@@ -7,6 +7,7 @@ import type { EventFrame } from "@/lib/gateway/GatewayClient";
 export type GatewayHelloOk = {
   sessionId?: string;
   protocol?: number;
+  adapterType?: string;
 };
 
 type GatewayResponseFrame = {
