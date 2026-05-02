@@ -245,7 +245,7 @@ async function main() {
   } catch (err) {
     console.error("❌ [Server] Falha ao preparar Next.js:", err.message);
   }
-}
+
   if (useHttps) {
     console.info("HTTPS mode: self-signed cert in use. You may need to accept a browser security warning once.");
     console.info(`Spotify redirect URI: ${browserUrl}/office`);
