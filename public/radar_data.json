@@ -32,23 +32,23 @@
     }
   ],
   "active_profiles": [
-    "Perfil 1 - Investidor",
-    "Perfil 2 - Morador"
+    "Perfil 1 - Imobiliária X",
+    "Perfil 2 - Imobiliária Y"
   ],
-  "market_vibe": "O mercado imobiliário em Goiânia está em alta, com preços aumentando e demanda por imóveis em áreas nobres.",
+  "market_vibe": "O mercado está em alta, com aumento de 15% nas vendas em comparação com o mesmo período do ano passado.",
   "competition_alerts": [
     {
       "title": "Alerta de Preço",
       "neighborhood": "Setor Bueno",
       "threat": "Alta",
-      "suggestion": "Aumentar o preço para manter a competitividade"
+      "suggestion": "Revisar os preços para manter a competitividade"
     },
     {
-      "title": "Alerta de Concorrência",
+      "title": "Alerta de Oferta",
       "neighborhood": "Marista",
-      "threat": "Média",
-      "suggestion": "Oferecer descontos para atrair compradores"
+      "threat": "Baixa",
+      "suggestion": "Aumentar a oferta de imóveis para atender à demanda"
     }
   ],
-  "last_update": "02/05/2026, 14:19:23"
+  "last_update": "02/05/2026, 17:19:23"
 }

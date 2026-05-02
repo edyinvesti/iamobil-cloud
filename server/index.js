@@ -203,9 +203,9 @@ async function main() {
             if (accessGate.handleHttp(req, res)) return;
 
             if (!nextReady) {
-              res.statusCode = 503;
+              res.statusCode = 200; // Return 200 for Render Health Check
               res.setHeader("Content-Type", "application/json");
-              res.end(JSON.stringify({ error: "Next.js is preparing. Please wait..." }));
+              res.end(JSON.stringify({ status: "preparing", message: "IAmobil is starting up. Please wait..." }));
               return;
             }
             handle(req, res);
@@ -242,9 +242,9 @@ async function main() {
             }
 
             if (!nextReady) {
-              res.statusCode = 503;
+              res.statusCode = 200; // Return 200 for Render Health Check
               res.setHeader("Content-Type", "application/json");
-              res.end(JSON.stringify({ error: "Next.js is preparing. Please wait..." }));
+              res.end(JSON.stringify({ status: "preparing", message: "IAmobil is starting up. Please wait..." }));
               return;
             }
             handle(req, res);
@@ -302,7 +302,7 @@ async function main() {
   const protocol = useHttps ? "https" : "http";
   const browserUrl = `${protocol}://${hostForBrowser}:${port}`;
 
-  console.info(`📡 [Server] Iniciando escuta em ${browserUrl}...`);
+  console.info(`📡 [Server] Iniciando escuta em ${browserUrl}... (Host: ${hostname}, Port: ${port})`);
   try {
     await Promise.all(servers.map((server, index) => listenOnHost(server, hostnames[index])));
     console.info(`✅ [Server] HTTP Server escutando.`);
