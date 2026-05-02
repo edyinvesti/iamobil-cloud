@@ -23,11 +23,11 @@
       "percentage": 20
     },
     {
-      "type": "Sobrado",
+      "type": "Terreno",
       "percentage": 10
     },
     {
-      "type": "Terreno",
+      "type": "Comercial",
       "percentage": 10
     }
   ],
@@ -42,14 +42,14 @@
       "title": "Alerta de Preço",
       "neighborhood": "Setor Bueno",
       "threat": "Alta",
-      "suggestion": "Ajustar preços para manter competitividade"
+      "suggestion": "Aumentar o preço para manter a competitividade"
     },
     {
       "title": "Alerta de Oferta",
       "neighborhood": "Marista",
       "threat": "Baixa",
-      "suggestion": "Aumentar oferta de imóveis para atender à demanda"
+      "suggestion": "Oferecer descontos para atrair compradores"
     }
   ],
-  "last_update": "02/05/2026, 18:19:23"
+  "last_update": "02/05/2026, 19:19:23"
 }
