@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: iamobil-cloud
+    runtime: docker
+    dockerContext: .
+    dockerfilePath: Dockerfile
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: TURSO_DB_URL
+        sync: false
+      - key: TURSO_DB_AUTH_TOKEN
+        sync: false
+      - key: HERMES_API_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: HERMES_MODEL
+        value: llama-3.3-70b-versatile
+      - key: HOST
+        value: 0.0.0.0
+      - key: DEBUG
+        value: "true"
