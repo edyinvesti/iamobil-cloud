@@ -1,3 +1,12 @@
+---
+title: IAmobil
+emoji: 🏠
+colorFrom: blue
+colorTo: pink
+sdk: docker
+pinned: false
+---
+
 # IAmobil
 
 IAmobil é um ecossistema inteligente para gestão imobiliária e corretores autônomos.

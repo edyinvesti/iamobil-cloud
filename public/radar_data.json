@@ -23,33 +23,32 @@
       "percentage": 20
     },
     {
-      "type": "Terreno",
+      "type": "Sobrado",
       "percentage": 10
     },
     {
-      "type": "Comercial",
+      "type": "Terreno",
       "percentage": 10
     }
   ],
   "active_profiles": [
-    "Perfil 1",
-    "Perfil 2",
-    "Perfil 3"
+    "Perfil 1 - Investidor",
+    "Perfil 2 - Morador"
   ],
-  "market_vibe": "O mercado está em alta, com uma demanda crescente por apartamentos em Setor Bueno.",
+  "market_vibe": "O mercado imobiliário está em alta, com preços aumentando e demanda alta para apartamentos em Setor Bueno.",
   "competition_alerts": [
     {
       "title": "Alerta de Preço",
       "neighborhood": "Setor Bueno",
       "threat": "Alta",
-      "suggestion": "Aumentar o preço para manter a competitividade"
+      "suggestion": "Ajustar preços para manter competitividade"
     },
     {
-      "title": "Alerta de Oferta",
+      "title": "Alerta de Demanda",
       "neighborhood": "Marista",
-      "threat": "Baixa",
-      "suggestion": "Oferecer descontos para atrair compradores"
+      "threat": "Média",
+      "suggestion": "Investir em marketing para aumentar visibilidade"
     }
   ],
-  "last_update": "02/05/2026, 19:19:23"
+  "last_update": "02/05/2026, 20:19:23"
 }
