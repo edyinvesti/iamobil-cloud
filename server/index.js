@@ -112,68 +112,7 @@ async function main() {
   let handle = null;
   let handleUpgrade = null;
 
-  const accessGate = createAccessGate({
-    token: process.env.STUDIO_ACCESS_TOKEN,
-  });
-
-  const proxy = createGatewayProxy({
-    loadUpstreamSettings: async () => {
-      const settings = loadUpstreamGatewaySettings(process.env);
-      return { url: settings.url, token: settings.token, adapterType: settings.adapterType };
-    },
-    log: (message) => console.info(message),
-    logError: (message, error) => console.error(message, error),
-    allowWs: (req) => {
-      if (resolvePathname(req.url) !== "/api/gateway/ws") return false;
-      return true;
-    },
-    verifyClient: (info) => accessGate.allowUpgrade(info.req),
-  });
-
-  // 1. Iniciar Hermes Gateway Adapter IMEDIATAMENTE (Paralelo ao Next.js prepare)
-  try {
-    if (process.env.SKIP_SUBPROCESS !== "true") {
-      console.log("🚀 [Server] Iniciando Hermes Gateway Adapter em background...");
-      const adapterProcess = spawn("node", ["server/hermes-gateway-adapter.js"], {
-        stdio: "inherit",
-        env: { ...process.env, ADAPTER_IS_SUBPROCESS: "true" },
-      });
-      adapterProcess.on("error", (err) => {
-        console.error("❌ [Server] Falha ao iniciar Hermes Adapter:", err.message);
-      });
-    }
-  } catch (err) {
-    console.error("⚠️ [Server] Erro ao disparar subprocesso do Hermes:", err.message);
-  }
-
-  console.log(`🌍 [Server] Ambiente: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔑 [Server] Turso Configurado: ${!!process.env.TURSO_DB_URL}`);
-  console.log(`🤖 [Server] Hermes Key Configurada: ${!!process.env.HERMES_API_KEY}`);
-
-  // 2. Orquestrar Hub de Mensageria e Motores em background
-  (async () => {
-    try {
-      console.info("⏳ [Server] Aguardando Hermes Gateway na porta 18789...");
-      const ready = await waitForPort(18789, "127.0.0.1", 20000); // 20s de paciência
-      if (ready) {
-        console.info("📡 [Server] Hermes pronto! Conectando Messaging Hub...");
-        require("./messaging_hub");
-      } else {
-        console.warn("⚠️ [Server] Timeout Hermes ou porta ocupada. Verificando ambiente...");
-        require("./messaging_hub");
-      }
-    } catch (err) {
-      console.error("⚠️ [Server] Falha na orquestração de background:", err.message);
-    }
-  })();
-
-  // Iniciar Motores Secundários (Radar e Autofix) sem bloquear
-  try { radarEngine.start(); } catch (e) { console.error(e); }
-  try { require("./autofix-engine"); } catch (e) { console.error(e); }
-  try { require("./brain_engine").startAutonomousLearning(30 * 60 * 1000); } catch (e) { console.error(e); }
-  try { require("./rag_engine").syncKnowledgeBase(); } catch (e) { console.error(e); }
-
-
+  // 1. Definição do Handler do Servidor
   const handleServerUpgrade = (req, socket, head) => {
     if (resolvePathname(req.url) === "/api/gateway/ws") {
       proxy.handleUpgrade(req, socket, head);
@@ -187,23 +126,20 @@ async function main() {
   };
 
   const httpsCert = useHttps ? await generateHttpsCert() : null;
-
   let nextReady = false;
 
   const createServer = () =>
     useHttps
       ? https.createServer(httpsCert, (req, res) => {
           try {
-            // CORS Support for the Website
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
             res.setHeader("Access-Control-Allow-Headers", "Content-Type");
             if (req.method === "OPTIONS") { res.statusCode = 204; res.end(); return; }
-
             if (accessGate.handleHttp(req, res)) return;
 
             if (!nextReady) {
-              res.statusCode = 200; // Return 200 for Render Health Check
+              res.statusCode = 200;
               res.setHeader("Content-Type", "application/json");
               res.end(JSON.stringify({ status: "preparing", message: "IAmobil is starting up. Please wait..." }));
               return;
@@ -212,18 +148,15 @@ async function main() {
           } catch (err) {
             console.error("🔥 [Server] Critical Request Error (HTTPS):", err);
             res.statusCode = 500;
-            res.setHeader("Content-Type", "application/json");
-            res.end(JSON.stringify({ error: "Internal Server Error (Custom Handler)" }));
+            res.end(JSON.stringify({ error: "Internal Server Error" }));
           }
         })
       : http.createServer((req, res) => {
           try {
-            // CORS Support for the Website
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
             res.setHeader("Access-Control-Allow-Headers", "Content-Type");
             if (req.method === "OPTIONS") { res.statusCode = 204; res.end(); return; }
-
             if (accessGate.handleHttp(req, res)) return;
 
             const pathname = resolvePathname(req.url);
@@ -233,16 +166,9 @@ async function main() {
               res.end(JSON.stringify(simulatorManager.getSimulatorStatus()));
               return;
             }
-            if (pathname === "/api/simulator/launch" && req.method === "POST") {
-              const result = simulatorManager.startSimulator();
-              res.statusCode = 200;
-              res.setHeader("Content-Type", "application/json");
-              res.end(JSON.stringify(result));
-              return;
-            }
 
             if (!nextReady) {
-              res.statusCode = 200; // Return 200 for Render Health Check
+              res.statusCode = 200;
               res.setHeader("Content-Type", "application/json");
               res.end(JSON.stringify({ status: "preparing", message: "IAmobil is starting up. Please wait..." }));
               return;
@@ -251,72 +177,75 @@ async function main() {
           } catch (err) {
             console.error("🔥 [Server] Critical Request Error (HTTP):", err);
             res.statusCode = 500;
-            res.setHeader("Content-Type", "application/json");
-            res.end(JSON.stringify({ error: "Internal Server Error (Custom Handler)" }));
+            res.end(JSON.stringify({ error: "Internal Server Error" }));
           }
         });
 
+  // 2. ABRIR PORTA IMEDIATAMENTE (Vital para Render Health Check)
   const servers = hostnames.map(() => createServer());
   global.servers = servers;
-
-  const attachUpgradeHandlers = (server) => {
-    server.on("upgrade", handleServerUpgrade);
-    server.on("newListener", (eventName, listener) => {
-      if (eventName !== "upgrade") return;
-      if (listener === handleServerUpgrade) return;
-      process.nextTick(() => {
-        server.removeListener("upgrade", listener);
-      });
-    });
-  };
-
   for (const server of servers) {
-    attachUpgradeHandlers(server);
+    server.on("upgrade", handleServerUpgrade);
   }
 
   const listenOnHost = (server, host) =>
     new Promise((resolve, reject) => {
-      const onError = (err) => {
-        server.off("error", onError);
-        reject(err);
-      };
-      server.once("error", onError);
-      server.listen(port, host, () => {
-        server.off("error", onError);
-        resolve();
-      });
+      server.listen(port, host, () => resolve());
+      server.once("error", reject);
     });
-
-  const closeServer = (server) =>
-    new Promise((resolve) => {
-      if (!server.listening) return resolve();
-      server.close(() => resolve());
-    });
-
-  const hostForBrowser = hostnames.some((value) => value === "127.0.0.1" || value === "::1")
-    ? "localhost"
-    : hostname === "0.0.0.0" || hostname === "::"
-      ? "localhost"
-      : hostname;
 
   const protocol = useHttps ? "https" : "http";
-  const browserUrl = `${protocol}://${hostForBrowser}:${port}`;
+  const browserUrl = `${protocol}://0.0.0.0:${port}`;
 
-  console.info(`📡 [Server] Iniciando escuta em ${browserUrl}... (Host: ${hostname}, Port: ${port})`);
+  console.info(`📡 [Server] [${new Date().toLocaleTimeString()}] Abrindo porta ${port} imediatamente (Health Check)...`);
   try {
     await Promise.all(servers.map((server, index) => listenOnHost(server, hostnames[index])));
-    console.info(`✅ [Server] HTTP Server escutando.`);
+    console.info(`✅ [Server] [${new Date().toLocaleTimeString()}] Porta aberta com sucesso!`);
   } catch (err) {
-    await Promise.all(servers.map((server) => closeServer(server)));
-    throw err;
+    console.error("❌ [Server] Falha fatal ao abrir porta:", err.message);
+    process.exit(1);
   }
 
-  console.info("⚙️ [Server] Preparando Next.js em paralelo...");
-  await app.prepare();
-  handle = app.getRequestHandler();
-  handleUpgrade = app.getUpgradeHandler();
-  nextReady = true;
-  console.info("🎉 [Server] Sistema IAmobil Totalmente Pronto!");
+  // 3. INICIAR MOTORES EM BACKGROUND (Não bloqueia o Health Check)
+  (async () => {
+    console.info(`🚀 [Server] [${new Date().toLocaleTimeString()}] Iniciando motores secundários...`);
+    
+    // Hermes Adapter
+    try {
+      if (process.env.SKIP_SUBPROCESS !== "true") {
+        spawn("node", ["server/hermes-gateway-adapter.js"], {
+          stdio: "inherit",
+          env: { ...process.env, ADAPTER_IS_SUBPROCESS: "true" },
+        }).on("error", (err) => console.error("❌ [Server] Erro Hermes:", err.message));
+      }
+    } catch (e) { console.error(e); }
+
+    // Messaging Hub
+    try {
+      const ready = await waitForPort(18789, "127.0.0.1", 30000);
+      require("./messaging_hub");
+      console.info(`📡 [Server] [${new Date().toLocaleTimeString()}] Messaging Hub conectado.`);
+    } catch (e) { console.error(e); }
+
+    // Outros Motores
+    try { radarEngine.start(); } catch (e) { console.error(e); }
+    try { require("./autofix-engine"); } catch (e) { console.error(e); }
+    try { require("./brain_engine").startAutonomousLearning(30 * 60 * 1000); } catch (e) { console.error(e); }
+    try { require("./rag_engine").syncKnowledgeBase(); } catch (e) { console.error(e); }
+  })();
+
+  // 4. PREPARAR NEXT.JS EM PARALELO
+  console.info(`⚙️ [Server] [${new Date().toLocaleTimeString()}] Preparando Next.js (Cold Start)...`);
+  try {
+    await app.prepare();
+    handle = app.getRequestHandler();
+    handleUpgrade = app.getUpgradeHandler();
+    nextReady = true;
+    console.info(`🎉 [Server] [${new Date().toLocaleTimeString()}] Sistema IAmobil Totalmente Pronto!`);
+  } catch (err) {
+    console.error("❌ [Server] Falha ao preparar Next.js:", err.message);
+  }
+}
   if (useHttps) {
     console.info("HTTPS mode: self-signed cert in use. You may need to accept a browser security warning once.");
     console.info(`Spotify redirect URI: ${browserUrl}/office`);
