@@ -34399,3 +34399,20 @@
 [2026-05-02T20:34:33.753Z] ⚠️ [Cron] Sistema autônomo aguardando novas integrações.
 [2026-05-02T20:49:32.589Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Carlos
 [2026-05-02T20:49:33.443Z] ⚠️ [Cron] Sistema autônomo aguardando novas integrações.
+[2026-05-02T21:04:32.624Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Carlos
+[2026-05-02T21:04:37.560Z] ⚠️ [Cron] Sistema autônomo aguardando novas integrações.
+[2026-05-02T21:19:32.631Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Carlos
+[2026-05-02T21:19:33.524Z] ⚠️ [Cron] Sistema autônomo aguardando novas integrações.
+[2026-05-02T21:34:32.639Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Carlos
+[2026-05-02T21:34:34.435Z] ⚠️ [Cron] Sistema autônomo aguardando novas integrações.
+[2026-05-02T21:49:32.635Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Carlos
+[2026-05-02T21:49:33.755Z] ⚠️ [Cron] Sistema autônomo aguardando novas integrações.
+[2026-05-02T22:02:31.953Z] 🚦 [Broker] Mensagem enfileirada: "ola" (Telegram) | Hermes pronto: true
+[2026-05-02T22:02:31.965Z] 🧠 [Broker] Processando da Fila (Restam 0): "ola"
+[2026-05-02T22:02:31.965Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=1
+[2026-05-02T22:02:39.473Z] [Telegram] Enviando texto (916 chars) para ChatID: 6202370881
+[2026-05-02T22:02:41.645Z] [Telegram] Iniciando pipeline de áudio obrigatório...
+[2026-05-02T22:02:41.646Z] [Hub] Gerando voz via sistema estável iAmobil.
+[2026-05-02T22:02:45.407Z] [Telegram] Despachando áudio (692160 bytes)...
+[2026-05-02T22:04:32.639Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Carlos
+[2026-05-02T22:04:34.318Z] ⚠️ [Cron] Sistema autônomo aguardando novas integrações.

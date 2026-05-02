@@ -32,23 +32,24 @@
     }
   ],
   "active_profiles": [
-    "Perfil 1 - Imobiliária X",
-    "Perfil 2 - Imobiliária Y"
+    "Perfil 1",
+    "Perfil 2",
+    "Perfil 3"
   ],
-  "market_vibe": "O mercado está em alta, com aumento de 15% nas vendas em comparação com o mesmo período do ano passado.",
+  "market_vibe": "O mercado está em alta, com uma demanda crescente por apartamentos em Setor Bueno.",
   "competition_alerts": [
     {
       "title": "Alerta de Preço",
       "neighborhood": "Setor Bueno",
       "threat": "Alta",
-      "suggestion": "Revisar os preços para manter a competitividade"
+      "suggestion": "Ajustar preços para manter competitividade"
     },
     {
       "title": "Alerta de Oferta",
       "neighborhood": "Marista",
       "threat": "Baixa",
-      "suggestion": "Aumentar a oferta de imóveis para atender à demanda"
+      "suggestion": "Aumentar oferta de imóveis para atender à demanda"
     }
   ],
-  "last_update": "02/05/2026, 17:19:23"
+  "last_update": "02/05/2026, 18:19:23"
 }

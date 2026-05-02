@@ -7,6 +7,7 @@ RUN mkdir -p data logs
 # Copiar dependências
 COPY package*.json ./
 RUN npm install
+RUN npm rebuild sqlite3 --build-from-source
 
 # Copiar código
 COPY . .
