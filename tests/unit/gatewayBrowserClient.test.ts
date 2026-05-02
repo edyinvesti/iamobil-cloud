@@ -63,7 +63,12 @@ describe("GatewayBrowserClient", () => {
   });
 
   it("sends connect when connect.challenge arrives", async () => {
-    const client = new GatewayBrowserClient({ url: "ws://example.com" });
+    const client = new GatewayBrowserClient({
+      url: "ws://example.com",
+      onHello: () => {},
+      onEvent: () => {},
+      onClose: () => {},
+    });
     client.start();
 
     const ws = MockWebSocket.instances[0];
@@ -96,7 +101,13 @@ describe("GatewayBrowserClient", () => {
 
   it("truncates connect-failed close reason to websocket limit", async () => {
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
-    const client = new GatewayBrowserClient({ url: "ws://example.com", token: "secret" });
+    const client = new GatewayBrowserClient({
+      url: "ws://example.com",
+      token: "secret",
+      onHello: () => {},
+      onEvent: () => {},
+      onClose: () => {},
+    });
     client.start();
 
     const ws = MockWebSocket.instances[0];

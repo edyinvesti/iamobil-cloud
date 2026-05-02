@@ -55,7 +55,7 @@ const base64UrlEncode = (bytes: Uint8Array): string =>
     .replace(/=+$/g, "");
 
 const generateDeviceId = async (publicKey: Uint8Array): Promise<string> => {
-  const hashBuffer = await crypto.subtle.digest("SHA-256", publicKey.buffer);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", publicKey.buffer as ArrayBuffer);
   return Array.from(new Uint8Array(hashBuffer))
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
