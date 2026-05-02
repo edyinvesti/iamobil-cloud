@@ -20,13 +20,13 @@ type SettingsPanelProps = {
   officeTitleLoaded: boolean;
   onOfficeTitleChange: (title: string) => void;
   remoteOfficeEnabled: boolean;
-  remoteOfficeSourceKind: "presence_endpoint" | "hermes_gateway";
+  remoteOfficeSourceKind: "presence_endpoint" | "hermes_gateway" | "openclaw_gateway";
   remoteOfficeLabel: string;
   remoteOfficePresenceUrl: string;
   remoteOfficeGatewayUrl: string;
   remoteOfficeTokenConfigured: boolean;
   onRemoteOfficeEnabledChange: (enabled: boolean) => void;
-  onRemoteOfficeSourceKindChange: (kind: "presence_endpoint" | "hermes_gateway") => void;
+  onRemoteOfficeSourceKindChange: (kind: "presence_endpoint" | "hermes_gateway" | "openclaw_gateway") => void;
   onRemoteOfficeLabelChange: (label: string) => void;
   onRemoteOfficePresenceUrlChange: (url: string) => void;
   onRemoteOfficeGatewayUrlChange: (url: string) => void;

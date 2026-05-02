@@ -2445,7 +2445,7 @@ export function RetroOffice3D({
   officeTitle?: string;
   officeTitleLoaded?: boolean;
   remoteOfficeEnabled?: boolean;
-  remoteOfficeSourceKind?: "presence_endpoint" | "hermes_gateway";
+  remoteOfficeSourceKind?: "presence_endpoint" | "hermes_gateway" | "openclaw_gateway";
   remoteOfficeLabel?: string;
   remoteOfficePresenceUrl?: string;
   remoteOfficeGatewayUrl?: string;
@@ -2459,7 +2459,7 @@ export function RetroOffice3D({
   onOfficeTitleChange?: (title: string) => void;
   onRemoteOfficeEnabledChange?: (enabled: boolean) => void;
   onRemoteOfficeSourceKindChange?: (
-    kind: "presence_endpoint" | "hermes_gateway",
+    kind: "presence_endpoint" | "hermes_gateway" | "openclaw_gateway",
   ) => void;
   onRemoteOfficeLabelChange?: (label: string) => void;
   onRemoteOfficePresenceUrlChange?: (url: string) => void;
