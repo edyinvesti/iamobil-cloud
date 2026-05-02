@@ -1,0 +1,19 @@
+[
+  {
+    "suites": 5,
+    "description": "Excelente cobertura com vista panoramica para o Vaca Brava.",
+    "price": 9500000,
+    "bedrooms": 5,
+    "parkingSpaces": 6,
+    "amenities": [
+      "Piscina Privativa",
+      "Heliponto",
+      "Elevador Exclusivo"
+    ],
+    "address": "Setor Bueno, Goiânia - GO",
+    "size": 450,
+    "title": "Cobertura Triplex Royal",
+    "status": "Aguardando Aprovação",
+    "submittedAt": 1776465533992
+  }
+]

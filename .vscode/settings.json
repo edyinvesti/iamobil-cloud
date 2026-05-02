@@ -1,0 +1,7 @@
+{
+  "css.customData": [],
+  "css.lint.unknownAtRules": "ignore",
+  "tailwindCSS.experimental.classRegex": [
+    [" firma-glass-card", "glass-panel"]
+  ]
+}

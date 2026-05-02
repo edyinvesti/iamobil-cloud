@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  iamobil-app:
+    build: .
+    ports:
+      - "3000:3000"
+      - "18789:18789"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: always

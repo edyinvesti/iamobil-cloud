@@ -1,0 +1,54 @@
+{
+  "top_regions": [
+    {
+      "name": "Setor Bueno",
+      "score": 90
+    },
+    {
+      "name": "Marista",
+      "score": 80
+    },
+    {
+      "name": "Alphaville",
+      "score": 70
+    }
+  ],
+  "property_types": [
+    {
+      "type": "Apartamentos",
+      "percentage": 60
+    },
+    {
+      "type": "Casa",
+      "percentage": 20
+    },
+    {
+      "type": "Sobrado",
+      "percentage": 10
+    },
+    {
+      "type": "Terreno",
+      "percentage": 10
+    }
+  ],
+  "active_profiles": [
+    "Perfil 1 - Imobiliária X",
+    "Perfil 2 - Imobiliária Y"
+  ],
+  "market_vibe": "O mercado está em alta, com uma demanda crescente por apartamentos em Setor Bueno.",
+  "competition_alerts": [
+    {
+      "title": "Alerta de Preço",
+      "neighborhood": "Setor Bueno",
+      "threat": "Alta",
+      "suggestion": "Revisar os preços para manter a competitividade."
+    },
+    {
+      "title": "Alerta de Oferta",
+      "neighborhood": "Marista",
+      "threat": "Baixa",
+      "suggestion": "Aumentar a oferta de imóveis em Marista para atender à demanda."
+    }
+  ],
+  "last_update": "02/05/2026, 10:19:25"
+}

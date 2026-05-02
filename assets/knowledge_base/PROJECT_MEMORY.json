@@ -1,0 +1,19 @@
+{
+  "stack": [
+    "Node.js",
+    "Next.js",
+    "OpenClaw",
+    "Groq",
+    "SQLite"
+  ],
+  "erros_recorrentes": [],
+  "reparos_sucesso": [],
+  "conhecimento_arquivos": {
+    "server/index.js": "Ponto de entrada do servidor Next.js e inicialização de motores.",
+    "server/hermes-gateway-adapter.js": "Núcleo de orquestração de IA e ferramentas (Edy).",
+    "server/messaging_hub.js": "Ponte entre Telegram/WhatsApp e o cérebro da iAmobil.",
+    "server/data_engine.js": "Gestão de persistência de Leads e CRM em SQLite.",
+    "server/autofix-engine.js": "Vigilante autônomo e motor de Auto-Healing."
+  },
+  "historico_correcoes": []
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListingDataFeed xmlns="http://www.viva-real.com/schemas/1.0/VRSync" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Header>
+    <Provider>iAmobil</Provider>
+    <Email>vendas@iamobil.com.br</Email>
+    <ContactName>Edy Diretor</ContactName>
+  </Header>
+  <Listings>
+    <Listing>
+      <ListingID>1776465533992</ListingID>
+      <Title><![CDATA[Cobertura Triplex Royal]]></Title>
+      <TransactionType>For Sale</TransactionType>
+      <DetailViewUrl>https://iamobil.com.br/imovel/1776465533992</DetailViewUrl>
+      <Media>
+        <Item medium="image" caption="Fachada">https://iamobil.com.br/assets/placeholder_property.jpg</Item>
+      </Media>
+      <Details>
+        <Usage>Residential</Usage>
+        <PropertyType>Apartment</PropertyType>
+        <Description><![CDATA[Excelente cobertura com vista panoramica para o Vaca Brava.]]></Description>
+        <ListPrice currency="BRL">9500000</ListPrice>
+        <LivingArea unit="square metres">450</LivingArea>
+        <Bedrooms>5</Bedrooms>
+        <Bathrooms>5</Bathrooms>
+        <Garage>6</Garage>
+        <Features>
+          <Feature>Piscina Privativa</Feature>
+          <Feature>Heliponto</Feature>
+          <Feature>Elevador Exclusivo</Feature>
+        </Features>
+      </Details>
+      <Location displayAddress="All">
+        <Address><![CDATA[Setor Bueno, Goiânia - GO]]></Address>
+        <City>Goiânia</City>
+        <State>GO</State>
+      </Location>
+    </Listing>
+  </Listings>
+</ListingDataFeed>
