@@ -431,9 +431,10 @@ function processQueue() {
 function startTelegramBot() {
     if (!TELEGRAM_TOKEN) return;
     
-    try {
-        // Inicializa sem polling longo
-        tgBot = new TelegramBot(TELEGRAM_TOKEN);
+        // Inicializa forçando IPv4 por causa do bug de TLS do Hugging Face
+        tgBot = new TelegramBot(TELEGRAM_TOKEN, {
+            request: { agentOptions: { family: 4 } }
+        });
         global.tgBot = tgBot; // Expor globalmente para o HTTP server
         
         // Em Cloud (como Hugging Face), ativamos o WebHook nativo!
