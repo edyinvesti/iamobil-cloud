@@ -444,7 +444,12 @@ function startTelegramBot() {
             let body = '';
             req.on('data', chunk => body += chunk);
             req.on('end', () => {
-                try { tgBot.processUpdate(JSON.parse(body)); } catch(e){}
+                try { 
+                    logDebug('✅ [Hub] Payload IPC Recebido na 8081!');
+                    tgBot.processUpdate(JSON.parse(body)); 
+                } catch(e) {
+                    logDebug('❌ [Hub] Erro interno no processUpdate: ' + e.message);
+                }
                 res.end('OK');
             });
         });
