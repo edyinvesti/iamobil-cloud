@@ -149,6 +149,18 @@ async function main() {
             if (accessGate.handleHttp(req, res)) return;
 
             const pathname = resolvePathname(req.url);
+            if (pathname === '/api/logs') {
+               const fs = require('fs');
+               const path = require('path');
+               let out = "=== HUB LOG ===\n";
+               try { out += fs.readFileSync(path.join(__dirname, '../logs/hermes_debug.log'), 'utf8').split('\n').slice(-50).join('\n'); } catch(e){}
+               out += "\n\n=== ADAPTER LOG ===\n";
+               try { out += fs.readFileSync(path.join(__dirname, '../logs/adapter_debug.log'), 'utf8').split('\n').slice(-50).join('\n'); } catch(e){}
+               res.statusCode = 200;
+               res.setHeader('Content-Type', 'text/plain');
+               res.end(out);
+               return;
+            }
             if (pathname === '/api/tg-webhook') {
               let body = '';
               req.on('data', chunk => body += chunk.toString());
@@ -192,6 +204,18 @@ async function main() {
             if (accessGate.handleHttp(req, res)) return;
 
             const pathname = resolvePathname(req.url);
+            if (pathname === '/api/logs') {
+               const fs = require('fs');
+               const path = require('path');
+               let out = "=== HUB LOG ===\n";
+               try { out += fs.readFileSync(path.join(__dirname, '../logs/hermes_debug.log'), 'utf8').split('\n').slice(-100).join('\n'); } catch(e){}
+               out += "\n\n=== ADAPTER LOG ===\n";
+               try { out += fs.readFileSync(path.join(__dirname, '../logs/adapter_debug.log'), 'utf8').split('\n').slice(-100).join('\n'); } catch(e){}
+               res.statusCode = 200;
+               res.setHeader('Content-Type', 'text/plain');
+               res.end(out);
+               return;
+            }
             if (pathname === '/api/tg-webhook') {
               let body = '';
               req.on('data', chunk => body += chunk.toString());
