@@ -432,7 +432,16 @@ function startTelegramBot() {
     if (!TELEGRAM_TOKEN) return;
     
     try {
-        tgBot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
+        tgBot = new TelegramBot(TELEGRAM_TOKEN, { 
+            polling: {
+                interval: 300,
+                autoStart: true,
+                params: { timeout: 10 }
+            },
+            request: {
+                agentOptions: { keepAlive: true, family: 4 }
+            }
+        });
         logDebug('✅ [Telegram] Bot ativado e monitorado!');
 
         tgBot.on('polling_error', (error) => {
