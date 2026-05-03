@@ -1,4 +1,5 @@
 "use strict";
+console.log(`[hermes-adapter] BOOTING AT ${new Date().toISOString()} | CWD: ${process.cwd()}`);
 
 /**
  * Hermes Gateway Adapter — with multi-agent orchestration
