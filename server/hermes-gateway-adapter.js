@@ -560,12 +560,20 @@ function hermesGet(path) {
     const transport = url.protocol === "https:" ? https : http;
     const headers = {};
     if (HERMES_API_KEY) headers["Authorization"] = `Bearer ${HERMES_API_KEY}`;
+    const controller = new AbortController();
+    const timeoutHandle = setTimeout(() => controller.abort(), 30000); // 30s timeout for GET
     const req = transport.request(
       { hostname: url.hostname, port: url.port ? parseInt(url.port, 10) : (url.protocol === "https:" ? 443 : 80),
-        path: url.pathname + (url.search || ""), method: "GET", headers },
-      resolve
+        path: url.pathname + (url.search || ""), method: "GET", headers, signal: controller.signal },
+      (res) => {
+        clearTimeout(timeoutHandle);
+        resolve(res);
+      }
     );
-    req.on("error", reject);
+    req.on("error", (err) => {
+        clearTimeout(timeoutHandle);
+        reject(err);
+    });
     req.end();
   });
 }
@@ -797,7 +805,17 @@ async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _r
   let buffer = "";
 
   await new Promise((resolve, reject) => {
+    const streamTimeout = setTimeout(() => {
+        res.destroy();
+        reject(new Error("Stream inactivity timeout (30s)"));
+    }, 30000);
+
     res.on("data", (chunk) => {
+      streamTimeout.refresh?.() || (function(){
+          // Fallback if refresh is not available (older Node)
+          clearTimeout(streamTimeout);
+          // (This part is tricky without keeping reference, but modern Node has it)
+      })();
       if (abortCheck && abortCheck()) { res.destroy(); return; }
       buffer += chunk.toString("utf8");
       const lines = buffer.split("\n");
@@ -840,8 +858,14 @@ async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _r
         } catch { /* ignore malformed */ }
       }
     });
-    res.on("end", resolve);
-    res.on("error", reject);
+    res.on("end", () => {
+        clearTimeout(streamTimeout);
+        resolve();
+    });
+    res.on("error", (err) => {
+        clearTimeout(streamTimeout);
+        reject(err);
+    });
   });
 
   const toolCalls = Object.values(toolCallAccum).map((tc) => {

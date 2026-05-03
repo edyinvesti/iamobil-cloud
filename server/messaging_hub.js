@@ -361,7 +361,7 @@ let isProcessingQueue = false;
 
 function sendToAgents(task, platform, chatId, msgRef = null) {
     // Sempre enfileira — se o Hermes não estiver pronto, a fila será processada quando conectar
-    logDebug(`🚦 [Broker] Mensagem enfileirada: "${task}" (${platform}) | Hermes pronto: ${hermesReady}`);
+    logDebug(`🚦 [Broker] Nova tarefa recebida: "${task.substring(0, 20)}..." | Plataforma: ${platform} | ChatID: ${chatId}`);
     messageQueue.push({ task, platform, chatId, msgRef });
     if (ws && ws.readyState === WebSocket.OPEN && hermesReady) {
         processQueue();
@@ -436,10 +436,10 @@ function startTelegramBot() {
         tgBot = new TelegramBot(TELEGRAM_TOKEN, {
             request: { agentOptions: { family: 4 } }
         });
-        global.tgBot = tgBot;
+        // global.tgBot = tgBot; // Already set above
         
-        // Desregistrar qualquer webhook antigo
-        tgBot.deleteWebHook().catch(() => {});
+        // Desregistrar webhooks no Hub causava conflito com o modo Webhook da Nuvem.
+        // tgBot.deleteWebHook().catch(() => {});
         
         logDebug('✅ [Telegram] Bot inicializado! Aguardando Webhook do Telegram...');
         
@@ -452,7 +452,8 @@ function startTelegramBot() {
 
 
         tgBot.on('message', async (msg) => {
-        const text = msg.text;
+            logDebug(`📩 [Telegram] Mensagem recebida de ID: ${msg.chat.id} | Conteúdo: ${msg.text?.substring(0, 30)}...`);
+            const text = msg.text;
         const voice = msg.voice || msg.audio;
 
         if (voice) {
