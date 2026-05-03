@@ -15,6 +15,7 @@ COPY . .
 # Variáveis de ambiente padrão
 ENV PORT=7860
 ENV NODE_ENV=production
+ENV NODE_OPTIONS="--dns-result-order=ipv4first"
 
 # Compilar Next.js
 RUN npm run build
