@@ -101,6 +101,26 @@ async function getVoiceAudio(text) {
     }
 }
 
+function splitText(text, limit = 4000) {
+    const chunks = [];
+    let current = text;
+    while (current.length > 0) {
+        if (current.length <= limit) {
+            chunks.push(current);
+            break;
+        }
+        let slice = current.substring(0, limit);
+        let lastBreak = slice.lastIndexOf('\n');
+        if (lastBreak < limit * 0.7) lastBreak = slice.lastIndexOf('. ');
+        if (lastBreak < limit * 0.7) lastBreak = slice.lastIndexOf(' ');
+        
+        let splitAt = (lastBreak > 0) ? lastBreak : limit;
+        chunks.push(current.substring(0, splitAt).trim());
+        current = current.substring(splitAt).trim();
+    }
+    return chunks;
+}
+
 // Função auxiliar para gerar áudio realista (ElevenLabs)
 
 // --- Estabilização TTS: Apenas Google TTS Ativo ---
@@ -239,19 +259,27 @@ function connectHermes() {
                                     .replace(/\s+/g, ' ')
                                     .trim();
                                 
-                                // 1. Entrega do Texto (Independente)
-                                const safeAns = (typeof ans === 'string' && ans.length > 0) ? ans : "Desculpe, não consegui processar a resposta.";
-                                try {
-                                    logDebug(`[Telegram] Enviando texto (${safeAns.length} chars) para ChatID: ${reqData.chatId}`);
-                                    await tgBot.sendMessage(reqData.chatId, `🤖 **${actingAgentName}:**\n\n${safeAns}`, { parse_mode: 'Markdown' });
-                                } catch (err) { 
-                                    logDebug(`[Telegram] Falha no Markdown, tentando Texto Plano...`); 
-                                    try {
-                                        await tgBot.sendMessage(reqData.chatId, `🤖 ${actingAgentName}:\n\n${safeAns}`);
-                                    } catch (err2) {
-                                        logDebug(`[Telegram] Erro crítico ao enviar texto:`, err2.message);
-                                    }
-                                }
+                                // 1. Entrega do Texto (Com Split para Mensagens Longas)
+                                 const safeAns = (typeof ans === 'string' && ans.length > 0) ? ans : "Desculpe, não consegui processar a resposta.";
+                                 const textChunks = splitText(safeAns);
+                                 
+                                 for (let i = 0; i < textChunks.length; i++) {
+                                     const prefix = textChunks.length > 1 ? `(${i+1}/${textChunks.length}) ` : "";
+                                     const header = i === 0 ? `🤖 **${actingAgentName}:**\n\n` : "";
+                                     const chunkMsg = `${header}${prefix}${textChunks[i]}`;
+                                     
+                                     try {
+                                         logDebug(`[Telegram] Enviando chunk ${i+1}/${textChunks.length} (${chunkMsg.length} chars)`);
+                                         await tgBot.sendMessage(reqData.chatId, chunkMsg, { parse_mode: 'Markdown' });
+                                     } catch (err) { 
+                                         logDebug(`[Telegram] Falha no Markdown no chunk ${i+1}, tentando Texto Plano...`); 
+                                         try {
+                                             await tgBot.sendMessage(reqData.chatId, `${header}${prefix}${textChunks[i]}`);
+                                         } catch (err2) {
+                                             logDebug(`[Telegram] Erro crítico ao enviar chunk ${i+1}:`, err2.message);
+                                         }
+                                     }
+                                 }
 
                                 try {
                                     await sendMediaIfMentioned(reqData.chatId, 'Telegram', ans);
