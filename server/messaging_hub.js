@@ -431,6 +431,7 @@ function processQueue() {
 function startTelegramBot() {
     if (!TELEGRAM_TOKEN) return;
     
+    try {
         // Inicializa forçando IPv4 por causa do bug de TLS do Hugging Face
         tgBot = new TelegramBot(TELEGRAM_TOKEN, {
             request: { agentOptions: { family: 4 } }
