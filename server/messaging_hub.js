@@ -435,11 +435,11 @@ function startTelegramBot() {
         // Inicializa Polling forçando IPv4 por causa do bug de TLS (EFATAL) do Hugging Face
         tgBot = new TelegramBot(TELEGRAM_TOKEN, {
             polling: {
-                interval: 300,
+                interval: 2000,
                 autoStart: true,
-                params: { timeout: 10 }
+                params: { timeout: 0, limit: 100, allowed_updates: ['message'] }
             },
-            request: { agentOptions: { keepAlive: true, family: 4 } }
+            request: { agentOptions: { keepAlive: false, family: 4 } }
         });
         global.tgBot = tgBot; // Expor globalmente (apalpável caso precise)
         
