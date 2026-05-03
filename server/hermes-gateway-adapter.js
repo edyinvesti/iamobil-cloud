@@ -210,7 +210,7 @@ console.log(`[hermes-adapter] API Base URL: ${HERMES_API_URL}`);
 
 let HERMES_API_KEY = process.env.HERMES_API_KEY || "";
 const ADAPTER_PORT = parseInt(process.env.HERMES_ADAPTER_PORT || "18789", 10);
-const HERMES_MODEL = process.env.HERMES_MODEL || "hermes";
+const HERMES_MODEL = process.env.HERMES_MODEL || "llama-3.3-70b-versatile";
 const HERMES_AGENT_NAME = identity.name || identity.nome || process.env.HERMES_AGENT_NAME || "Hermes";
 const HERMES_ROLE = identity.role || identity.papel || "Diretor de Vendas";
 const HERMES_VIBE = identity.vibe || "Efficient and helpful";
@@ -754,11 +754,11 @@ async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _r
     const geminiKey = process.env.GEMINI_API_KEY || "";
     const isRotatable = [429, 401, 402, 403, 404].includes(res.statusCode);
     
-    if (isRotatable && _retryCount < 6) {
+    if (isRotatable && _retryCount < 4) {
       const currentUrl = HERMES_API_URL;
       console.warn(`[API ROTATOR] Erro ${res.statusCode} em ${currentUrl}. Tentativa ${_retryCount + 1}...`);
 
-      // Rotation: Groq → OpenAI → Gemini → Groq (reset)
+      // Rotation Plan: Groq -> OpenAI -> Gemini -> Groq (Safe Model)
       if (currentUrl.includes("groq") && openaiKey) {
         console.warn(`[API ROTATOR] Groq falhou. Alternando para OpenAI...`);
         HERMES_API_URL = "https://api.openai.com";
@@ -766,11 +766,18 @@ async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _r
         return streamOneTurn(messages, "gpt-4o-mini", null, onTextDelta, abortCheck, _retryCount + 1);
       }
       
-      if (currentUrl.includes("openai.com") && geminiKey) {
-        console.warn(`[API ROTATOR] OpenAI falhou. Alternando para Gemini...`);
-        HERMES_API_URL = "https://generativelanguage.googleapis.com/v1beta/openai";
-        HERMES_API_KEY = geminiKey;
-        return streamOneTurn(messages, "gemini-2.0-flash", null, onTextDelta, abortCheck, _retryCount + 1);
+      if (currentUrl.includes("openai.com")) {
+        if (geminiKey) {
+            console.warn(`[API ROTATOR] OpenAI falhou. Alternando para Gemini...`);
+            HERMES_API_URL = "https://generativelanguage.googleapis.com/v1beta/openai";
+            HERMES_API_KEY = geminiKey;
+            return streamOneTurn(messages, "gemini-2.0-flash", null, onTextDelta, abortCheck, _retryCount + 1);
+        } else {
+            console.warn(`[API ROTATOR] OpenAI falhou e Gemini indisponível. Pulando para Groq Safe...`);
+            HERMES_API_URL = (process.env.HERMES_API_URL || "https://api.groq.com/openai").replace(/\/+$/, "").replace(/\/v1$/, "");
+            HERMES_API_KEY = process.env.HERMES_API_KEY || "";
+            return streamOneTurn(messages, "llama-3.1-8b-instant", null, onTextDelta, abortCheck, _retryCount + 1);
+        }
       }
 
       if (currentUrl.includes("generativelanguage") && groqKey) {
@@ -779,23 +786,9 @@ async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _r
         HERMES_API_KEY = groqKey;
         return streamOneTurn(messages, "llama-3.1-8b-instant", null, onTextDelta, abortCheck, _retryCount + 1);
       }
-
-      // Generic retry with backoff
-      if (_retryCount < 5) {
-        const delay = 1000 * Math.pow(2, _retryCount);
-        console.warn(`[API ROTATOR] Aguardando ${delay}ms antes de nova tentativa...`);
-        await new Promise(r => setTimeout(r, delay));
-        return streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _retryCount + 1);
-      }
     }
 
-    // Fallback: Se o erro for 400 e houver tools, tentar sem tools (Ollama local fallback)
-    if (res.statusCode === 400 && tools && tools.length > 0 && _retryCount === 0) {
-      console.warn(`[Hermes] 400 Detected in stream with tools. Retrying without tools for compatibility...`);
-      return streamOneTurn(messages, model, null, onTextDelta, abortCheck, _retryCount + 1);
-    }
-
-    throw new Error(errorMsg);
+    throw new Error(errorMsg || `Hermes API Error ${res.statusCode}`);
   }
 
   let textContent = "";
