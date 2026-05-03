@@ -148,7 +148,13 @@ async function main() {
               let body = '';
               req.on('data', chunk => body += chunk.toString());
               req.on('end', () => {
-                 try { if (global.tgBot) global.tgBot.processUpdate(JSON.parse(body)); } catch(e) {}
+                 try { 
+                   const http = require('http');
+                   const fReq = http.request('http://127.0.0.1:8081', { method: 'POST' });
+                   fReq.on('error', ()=>{});
+                   fReq.write(body);
+                   fReq.end();
+                 } catch(e) {}
                  res.statusCode = 200; res.end('OK');
               });
               return;
@@ -184,7 +190,13 @@ async function main() {
               let body = '';
               req.on('data', chunk => body += chunk.toString());
               req.on('end', () => {
-                 try { if (global.tgBot) global.tgBot.processUpdate(JSON.parse(body)); } catch(e) {}
+                 try { 
+                   const http = require('http');
+                   const fReq = http.request('http://127.0.0.1:8081', { method: 'POST' });
+                   fReq.on('error', ()=>{});
+                   fReq.write(body);
+                   fReq.end();
+                 } catch(e) {}
                  res.statusCode = 200; res.end('OK');
               });
               return;

@@ -438,6 +438,18 @@ function startTelegramBot() {
         });
         global.tgBot = tgBot; // Expor globalmente para o HTTP server
         
+        // Criar receptor interno já que index.js roda em outro processo PM2
+        const http = require('http');
+        const internalHook = http.createServer((req, res) => {
+            let body = '';
+            req.on('data', chunk => body += chunk);
+            req.on('end', () => {
+                try { tgBot.processUpdate(JSON.parse(body)); } catch(e){}
+                res.end('OK');
+            });
+        });
+        internalHook.listen(8081, '127.0.0.1', () => logDebug('✅ [Telegram] Internal Webhook bridge rodando na 8081'));
+        
         // Em Cloud (como Hugging Face), ativamos o WebHook nativo!
         const webUrl = "https://edyinvesti-iamobil.hf.space/api/tg-webhook";
         tgBot.setWebHook(webUrl, { drop_pending_updates: false }).then(() => {
