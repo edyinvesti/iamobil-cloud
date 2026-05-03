@@ -622,26 +622,7 @@ async function fetchHermesModels() {
 async function resolveHermesModel(requestedModel) {
   const trimmed = typeof requestedModel === "string" ? requestedModel.trim() : "";
   const normalized = trimmed.includes("/") ? trimmed.split("/").pop().trim() : trimmed;
-  try {
-    const models = await fetchHermesModels();
-    if (models.length === 0) {
-      return normalized || trimmed || HERMES_MODEL;
-    }
-    const candidates = [trimmed, normalized, HERMES_MODEL]
-      .map((value) => (typeof value === "string" ? value.trim() : ""))
-      .filter(Boolean);
-    for (const candidate of candidates) {
-      const exact = models.find((modelId) => modelId === candidate);
-      if (exact) return exact;
-    }
-    for (const candidate of candidates) {
-      const suffix = models.find((modelId) => modelId.endsWith(`/${candidate}`));
-      if (suffix) return suffix;
-    }
-    return models[0];
-  } catch {
-    return normalized || trimmed || HERMES_MODEL;
-  }
+  return normalized || trimmed || HERMES_MODEL;
 }
 
 async function completeOneTurn(messages, model, tools, _retryCount = 0) {

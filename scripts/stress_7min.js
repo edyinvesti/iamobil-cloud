@@ -10,7 +10,8 @@
  * - Simulação de pico de usuários acessando o portal
  */
 
-const http = require("http");
+const { http, https } = require("follow-redirects"); // Optional or just use standard https
+const client = require("https");
 const dataEngine = require("../server/data_engine");
 
 // ═══════════════════════════════════════════════════
@@ -98,7 +99,7 @@ async function attackHTTPFlood() {
   
   const promises = endpoints.map(ep => {
     return new Promise((resolve) => {
-      const req = http.get(`http://127.0.0.1:3000${ep}`, { timeout: 5000 }, (res) => {
+      const req = client.get(`https://iamobil-gestor-imob-13hr2vw59-edyinvestis-projects.vercel.app${ep}`, { timeout: 5000 }, (res) => {
         let data = "";
         res.on("data", chunk => data += chunk);
         res.on("end", () => resolve({ ok: res.statusCode === 200, size: data.length }));
@@ -143,7 +144,7 @@ async function attackReadWriteConflict() {
 /** Chamadas HTTP ao WebSocket Adapter (health check) */
 async function attackAdapterPing() {
   return new Promise((resolve) => {
-    const req = http.get("http://127.0.0.1:3000/api/catalog", { timeout: 3000 }, (res) => {
+    const req = client.get("https://iamobil-gestor-imob-13hr2vw59-edyinvestis-projects.vercel.app/api/catalog", { timeout: 3000 }, (res) => {
       let d = "";
       res.on("data", c => d += c);
       res.on("end", () => { httpRequests++; resolve(1); });
