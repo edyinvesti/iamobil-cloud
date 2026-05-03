@@ -96,6 +96,11 @@ async function main() {
   const hostnames = Array.from(new Set(resolveHosts(process.env)));
   const hostname = hostnames[0] ?? "127.0.0.1";
   const port = resolvePort();
+  
+  const accessGate = createAccessGate({
+    token: process.env.STUDIO_ACCESS_TOKEN || "local-dev-bypass"
+  });
+
   for (const host of hostnames) {
     assertPublicHostAllowed({
       host,
