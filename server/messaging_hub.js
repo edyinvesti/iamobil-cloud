@@ -432,35 +432,24 @@ function startTelegramBot() {
     if (!TELEGRAM_TOKEN) return;
     
     try {
-        // Inicializa forçando IPv4 por causa do bug de TLS do Hugging Face
+        // Inicializa Polling forçando IPv4 por causa do bug de TLS (EFATAL) do Hugging Face
         tgBot = new TelegramBot(TELEGRAM_TOKEN, {
-            request: { agentOptions: { family: 4 } }
+            polling: {
+                interval: 300,
+                autoStart: true,
+                params: { timeout: 10 }
+            },
+            request: { agentOptions: { keepAlive: true, family: 4 } }
         });
-        global.tgBot = tgBot; // Expor globalmente para o HTTP server
+        global.tgBot = tgBot; // Expor globalmente (apalpável caso precise)
         
-        // Criar receptor interno já que index.js roda em outro processo PM2
-        const http = require('http');
-        const internalHook = http.createServer((req, res) => {
-            let body = '';
-            req.on('data', chunk => body += chunk);
-            req.on('end', () => {
-                try { 
-                    logDebug('✅ [Hub] Payload IPC Recebido na 8081!');
-                    tgBot.processUpdate(JSON.parse(body)); 
-                } catch(e) {
-                    logDebug('❌ [Hub] Erro interno no processUpdate: ' + e.message);
-                }
-                res.end('OK');
-            });
-        });
-        internalHook.listen(8081, '127.0.0.1', () => logDebug('✅ [Telegram] Internal Webhook bridge rodando na 8081'));
+        logDebug('✅ [Telegram] Bot ativado e com Polling Seguro (IPv4) rodando!');
         
-        // Em Cloud (como Hugging Face), ativamos o WebHook nativo!
-        const webUrl = "https://edyinvesti-iamobil.hf.space/api/tg-webhook";
-        tgBot.setWebHook(webUrl, { drop_pending_updates: false }).then(() => {
-            logDebug('✅ [Telegram] WebHook ativado nativo em: ' + webUrl);
-        }).catch(err => {
-            logDebug('❌ [Telegram] Falha ao configurar WebHook: ' + err.message);
+        // Remove old webhook on Telegram side to allow polling
+        tgBot.deleteWebHook().catch(e => {});
+
+        tgBot.on('polling_error', (error) => {
+            logDebug(`[Telegram] Erro de Polling (Pode ser ignorado se relogar): ${error.message}`);
         });
 
 
