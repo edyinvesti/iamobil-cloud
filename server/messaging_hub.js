@@ -436,7 +436,7 @@ function startTelegramBot() {
         tgBot = new TelegramBot(TELEGRAM_TOKEN, {
             request: { agentOptions: { family: 4 } }
         });
-        // global.tgBot = tgBot; // Already set above
+        global.tgBot = tgBot;
         
         // Desregistrar webhooks no Hub causava conflito com o modo Webhook da Nuvem.
         // tgBot.deleteWebHook().catch(() => {});
