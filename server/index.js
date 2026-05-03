@@ -149,6 +149,18 @@ async function main() {
             if (accessGate.handleHttp(req, res)) return;
 
             const pathname = resolvePathname(req.url);
+            if (pathname === '/api/status') {
+               res.statusCode = 200;
+               res.setHeader("Content-Type", "application/json");
+               res.end(JSON.stringify({ 
+                 status: "ok", 
+                 tgBotReady: !!global.tgBot, 
+                 pendingUpdates: global.pendingTelegramUpdates?.length || 0,
+                 nextReady: nextReady,
+                 time: new Date().toISOString()
+               }));
+               return;
+            }
             if (pathname === '/api/logs') {
                let out = "=== HUB LOG ===\n";
                try { out += fs.readFileSync(path.join(__dirname, '../logs/hermes_debug.log'), 'utf8').split('\n').slice(-50).join('\n'); } catch(e){}
@@ -202,6 +214,18 @@ async function main() {
             if (accessGate.handleHttp(req, res)) return;
 
             const pathname = resolvePathname(req.url);
+            if (pathname === '/api/status') {
+               res.statusCode = 200;
+               res.setHeader("Content-Type", "application/json");
+               res.end(JSON.stringify({ 
+                 status: "ok", 
+                 tgBotReady: !!global.tgBot, 
+                 pendingUpdates: global.pendingTelegramUpdates?.length || 0,
+                 nextReady: nextReady,
+                 time: new Date().toISOString()
+               }));
+               return;
+            }
             if (pathname === '/api/logs') {
                let out = "=== HUB LOG ===\n";
                try { out += fs.readFileSync(path.join(__dirname, '../logs/hermes_debug.log'), 'utf8').split('\n').slice(-100).join('\n'); } catch(e){}
