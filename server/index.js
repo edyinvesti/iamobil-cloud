@@ -177,7 +177,11 @@ async function main() {
           } catch (err) {
             console.error("🔥 [Server] Critical Request Error (HTTP):", err);
             res.statusCode = 500;
-            res.end(JSON.stringify({ error: "Internal Server Error" }));
+            res.end(JSON.stringify({ 
+              error: "Internal Server Error",
+              message: process.env.DEBUG === "true" ? err.message : undefined,
+              stack: process.env.DEBUG === "true" ? err.stack : undefined
+            }));
           }
         });
 
