@@ -432,22 +432,18 @@ function startTelegramBot() {
     if (!TELEGRAM_TOKEN) return;
     
     try {
-        tgBot = new TelegramBot(TELEGRAM_TOKEN, { 
-            polling: {
-                interval: 300,
-                autoStart: true,
-                params: { timeout: 10 }
-            },
-            request: {
-                agentOptions: { keepAlive: true, family: 4 }
-            }
+        // Inicializa sem polling longo
+        tgBot = new TelegramBot(TELEGRAM_TOKEN);
+        global.tgBot = tgBot; // Expor globalmente para o HTTP server
+        
+        // Em Cloud (como Hugging Face), ativamos o WebHook nativo!
+        const webUrl = "https://edyinvesti-iamobil.hf.space/api/tg-webhook";
+        tgBot.setWebHook(webUrl, { drop_pending_updates: false }).then(() => {
+            logDebug('✅ [Telegram] WebHook ativado nativo em: ' + webUrl);
+        }).catch(err => {
+            logDebug('❌ [Telegram] Falha ao configurar WebHook: ' + err.message);
         });
-        logDebug('✅ [Telegram] Bot ativado e monitorado!');
 
-        tgBot.on('polling_error', (error) => {
-            logDebug(`[Telegram] Erro de Polling: ${error.code}. Tentando manter conexão...`);
-            // Não mata o processo, apenas deixa o polling tentar se recuperar sozinho
-        });
 
         tgBot.on('message', async (msg) => {
         const text = msg.text;

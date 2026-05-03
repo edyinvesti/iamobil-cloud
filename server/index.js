@@ -143,6 +143,17 @@ async function main() {
             if (req.method === "OPTIONS") { res.statusCode = 204; res.end(); return; }
             if (accessGate.handleHttp(req, res)) return;
 
+            const pathname = resolvePathname(req.url);
+            if (pathname === '/api/tg-webhook') {
+              let body = '';
+              req.on('data', chunk => body += chunk.toString());
+              req.on('end', () => {
+                 try { if (global.tgBot) global.tgBot.processUpdate(JSON.parse(body)); } catch(e) {}
+                 res.statusCode = 200; res.end('OK');
+              });
+              return;
+            }
+
             if (!nextReady) {
               res.statusCode = 200;
               res.setHeader("Content-Type", "application/json");
@@ -169,6 +180,15 @@ async function main() {
             if (accessGate.handleHttp(req, res)) return;
 
             const pathname = resolvePathname(req.url);
+            if (pathname === '/api/tg-webhook') {
+              let body = '';
+              req.on('data', chunk => body += chunk.toString());
+              req.on('end', () => {
+                 try { if (global.tgBot) global.tgBot.processUpdate(JSON.parse(body)); } catch(e) {}
+                 res.statusCode = 200; res.end('OK');
+              });
+              return;
+            }
             if (pathname === "/api/simulator/status") {
               res.statusCode = 200;
               res.setHeader("Content-Type", "application/json");
