@@ -432,25 +432,23 @@ function startTelegramBot() {
     if (!TELEGRAM_TOKEN) return;
     
     try {
-        // Inicializa Polling forçando IPv4 por causa do bug de TLS (EFATAL) do Hugging Face
+        // Modo Webhook: sem polling, recebe updates via HTTP /api/tg-webhook
         tgBot = new TelegramBot(TELEGRAM_TOKEN, {
-            polling: {
-                interval: 2000,
-                autoStart: true,
-                params: { timeout: 0, limit: 100, allowed_updates: ['message'] }
-            },
-            request: { agentOptions: { keepAlive: false, family: 4 } }
+            request: { agentOptions: { family: 4 } }
         });
-        global.tgBot = tgBot; // Expor globalmente (apalpável caso precise)
+        global.tgBot = tgBot;
         
-        logDebug('✅ [Telegram] Bot ativado e com Polling Seguro (IPv4) rodando!');
+        // Desregistrar qualquer webhook antigo
+        tgBot.deleteWebHook().catch(() => {});
         
-        // Remove old webhook on Telegram side to allow polling
-        tgBot.deleteWebHook().catch(e => {});
-
-        tgBot.on('polling_error', (error) => {
-            logDebug(`[Telegram] Erro de Polling (Pode ser ignorado se relogar): ${error.message}`);
-        });
+        logDebug('✅ [Telegram] Bot inicializado! Aguardando Webhook do Telegram...');
+        
+        // Processar updates que chegaram antes do bot estar pronto
+        if (global.pendingTelegramUpdates && global.pendingTelegramUpdates.length > 0) {
+            logDebug(`📬 [Telegram] Processando ${global.pendingTelegramUpdates.length} updates da fila...`);
+            global.pendingTelegramUpdates.forEach(u => { try { tgBot.processUpdate(u); } catch(e) {} });
+            global.pendingTelegramUpdates = [];
+        }
 
 
         tgBot.on('message', async (msg) => {

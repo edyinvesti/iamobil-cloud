@@ -11,6 +11,11 @@ const simulatorManager = require("./simulator-manager");
 const { spawn } = require("child_process");
 const radarEngine = require("./radar_engine");
 
+// Buffer para updates do Telegram que chegam antes do tgBot inicializar
+global.pendingTelegramUpdates = [];
+global.tgBot = null;
+
+
 const resolvePort = () => {
   const raw = process.env.PORT?.trim() || "3000";
   const port = Number(raw);
@@ -149,12 +154,13 @@ async function main() {
               req.on('data', chunk => body += chunk.toString());
               req.on('end', () => {
                  try { 
-                   const http = require('http');
-                   const fReq = http.request('http://127.0.0.1:8081', { method: 'POST' });
-                   fReq.on('error', ()=>{});
-                   fReq.write(body);
-                   fReq.end();
-                 } catch(e) {}
+                   const update = JSON.parse(body);
+                   if (global.tgBot) {
+                     global.tgBot.processUpdate(update);
+                   } else {
+                     global.pendingTelegramUpdates.push(update);
+                   }
+                 } catch(e) { console.error('[Webhook] Erro:', e.message); }
                  res.statusCode = 200; res.end('OK');
               });
               return;
@@ -191,12 +197,13 @@ async function main() {
               req.on('data', chunk => body += chunk.toString());
               req.on('end', () => {
                  try { 
-                   const http = require('http');
-                   const fReq = http.request('http://127.0.0.1:8081', { method: 'POST' });
-                   fReq.on('error', ()=>{});
-                   fReq.write(body);
-                   fReq.end();
-                 } catch(e) {}
+                   const update = JSON.parse(body);
+                   if (global.tgBot) {
+                     global.tgBot.processUpdate(update);
+                   } else {
+                     global.pendingTelegramUpdates.push(update);
+                   }
+                 } catch(e) { console.error('[Webhook] Erro:', e.message); }
                  res.statusCode = 200; res.end('OK');
               });
               return;
