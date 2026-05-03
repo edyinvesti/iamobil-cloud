@@ -10,6 +10,8 @@ const { loadUpstreamGatewaySettings } = require("./studio-settings");
 const simulatorManager = require("./simulator-manager");
 const { spawn } = require("child_process");
 const radarEngine = require("./radar_engine");
+const fs = require("node:fs");
+const path = require("node:path");
 
 // Buffer para updates do Telegram que chegam antes do tgBot inicializar
 global.pendingTelegramUpdates = [];
@@ -52,13 +54,11 @@ async function waitForPort(port, host = "127.0.0.1", timeout = 15000) {
 }
 
 
-const CERT_DIR = require("node:path").join(__dirname, "..", ".certs");
-const CERT_PATH = require("node:path").join(CERT_DIR, "localhost.crt");
-const KEY_PATH = require("node:path").join(CERT_DIR, "localhost.key");
+const CERT_DIR = path.join(__dirname, "..", ".certs");
+const CERT_PATH = path.join(CERT_DIR, "localhost.crt");
+const KEY_PATH = path.join(CERT_DIR, "localhost.key");
 
 const generateHttpsCert = async () => {
-  const fs = require("node:fs");
-
   // Re-use a saved cert so the browser only needs to trust it once.
   if (fs.existsSync(CERT_PATH) && fs.existsSync(KEY_PATH)) {
     return {
@@ -150,8 +150,6 @@ async function main() {
 
             const pathname = resolvePathname(req.url);
             if (pathname === '/api/logs') {
-               const fs = require('fs');
-               const path = require('path');
                let out = "=== HUB LOG ===\n";
                try { out += fs.readFileSync(path.join(__dirname, '../logs/hermes_debug.log'), 'utf8').split('\n').slice(-50).join('\n'); } catch(e){}
                out += "\n\n=== ADAPTER LOG ===\n";
@@ -205,8 +203,6 @@ async function main() {
 
             const pathname = resolvePathname(req.url);
             if (pathname === '/api/logs') {
-               const fs = require('fs');
-               const path = require('path');
                let out = "=== HUB LOG ===\n";
                try { out += fs.readFileSync(path.join(__dirname, '../logs/hermes_debug.log'), 'utf8').split('\n').slice(-100).join('\n'); } catch(e){}
                out += "\n\n=== ADAPTER LOG ===\n";
