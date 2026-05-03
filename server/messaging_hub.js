@@ -18,9 +18,11 @@ const DEBUG_LOG = path.join(process.cwd(), "logs", "hub_debug.log");
 if (!fs.existsSync(path.join(process.cwd(), "logs"))) {
     fs.mkdirSync(path.join(process.cwd(), "logs"), { recursive: true });
 }
+const logStream = fs.createWriteStream(DEBUG_LOG, { flags: 'a' });
+
 function logDebug(msg) {
     const entry = `[${new Date().toISOString()}] ${msg}\n`;
-    fs.appendFileSync(DEBUG_LOG, entry, "utf8");
+    logStream.write(entry);
     console.log(msg);
 }
 
@@ -452,6 +454,7 @@ function startTelegramBot() {
 
 
         tgBot.on('message', async (msg) => {
+          try {
             logDebug(`📩 [Telegram] Mensagem recebida de ID: ${msg.chat.id} | Conteúdo: ${msg.text?.substring(0, 30)}...`);
             const text = msg.text;
         const voice = msg.voice || msg.audio;
@@ -514,11 +517,12 @@ function startTelegramBot() {
             return;
         }
 
-        if (text && !text.startsWith('/')) {
-            if (!sendToAgents(text, 'Telegram', msg.chat.id)) {
-                tgBot.sendMessage(msg.chat.id, '🚨 Escritório offline.');
-            }
+        if (text) {
+            sendToAgents(text, 'telegram', msg.chat.id, msg);
         }
+          } catch (err) {
+            logDebug(`❌ [Hub] Erro interno ao processar mensagem do Telegram: ${err.message}`);
+          }
         });
     } catch (e) {
         logDebug('[Telegram] Erro crítico ao iniciar bot:', e.message);

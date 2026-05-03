@@ -171,7 +171,9 @@ class DataEngine {
         content += `📅 Data:** ${l.date}\n\n`;
       });
 
-      fs.writeFileSync(this.leadsPath, content, "utf8");
+      const tempPath = this.leadsPath + ".tmp";
+      fs.writeFileSync(tempPath, content, "utf8");
+      fs.renameSync(tempPath, this.leadsPath);
     } catch (err) {
       console.error("[DataEngine] SyncMD Error:", err.message);
     } finally {

@@ -51,7 +51,9 @@ class MemoryManager {
       memory.historico_correcoes.shift();
     }
 
-    fs.writeFileSync(MEMORY_FILE, JSON.stringify(memory, null, 2), "utf8");
+    const tempFile = MEMORY_FILE + ".tmp";
+    fs.writeFileSync(tempFile, JSON.stringify(memory, null, 2), "utf8");
+    fs.renameSync(tempFile, MEMORY_FILE);
     console.log("💾 [MemoryManager] Novo reparo registrado na memória do projeto.");
   }
 }

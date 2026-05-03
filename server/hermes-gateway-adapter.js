@@ -637,8 +637,17 @@ async function resolveHermesModel(requestedModel) {
 async function completeOneTurn(messages, model, tools, _retryCount = 0) {
   const resolvedModel = (_retryCount > 0) ? model : await resolveHermesModel(model);
   
+  // Limitação de Histórico para evitar vazamento de memória (Bug Fix #1)
   let activeMessages = messages;
-  if (resolvedModel.includes("8b-instant") && messages.length > 2) {
+  const MAX_HISTORY = 50;
+  if (activeMessages.length > MAX_HISTORY) {
+      console.warn(`[hermes-adapter] Pruning history for session. ${activeMessages.length} -> ${MAX_HISTORY}`);
+      const systemMsg = activeMessages.find(m => m.role === "system");
+      const latest = activeMessages.slice(-MAX_HISTORY + 1);
+      activeMessages = systemMsg ? [systemMsg, ...latest] : latest;
+  }
+
+  if (resolvedModel.includes("8b-instant") && activeMessages.length > 2) {
     activeMessages = [messages[0], ...messages.slice(-2)]; 
   }
 
