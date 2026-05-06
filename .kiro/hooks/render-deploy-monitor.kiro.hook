@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Monitor Deploy Render",
+  "description": "Verifica se o deploy no Render finalizou e o sistema está respondendo corretamente",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Verifica se o deploy do Render finalizou acessando https://iamobil-cloud-1.onrender.com/api/logs e veja se há logs novos após 2026-05-04T03:03. Se o sistema estiver com HERMES_API_URL correto (api.groq.com) e sem erros de \"localhost:8642\", avisa o usuário que está tudo pronto e manda uma mensagem de teste no Telegram para o chat ID 6202370881 usando o token 8615066494:AAFmn3yrAZTuhJOuKLdHrsvzGqhbIsKm2EA dizendo que o sistema está 100% online 24/7."
+  }
+}

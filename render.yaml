@@ -5,25 +5,73 @@ services:
     dockerContext: .
     dockerfilePath: Dockerfile
     plan: free
-    healthCheckPath: /
+    healthCheckPath: /api/status
     envVars:
       - key: PORT
-        value: 10000
+        value: "10000"
+      - key: HOST
+        value: 0.0.0.0
+      - key: NODE_ENV
+        value: production
+      - key: DEBUG
+        value: "false"
+
+      # Gateway
+      - key: NEXT_PUBLIC_GATEWAY_URL
+        value: ws://localhost:10000/api/gateway/ws
+      - key: CLAW3D_GATEWAY_URL
+        value: ws://localhost:18789
+      - key: CLAW3D_GATEWAY_TOKEN
+        value: local-dev-bypass
+      - key: CLAW3D_GATEWAY_ADAPTER_TYPE
+        value: hermes
+
+      # Hermes / Groq
+      - key: HERMES_API_URL
+        value: https://api.groq.com/openai
+      - key: HERMES_API_KEY
+        sync: false
+      - key: HERMES_MODEL
+        value: llama-3.3-70b-versatile
+      - key: HERMES_AGENT_NAME
+        value: Edy
+      - key: HERMES_ADAPTER_PORT
+        value: "18789"
+
+      # OpenAI
+      - key: OPENAI_API_KEY
+        sync: false
+
+      # Gemini
+      - key: GEMINI_API_KEY
+        sync: false
+
+      # Telegram
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: CEO_PHONE_NUMBER
+        value: "5562992115143"
+
+      # ElevenLabs
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: ELEVENLABS_VOICE_ID
+        value: xmC2q01GOJBUkdUmiHEd
+      - key: ELEVENLABS_MODEL_ID
+        value: eleven_flash_v2_5
+
+      # MiniMax
+      - key: MINIMAX_API_KEY
+        sync: false
+      - key: MINIMAX_VOICE_ID
+        value: moss_audio_981d772a-3b41-11f1-8219-6211e80ee6b1
+
+      # Turso Cloud DB
       - key: TURSO_DB_URL
         sync: false
       - key: TURSO_DB_AUTH_TOKEN
         sync: false
-      - key: HERMES_API_KEY
-        sync: false
-      - key: TELEGRAM_BOT_TOKEN
-        sync: false
-      - key: GEMINI_API_KEY
-        sync: false
-      - key: OPENAI_API_KEY
-        sync: false
-      - key: HERMES_MODEL
-        value: llama-3.3-70b-versatile
-      - key: HOST
-        value: 0.0.0.0
-      - key: DEBUG
-        value: "true"
+
+      # Studio
+      - key: STUDIO_ACCESS_TOKEN
+        value: local-dev-bypass

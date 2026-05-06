@@ -34445,3 +34445,262 @@
 [2026-05-03T00:49:37.706Z] ⚠️ [Cron] Sistema autônomo aguardando novas integrações.
 [2026-05-03T01:04:32.756Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Carlos
 [2026-05-03T01:04:35.112Z] ⚠️ [Cron] Sistema autônomo aguardando novas integrações.
+[2026-05-04T00:38:20.296Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 1)
+[2026-05-04T00:38:20.303Z] ⏰ [Cron] Iniciando Motor de Autofollow-up Ativo (Varredura a cada 15 minutos)
+[2026-05-04T00:38:22.358Z] ✅ [Hub] Conectado à iAmobil!
+[2026-05-04T00:38:22.368Z] 🤝 [Hub] Handshake OK! Hermes Adapter está PRONTO para receber mensagens.
+[2026-05-04T00:53:20.682Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Wanderson Teste
+[2026-05-04T00:54:08.117Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 1)
+[2026-05-04T00:54:08.124Z] ⏰ [Cron] Iniciando Motor de Autofollow-up Ativo (Varredura a cada 15 minutos)
+[2026-05-04T00:54:08.125Z] ✅ [Telegram] Bot inicializado! Aguardando Webhook do Telegram...
+[2026-05-04T00:54:09.795Z] ✅ [Hub] Conectado à iAmobil!
+[2026-05-04T00:54:09.804Z] 🤝 [Hub] Handshake OK! Hermes Adapter está PRONTO para receber mensagens.
+[2026-05-04T00:57:14.889Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: Olá! Como está o mercado em Go...
+[2026-05-04T00:57:14.889Z] 🚦 [Broker] Nova tarefa recebida: "Olá! Como está o mer..." | Plataforma: telegram | ChatID: 6202370881
+[2026-05-04T00:57:14.890Z] 🧠 [Broker] Processando da Fila (Restam 0): "Olá! Como está o mercado em Goiânia hoje?"
+[2026-05-04T00:57:14.890Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=1
+[2026-05-04T01:09:08.519Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Wanderson Teste
+[2026-05-04T02:22:32.056Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 1)
+[2026-05-04T02:22:32.071Z] ⏰ [Cron] Iniciando Motor de Autofollow-up Ativo (Varredura a cada 15 minutos)
+[2026-05-04T02:22:32.078Z] ✅ [Telegram] Bot inicializado! Aguardando Webhook do Telegram...
+[2026-05-04T02:22:33.719Z] ✅ [Hub] Conectado à iAmobil!
+[2026-05-04T02:22:33.729Z] 🤝 [Hub] Handshake OK! Hermes Adapter está PRONTO para receber mensagens.
+[2026-05-04T02:23:33.214Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: /start...
+[2026-05-04T02:23:33.488Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: /start...
+[2026-05-04T02:23:33.751Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: ola...
+[2026-05-04T02:23:33.752Z] 🚦 [Broker] Nova tarefa recebida: "ola..." | Plataforma: telegram | ChatID: 6202370881
+[2026-05-04T02:23:33.753Z] 🧠 [Broker] Processando da Fila (Restam 0): "ola"
+[2026-05-04T02:23:33.753Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=1
+[2026-05-04T02:23:34.022Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: ola...
+[2026-05-04T02:23:34.022Z] 🚦 [Broker] Nova tarefa recebida: "ola..." | Plataforma: telegram | ChatID: 6202370881
+[2026-05-04T02:23:34.291Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: ola...
+[2026-05-04T02:23:34.292Z] 🚦 [Broker] Nova tarefa recebida: "ola..." | Plataforma: telegram | ChatID: 6202370881
+[2026-05-04T02:23:34.552Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: mande...
+[2026-05-04T02:23:34.552Z] 🚦 [Broker] Nova tarefa recebida: "mande..." | Plataforma: telegram | ChatID: 6202370881
+[2026-05-04T02:23:37.726Z] 🧠 [Broker] Processando da Fila (Restam 2): "ola"
+[2026-05-04T02:23:37.726Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=2
+[2026-05-04T02:23:39.550Z] 🧠 [Broker] Processando da Fila (Restam 1): "ola"
+[2026-05-04T02:23:39.550Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=2
+[2026-05-04T02:23:41.724Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: /relatorio...
+[2026-05-04T02:23:42.807Z] 🧠 [Broker] Processando da Fila (Restam 0): "mande"
+[2026-05-04T02:23:42.808Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=2
+[2026-05-04T02:23:43.061Z] [Hub] Relatório PDF enviado com sucesso para 6202370881
+[2026-05-04T02:23:47.185Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: /catalogo...
+[2026-05-04T02:24:09.569Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: ola...
+[2026-05-04T02:24:09.569Z] 🚦 [Broker] Nova tarefa recebida: "ola..." | Plataforma: telegram | ChatID: 6202370881
+[2026-05-04T02:24:09.569Z] 🧠 [Broker] Processando da Fila (Restam 0): "ola"
+[2026-05-04T02:24:09.570Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=1
+[2026-05-04T02:37:32.157Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Wanderson Teste
+[2026-05-04T02:37:33.636Z] ✨ [Cron] Oportunidade salva no Vault: Oportunidade_FollowUp_Wanderson_Teste_1777862253635.md
+[2026-05-04T02:52:32.163Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Wanderson Teste
+[2026-05-04T02:52:32.807Z] ✨ [Cron] Oportunidade salva no Vault: Oportunidade_FollowUp_Wanderson_Teste_1777863152806.md
+[2026-05-04T03:07:32.206Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Wanderson Teste
+[2026-05-04T03:07:32.807Z] ✨ [Cron] Oportunidade salva no Vault: Oportunidade_FollowUp_Wanderson_Teste_1777864052806.md
+[2026-05-05T22:53:57.757Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 1)
+[2026-05-05T22:53:57.774Z] ⏰ [Cron] Iniciando Motor de Autofollow-up Ativo (Varredura a cada 15 minutos)
+[2026-05-05T22:53:57.797Z] ✅ [Telegram] Bot inicializado! Aguardando Webhook do Telegram...
+[2026-05-05T22:53:58.834Z] ✅ [Hub] Conectado à iAmobil!
+[2026-05-05T22:53:58.873Z] 🤝 [Hub] Handshake OK! Hermes Adapter está PRONTO para receber mensagens.
+[2026-05-05T22:58:58.372Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: ola...
+[2026-05-05T22:58:58.372Z] 🚦 [Broker] Nova tarefa recebida: "ola..." | Plataforma: Telegram | ChatID: 6202370881
+[2026-05-05T22:58:58.372Z] 🧠 [Broker] Processando da Fila (Restam 0): "ola"
+[2026-05-05T22:58:58.372Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=1
+[2026-05-05T22:59:00.207Z] [Telegram] Erro de Processamento Global:
+[2026-05-05T23:00:27.363Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: /admin...
+[2026-05-05T23:01:14.483Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: grafico relatorio...
+[2026-05-05T23:01:16.522Z] [Hub] Relatório PDF enviado com sucesso para 6202370881
+[2026-05-05T23:01:22.689Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: kaua...
+[2026-05-05T23:01:22.690Z] 🚦 [Broker] Nova tarefa recebida: "kaua..." | Plataforma: Telegram | ChatID: 6202370881
+[2026-05-05T23:01:22.690Z] 🧠 [Broker] Processando da Fila (Restam 0): "kaua"
+[2026-05-05T23:01:22.690Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=1
+[2026-05-05T23:01:23.570Z] [Telegram] Erro de Processamento Global:
+[2026-05-05T23:01:38.421Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: maria...
+[2026-05-05T23:01:38.421Z] 🚦 [Broker] Nova tarefa recebida: "maria..." | Plataforma: Telegram | ChatID: 6202370881
+[2026-05-05T23:01:38.421Z] 🧠 [Broker] Processando da Fila (Restam 0): "maria"
+[2026-05-05T23:01:38.421Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=1
+[2026-05-05T23:01:39.151Z] [Telegram] Erro de Processamento Global:
+[2026-05-05T23:03:29.326Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: catalago...
+[2026-05-05T23:03:29.326Z] 🚦 [Broker] Nova tarefa recebida: "catalago..." | Plataforma: Telegram | ChatID: 6202370881
+[2026-05-05T23:03:29.326Z] 🧠 [Broker] Processando da Fila (Restam 0): "catalago"
+[2026-05-05T23:03:29.326Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=1
+[2026-05-05T23:03:30.018Z] [Telegram] Erro de Processamento Global:
+[2026-05-05T23:08:58.204Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Wanderson Teste
+[2026-05-05T23:08:58.958Z] ✨ [Cron] Oportunidade salva no Vault: Oportunidade_FollowUp_Wanderson_Teste_1778022538957.md
+[2026-05-05T23:23:58.175Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Wanderson Teste
+[2026-05-05T23:23:58.808Z] ✨ [Cron] Oportunidade salva no Vault: Oportunidade_FollowUp_Wanderson_Teste_1778023438808.md
+[2026-05-05T23:38:58.531Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Wanderson Teste
+[2026-05-05T23:38:59.185Z] ✨ [Cron] Oportunidade salva no Vault: Oportunidade_FollowUp_Wanderson_Teste_1778024339185.md
+[2026-05-05T23:44:53.859Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 1)
+[2026-05-05T23:44:53.873Z] ⏰ [Cron] Iniciando Motor de Autofollow-up Ativo (Varredura a cada 15 minutos)
+[2026-05-05T23:44:53.897Z] ✅ [Telegram] Bot inicializado! Aguardando Webhook do Telegram...
+[2026-05-05T23:44:53.976Z] ✅ [Hub] Conectado à iAmobil!
+[2026-05-05T23:44:54.076Z] 🤝 [Hub] Handshake OK! Hermes Adapter está PRONTO para receber mensagens.
+[2026-05-05T23:45:22.048Z] ❌ [Hub] Conexão perdidda. Reconectando em 5s... (tentativa 1)
+[2026-05-05T23:45:27.064Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 2)
+[2026-05-05T23:45:27.067Z] [Hub] Erro WebSocket:
+[2026-05-05T23:45:27.067Z] ❌ [Hub] Conexão perdidda. Reconectando em 10s... (tentativa 2)
+[2026-05-05T23:45:37.076Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 3)
+[2026-05-05T23:45:37.077Z] [Hub] Erro WebSocket:
+[2026-05-05T23:45:37.077Z] ❌ [Hub] Conexão perdidda. Reconectando em 20s... (tentativa 3)
+[2026-05-05T23:45:57.158Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 4)
+[2026-05-05T23:45:57.192Z] [Hub] Erro WebSocket:
+[2026-05-05T23:45:57.194Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 4)
+[2026-05-05T23:46:27.214Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 5)
+[2026-05-05T23:46:27.498Z] [Hub] Erro WebSocket:
+[2026-05-05T23:46:27.498Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 5)
+[2026-05-05T23:46:57.506Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 6)
+[2026-05-05T23:46:57.507Z] [Hub] Erro WebSocket:
+[2026-05-05T23:46:57.508Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 6)
+[2026-05-05T23:47:27.520Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 7)
+[2026-05-05T23:47:27.523Z] [Hub] Erro WebSocket:
+[2026-05-05T23:47:27.523Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 7)
+[2026-05-05T23:47:57.533Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 8)
+[2026-05-05T23:47:57.535Z] [Hub] Erro WebSocket:
+[2026-05-05T23:47:57.535Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 8)
+[2026-05-05T23:48:27.543Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 9)
+[2026-05-05T23:48:27.546Z] [Hub] Erro WebSocket:
+[2026-05-05T23:48:27.546Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 9)
+[2026-05-05T23:48:57.911Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 10)
+[2026-05-05T23:48:57.942Z] [Hub] Erro WebSocket:
+[2026-05-05T23:48:57.942Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 10)
+[2026-05-05T23:49:27.947Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 11)
+[2026-05-05T23:49:27.950Z] [Hub] Erro WebSocket:
+[2026-05-05T23:49:27.950Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 11)
+[2026-05-05T23:49:42.652Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: ola...
+[2026-05-05T23:49:42.653Z] 🚦 [Broker] Nova tarefa recebida: "ola..." | Plataforma: Telegram | ChatID: 6202370881
+[2026-05-05T23:49:42.653Z] ⚠️ [Hub] Hermes ainda conectando. Mensagem aguardando na fila (1 pendentes).
+[2026-05-05T23:49:49.922Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: kaua...
+[2026-05-05T23:49:49.923Z] 🚦 [Broker] Nova tarefa recebida: "kaua..." | Plataforma: Telegram | ChatID: 6202370881
+[2026-05-05T23:49:49.923Z] ⚠️ [Hub] Hermes ainda conectando. Mensagem aguardando na fila (2 pendentes).
+[2026-05-05T23:49:57.954Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 12)
+[2026-05-05T23:49:57.956Z] [Hub] Erro WebSocket:
+[2026-05-05T23:49:57.956Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 12)
+[2026-05-05T23:49:59.948Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: graficos...
+[2026-05-05T23:49:59.948Z] 🚦 [Broker] Nova tarefa recebida: "graficos..." | Plataforma: Telegram | ChatID: 6202370881
+[2026-05-05T23:49:59.948Z] ⚠️ [Hub] Hermes ainda conectando. Mensagem aguardando na fila (3 pendentes).
+[2026-05-05T23:50:02.704Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: ola...
+[2026-05-05T23:50:02.704Z] 🚦 [Broker] Nova tarefa recebida: "ola..." | Plataforma: Telegram | ChatID: 6202370881
+[2026-05-05T23:50:02.704Z] ⚠️ [Hub] Hermes ainda conectando. Mensagem aguardando na fila (4 pendentes).
+[2026-05-05T23:50:06.352Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: tudo bem...
+[2026-05-05T23:50:06.352Z] 🚦 [Broker] Nova tarefa recebida: "tudo bem..." | Plataforma: Telegram | ChatID: 6202370881
+[2026-05-05T23:50:06.352Z] ⚠️ [Hub] Hermes ainda conectando. Mensagem aguardando na fila (5 pendentes).
+[2026-05-05T23:50:27.959Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 13)
+[2026-05-05T23:50:27.960Z] [Hub] Erro WebSocket:
+[2026-05-05T23:50:27.960Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 13)
+[2026-05-05T23:50:57.966Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 14)
+[2026-05-05T23:50:57.968Z] [Hub] Erro WebSocket:
+[2026-05-05T23:50:57.969Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 14)
+[2026-05-05T23:51:28.276Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 15)
+[2026-05-05T23:51:28.284Z] [Hub] Erro WebSocket:
+[2026-05-05T23:51:28.285Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 15)
+[2026-05-05T23:51:58.291Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 16)
+[2026-05-05T23:51:58.293Z] [Hub] Erro WebSocket:
+[2026-05-05T23:51:58.294Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 16)
+[2026-05-05T23:52:28.300Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 17)
+[2026-05-05T23:52:28.301Z] [Hub] Erro WebSocket:
+[2026-05-05T23:52:28.301Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 17)
+[2026-05-05T23:52:58.311Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 18)
+[2026-05-05T23:52:58.318Z] [Hub] Erro WebSocket:
+[2026-05-05T23:52:58.318Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 18)
+[2026-05-05T23:53:28.331Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 19)
+[2026-05-05T23:53:28.337Z] [Hub] Erro WebSocket:
+[2026-05-05T23:53:28.337Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 19)
+[2026-05-05T23:53:57.441Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: oi...
+[2026-05-05T23:53:57.441Z] 🚦 [Broker] Nova tarefa recebida: "oi..." | Plataforma: Telegram | ChatID: 6202370881
+[2026-05-05T23:53:57.442Z] ⚠️ [Hub] Hermes ainda conectando. Mensagem aguardando na fila (6 pendentes).
+[2026-05-05T23:53:58.346Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 20)
+[2026-05-05T23:53:58.347Z] [Hub] Erro WebSocket:
+[2026-05-05T23:53:58.350Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 20)
+[2026-05-05T23:54:28.357Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 21)
+[2026-05-05T23:54:28.358Z] [Hub] Erro WebSocket:
+[2026-05-05T23:54:28.359Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 21)
+[2026-05-05T23:54:58.513Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 22)
+[2026-05-05T23:54:58.518Z] [Hub] Erro WebSocket:
+[2026-05-05T23:54:58.518Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 22)
+[2026-05-05T23:55:28.531Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 23)
+[2026-05-05T23:55:28.532Z] [Hub] Erro WebSocket:
+[2026-05-05T23:55:28.532Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 23)
+[2026-05-05T23:55:58.536Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 24)
+[2026-05-05T23:55:58.538Z] [Hub] Erro WebSocket:
+[2026-05-05T23:55:58.538Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 24)
+[2026-05-05T23:56:28.548Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 25)
+[2026-05-05T23:56:28.549Z] [Hub] Erro WebSocket:
+[2026-05-05T23:56:28.549Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 25)
+[2026-05-05T23:56:58.565Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 26)
+[2026-05-05T23:56:58.568Z] [Hub] Erro WebSocket:
+[2026-05-05T23:56:58.568Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 26)
+[2026-05-05T23:57:28.571Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 27)
+[2026-05-05T23:57:28.572Z] [Hub] Erro WebSocket:
+[2026-05-05T23:57:28.572Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 27)
+[2026-05-05T23:57:58.587Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 28)
+[2026-05-05T23:57:58.588Z] [Hub] Erro WebSocket:
+[2026-05-05T23:57:58.588Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 28)
+[2026-05-05T23:58:28.593Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 29)
+[2026-05-05T23:58:28.594Z] [Hub] Erro WebSocket:
+[2026-05-05T23:58:28.594Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 29)
+[2026-05-05T23:58:58.595Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 30)
+[2026-05-05T23:58:58.597Z] [Hub] Erro WebSocket:
+[2026-05-05T23:58:58.597Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 30)
+[2026-05-05T23:59:28.607Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 31)
+[2026-05-05T23:59:28.608Z] [Hub] Erro WebSocket:
+[2026-05-05T23:59:28.608Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 31)
+[2026-05-05T23:59:54.284Z] ⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: Wanderson Teste
+[2026-05-05T23:59:54.575Z] ❌ [Cron] Erro no motor autônomo: Request failed with status code 401
+[2026-05-05T23:59:58.614Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 32)
+[2026-05-05T23:59:58.615Z] [Hub] Erro WebSocket:
+[2026-05-05T23:59:58.615Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 32)
+[2026-05-06T00:00:28.627Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 33)
+[2026-05-06T00:00:28.628Z] [Hub] Erro WebSocket:
+[2026-05-06T00:00:28.628Z] ❌ [Hub] Conexão perdidda. Reconectando em 30s... (tentativa 33)
+[2026-05-06T00:00:58.708Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 34)
+[2026-05-06T00:00:58.720Z] ✅ [Hub] Conectado à iAmobil!
+[2026-05-06T00:00:58.727Z] 🤝 [Hub] Handshake OK! Hermes Adapter está PRONTO para receber mensagens.
+[2026-05-06T00:00:58.727Z] 🧠 [Broker] Processando da Fila (Restam 5): "ola"
+[2026-05-06T00:00:58.727Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=1
+[2026-05-06T00:00:59.682Z] 🧠 [Broker] Processando da Fila (Restam 4): "kaua"
+[2026-05-06T00:00:59.682Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=2
+[2026-05-06T00:00:59.682Z] [Telegram] Erro de Processamento Global:
+[2026-05-06T00:01:00.399Z] 🧠 [Broker] Processando da Fila (Restam 3): "graficos"
+[2026-05-06T00:01:00.399Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=2
+[2026-05-06T00:01:00.400Z] [Telegram] Erro de Processamento Global:
+[2026-05-06T00:01:01.363Z] 🧠 [Broker] Processando da Fila (Restam 2): "ola"
+[2026-05-06T00:01:01.364Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=2
+[2026-05-06T00:01:01.364Z] [Telegram] Erro de Processamento Global:
+[2026-05-06T00:01:02.015Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 1)
+[2026-05-06T00:01:02.025Z] ⏰ [Cron] Iniciando Motor de Autofollow-up Ativo (Varredura a cada 15 minutos)
+[2026-05-06T00:01:02.044Z] ✅ [Telegram] Bot inicializado! Aguardando Webhook do Telegram...
+[2026-05-06T00:01:02.164Z] 🧠 [Broker] Processando da Fila (Restam 1): "tudo bem"
+[2026-05-06T00:01:02.164Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=2
+[2026-05-06T00:01:02.165Z] [Telegram] Erro de Processamento Global:
+[2026-05-06T00:01:02.219Z] ✅ [Hub] Conectado à iAmobil!
+[2026-05-06T00:01:02.248Z] 🤝 [Hub] Handshake OK! Hermes Adapter está PRONTO para receber mensagens.
+[2026-05-06T00:01:04.453Z] 🧠 [Broker] Processando da Fila (Restam 0): "oi"
+[2026-05-06T00:01:04.453Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=2
+[2026-05-06T00:01:04.454Z] [Telegram] Erro de Processamento Global:
+[2026-05-06T00:01:06.258Z] [Telegram] Erro de Processamento Global:
+[2026-05-06T00:02:08.338Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 1)
+[2026-05-06T00:02:08.353Z] ⏰ [Cron] Iniciando Motor de Autofollow-up Ativo (Varredura a cada 15 minutos)
+[2026-05-06T00:02:08.374Z] ✅ [Telegram] Bot inicializado! Aguardando Webhook do Telegram...
+[2026-05-06T00:02:08.707Z] ✅ [Hub] Conectado à iAmobil!
+[2026-05-06T00:02:08.766Z] 🤝 [Hub] Handshake OK! Hermes Adapter está PRONTO para receber mensagens.
+[2026-05-06T00:03:17.787Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: oi...
+[2026-05-06T00:03:17.788Z] 🚦 [Broker] Nova tarefa recebida: "oi..." | Plataforma: Telegram | ChatID: 6202370881
+[2026-05-06T00:03:17.788Z] 🧠 [Broker] Processando da Fila (Restam 0): "oi"
+[2026-05-06T00:03:17.788Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=1
+[2026-05-06T00:03:18.745Z] [Telegram] Erro de Processamento Global:
+[2026-05-06T00:03:47.406Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 1)
+[2026-05-06T00:03:47.422Z] ⏰ [Cron] Iniciando Motor de Autofollow-up Ativo (Varredura a cada 15 minutos)
+[2026-05-06T00:03:47.444Z] ✅ [Telegram] Bot inicializado! Aguardando Webhook do Telegram...
+[2026-05-06T00:03:47.524Z] ✅ [Hub] Conectado à iAmobil!
+[2026-05-06T00:03:47.540Z] 🤝 [Hub] Handshake OK! Hermes Adapter está PRONTO para receber mensagens.
+[2026-05-06T00:10:52.937Z] 📩 [Telegram] Mensagem recebida de ID: 6202370881 | Conteúdo: ola...
+[2026-05-06T00:10:52.937Z] 🚦 [Broker] Nova tarefa recebida: "ola..." | Plataforma: Telegram | ChatID: 6202370881
+[2026-05-06T00:10:52.937Z] 🧠 [Broker] Processando da Fila (Restam 0): "ola"
+[2026-05-06T00:10:52.937Z] [Broker] Estado da Fila: isProcessingQueue=true, Pendentes=1
+[2026-05-06T00:10:53.933Z] [Telegram] Erro de Processamento Global:
+[2026-05-06T10:20:33.079Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 1)
+[2026-05-06T10:20:33.088Z] ⏰ [Cron] Iniciando Motor de Autofollow-up Ativo (Varredura a cada 15 minutos)
+[2026-05-06T10:20:33.102Z] ✅ [Telegram] Bot inicializado! Aguardando Webhook do Telegram...
+[2026-05-06T10:20:56.005Z] ✅ [Hub] Conectado à iAmobil!
+[2026-05-06T10:20:56.048Z] 🤝 [Hub] Handshake OK! Hermes Adapter está PRONTO para receber mensagens.
+[2026-05-06T10:22:25.876Z] ❌ [Hub] Conexão perdidda. Reconectando em 5s... (tentativa 1)

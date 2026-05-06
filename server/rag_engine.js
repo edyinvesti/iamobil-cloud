@@ -35,6 +35,16 @@ class RagEngine {
                 const rs = await this.dbClient.execute({ sql, args: params });
                 return rs.rows;
             } catch (e) {
+                if (e.message && (e.message.includes('no such table') || e.message.includes('tabela inexistente'))) {
+                    console.warn("⚠️ [RAG Engine] Tabela não encontrada, inicializando...");
+                    await this.initVectorDB();
+                    try {
+                        const rs2 = await this.dbClient.execute({ sql, args: params });
+                        return rs2.rows;
+                    } catch (e2) {
+                        return [];
+                    }
+                }
                 console.error("❌ [Turso DB] Erro na query:", e.message);
                 return [];
             }
@@ -124,7 +134,7 @@ class RagEngine {
 
             for (const text of inputs) {
                 const response = await axios.post(
-                    `https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${this.geminiKey}`,
+                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${this.geminiKey}`,
                     {
                         content: { parts: [{ text: text }] }
                     },

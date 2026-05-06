@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const WebSocket = require('ws');
+require('dotenv').config();
 const ragEngine = require('./server/rag_engine');
 
 const ws = new WebSocket('ws://127.0.0.1:18789');

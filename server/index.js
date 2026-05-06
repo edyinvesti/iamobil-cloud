@@ -229,7 +229,7 @@ async function main() {
             }
             if (pathname === '/api/logs') {
                let out = "=== HUB LOG ===\n";
-               try { out += fs.readFileSync(path.join(__dirname, '../logs/hermes_debug.log'), 'utf8').split('\n').slice(-100).join('\n'); } catch(e){}
+               try { out += fs.readFileSync(path.join(__dirname, '../logs/hub_debug.log'), 'utf8').split('\n').slice(-100).join('\n'); } catch(e){}
                out += "\n\n=== ADAPTER LOG ===\n";
                try { out += fs.readFileSync(path.join(__dirname, '../logs/adapter_debug.log'), 'utf8').split('\n').slice(-100).join('\n'); } catch(e){}
                res.statusCode = 200;
@@ -351,6 +351,23 @@ async function main() {
     handleUpgrade = app.getUpgradeHandler();
     nextReady = true;
     console.info(`🎉 [Server] [${new Date().toLocaleTimeString()}] Sistema IAmobil Totalmente Pronto!`);
+
+    // 🏓 Self-Ping: mantém o servidor acordado no Render (plano free dorme após 15min)
+    if (process.env.NODE_ENV === 'production') {
+      const selfPingUrl = `http://localhost:${resolvePort()}/api/status`;
+      setInterval(async () => {
+        try {
+          const mod = require('http');
+          mod.get(selfPingUrl, (res) => {
+            console.info(`🏓 [KeepAlive] Ping OK — status ${res.statusCode}`);
+          }).on('error', (e) => {
+            console.warn(`🏓 [KeepAlive] Ping falhou: ${e.message}`);
+          });
+        } catch (e) {}
+      }, 10 * 60 * 1000); // a cada 10 minutos
+      console.info('🏓 [KeepAlive] Self-ping ativado (a cada 10 min) — servidor não vai dormir.');
+    }
+
   } catch (err) {
     console.error("❌ [Server] Falha ao preparar Next.js:", err.message);
   }

@@ -777,17 +777,11 @@ async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _r
       }
       
       if (currentUrl.includes("openai.com")) {
-        if (geminiKey) {
-            console.warn(`[API ROTATOR] OpenAI falhou. Alternando para Gemini...`);
-            HERMES_API_URL = "https://generativelanguage.googleapis.com/v1beta/openai";
-            HERMES_API_KEY = geminiKey;
-            return streamOneTurn(messages, "gemini-2.0-flash", null, onTextDelta, abortCheck, _retryCount + 1);
-        } else {
-            console.warn(`[API ROTATOR] OpenAI falhou e Gemini indisponível. Pulando para Groq Safe...`);
-            HERMES_API_URL = (process.env.HERMES_API_URL || "https://api.groq.com/openai").replace(/\/+$/, "").replace(/\/v1$/, "");
-            HERMES_API_KEY = process.env.HERMES_API_KEY || "";
-            return streamOneTurn(messages, "llama-3.1-8b-instant", null, onTextDelta, abortCheck, _retryCount + 1);
-        }
+        // Pula Gemini (chave incompatível com Bearer header) — vai direto para Groq Safe
+        console.warn(`[API ROTATOR] OpenAI falhou. Alternando para Groq Safe (llama-3.1-8b-instant)...`);
+        HERMES_API_URL = groqUrl;
+        HERMES_API_KEY = groqKey;
+        return streamOneTurn(messages, "llama-3.1-8b-instant", null, onTextDelta, abortCheck, _retryCount + 1);
       }
 
       if (currentUrl.includes("generativelanguage") && groqKey) {
@@ -1155,7 +1149,7 @@ async function execSearchProperties(args) {
   console.log(`[hermes-adapter] Searching properties: max_price=${max_price}, city=${city}`);
   
   const sqlite3 = require('sqlite3').verbose();
-  const dbPath = path.join(process.cwd(), "iamobil.db");
+  const dbPath = path.join(process.cwd(), "data", "iamobil.db");
   const db = new sqlite3.Database(dbPath);
 
   return new Promise((resolve) => {
@@ -1660,7 +1654,7 @@ async function execExecuteDbQuery(args) {
   
   return new Promise((resolve) => {
     const sqlite3 = require("sqlite3").verbose();
-    const dbPath = path.join(process.cwd(), "iamobil.db");
+    const dbPath = path.join(process.cwd(), "data", "iamobil.db");
     const db = new sqlite3.Database(dbPath, (err) => {
       if (err) return resolve(JSON.stringify({ ok: false, error: err.message }));
       

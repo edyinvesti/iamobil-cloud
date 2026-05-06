@@ -52,3 +52,302 @@
 [2026-05-02T22:02:39.469Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 916
 [2026-05-03T00:05:38.511Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
 [2026-05-03T00:05:41.358Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 520
+[hermes-adapter] BOOTING AT 2026-05-04T00:38:15.695Z | CWD: C:\Users\User\Downloads\IAmobil Imobiliaria
+[hermes-adapter] API Base URL: http://localhost:8642
+[hermes-adapter] Loaded history for 4 session(s).
+[hermes-adapter] Loaded and synced registry for 8 sub-agent(s).
+[hermes-adapter] 🔍 Iniciando auto-descoberta em: C:\Users\User\Downloads\IAmobil Imobiliaria\agents
+[hermes-adapter] 📁 Pastas encontradas: dika, dragon, edy, genio-fix, kaua, kelly, maria, pique, ruck
+[hermes-adapter] 🕵️ Verificando: dika (Nome: Dika)
+[hermes-adapter] Skip: Agente Dika (dika) já existe com ID dika
+[hermes-adapter] 🕵️ Verificando: dragon (Nome: Dragon)
+[hermes-adapter] Skip: Agente Dragon (dragon) já existe com ID dragon
+[hermes-adapter] 🕵️ Verificando: edy (Nome: Edy)
+[hermes-adapter] Skip: Agente Edy (edy) já existe com ID hermes
+[hermes-adapter] 🕵️ Verificando: genio-fix (Nome: Genio Fix)
+[hermes-adapter] Skip: Agente Genio Fix (genio-fix) já existe com ID genio-fix
+[hermes-adapter] 🕵️ Verificando: kaua (Nome: Kaua)
+[hermes-adapter] Skip: Agente Kaua (kaua) já existe com ID kaua
+[hermes-adapter] 🕵️ Verificando: kelly (Nome: Kelly)
+[hermes-adapter] Skip: Agente Kelly (kelly) já existe com ID kelly
+[hermes-adapter] 🕵️ Verificando: maria (Nome: Maria)
+[hermes-adapter] Skip: Agente Maria (maria) já existe com ID maria
+[hermes-adapter] 🕵️ Verificando: pique (Nome: Pique)
+[hermes-adapter] Skip: Agente Pique (pique) já existe com ID pique
+[hermes-adapter] 🕵️ Verificando: ruck (Nome: Ruck)
+[hermes-adapter] Skip: Agente Ruck (ruck) já existe com ID ruck
+
+[hermes-adapter] ✓ Listening on ws://localhost:18789
+[hermes-adapter] ✓ Forwarding to Hermes API at http://localhost:8642
+[hermes-adapter] ✓ Model: llama-3.3-70b-versatile
+[hermes-adapter] ✓ Multi-agent orchestration: ENABLED
+
+Open Claw3D → ws://localhost:18789
+
+[hermes-adapter] Broadcasting initial presence...
+[WS IN] Method: connect, ID: auth-hub-1777855102358
+[hermes-adapter] BOOTING AT 2026-05-04T00:54:04.517Z | CWD: C:\Users\User\Downloads\IAmobil Imobiliaria
+[hermes-adapter] API Base URL: https://api.groq.com/openai
+[hermes-adapter] Loaded history for 4 session(s).
+[hermes-adapter] Loaded and synced registry for 8 sub-agent(s).
+[hermes-adapter] 🔍 Iniciando auto-descoberta em: C:\Users\User\Downloads\IAmobil Imobiliaria\agents
+[hermes-adapter] 📁 Pastas encontradas: dika, dragon, edy, genio-fix, kaua, kelly, maria, pique, ruck
+[hermes-adapter] 🕵️ Verificando: dika (Nome: Dika)
+[hermes-adapter] Skip: Agente Dika (dika) já existe com ID dika
+[hermes-adapter] 🕵️ Verificando: dragon (Nome: Dragon)
+[hermes-adapter] Skip: Agente Dragon (dragon) já existe com ID dragon
+[hermes-adapter] 🕵️ Verificando: edy (Nome: Edy)
+[hermes-adapter] Skip: Agente Edy (edy) já existe com ID hermes
+[hermes-adapter] 🕵️ Verificando: genio-fix (Nome: Genio Fix)
+[hermes-adapter] Skip: Agente Genio Fix (genio-fix) já existe com ID genio-fix
+[hermes-adapter] 🕵️ Verificando: kaua (Nome: Kaua)
+[hermes-adapter] Skip: Agente Kaua (kaua) já existe com ID kaua
+[hermes-adapter] 🕵️ Verificando: kelly (Nome: Kelly)
+[hermes-adapter] Skip: Agente Kelly (kelly) já existe com ID kelly
+[hermes-adapter] 🕵️ Verificando: maria (Nome: Maria)
+[hermes-adapter] Skip: Agente Maria (maria) já existe com ID maria
+[hermes-adapter] 🕵️ Verificando: pique (Nome: Pique)
+[hermes-adapter] Skip: Agente Pique (pique) já existe com ID pique
+[hermes-adapter] 🕵️ Verificando: ruck (Nome: Ruck)
+[hermes-adapter] Skip: Agente Ruck (ruck) já existe com ID ruck
+
+[hermes-adapter] ✓ Listening on ws://localhost:18789
+[hermes-adapter] ✓ Forwarding to Hermes API at https://api.groq.com/openai
+[hermes-adapter] ✓ Model: llama-3.3-70b-versatile
+[hermes-adapter] ✓ Multi-agent orchestration: ENABLED
+
+Open Claw3D → ws://localhost:18789
+
+[hermes-adapter] Broadcasting initial presence...
+[WS IN] Method: connect, ID: auth-hub-1777856049795
+[WS IN] Method: chat.send, ID: req-1777856236851
+[hermes-adapter] 🚀 CHAT.SEND received. agentId: hermes, sessionKey: agent:hermes:main
+[2026-05-04T00:57:16.855Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[hermes-adapter] ⚙️ Starting background worker for runId: hub-run-1777856234890
+[hermes-adapter] 🧠 Calling runAgenticLoop...
+[AgenticLoop] CRITICAL DEBUG: agentId='hermes', actingAgentName='Edy', inRegistry=true
+[DEBUG PROMPT] Sending messages to LLM (Est. Tokens: 266 )
+[AgenticLoop] Entering while loop for hermes. Tools count: 33
+[streamOneTurn] Model: llama-3.3-70b-versatile, Retry: 0, Tools: 33
+[hermes-adapter] Tool call: search_properties {"city":"Goiânia"}
+[PropertySearch] Searching... max=undefined, city=Goiânia, q=undefined
+[streamOneTurn] Model: llama-3.3-70b-versatile, Retry: 0, Tools: 33
+[2026-05-04T00:57:18.544Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 465
+[hermes-adapter] ✅ runAgenticLoop finished. Result length: 465
+[hermes-adapter] BOOTING AT 2026-05-04T02:22:28.347Z | CWD: C:\Users\User\Downloads\IAmobil Imobiliaria
+[hermes-adapter] API Base URL: https://api.groq.com/openai
+[hermes-adapter] Loaded history for 4 session(s).
+[hermes-adapter] Loaded and synced registry for 8 sub-agent(s).
+[hermes-adapter] 🔍 Iniciando auto-descoberta em: C:\Users\User\Downloads\IAmobil Imobiliaria\agents
+[hermes-adapter] 📁 Pastas encontradas: dika, dragon, edy, genio-fix, kaua, kelly, maria, pique, ruck
+[hermes-adapter] 🕵️ Verificando: dika (Nome: Dika)
+[hermes-adapter] Skip: Agente Dika (dika) já existe com ID dika
+[hermes-adapter] 🕵️ Verificando: dragon (Nome: Dragon)
+[hermes-adapter] Skip: Agente Dragon (dragon) já existe com ID dragon
+[hermes-adapter] 🕵️ Verificando: edy (Nome: Edy)
+[hermes-adapter] Skip: Agente Edy (edy) já existe com ID hermes
+[hermes-adapter] 🕵️ Verificando: genio-fix (Nome: Genio Fix)
+[hermes-adapter] Skip: Agente Genio Fix (genio-fix) já existe com ID genio-fix
+[hermes-adapter] 🕵️ Verificando: kaua (Nome: Kaua)
+[hermes-adapter] Skip: Agente Kaua (kaua) já existe com ID kaua
+[hermes-adapter] 🕵️ Verificando: kelly (Nome: Kelly)
+[hermes-adapter] Skip: Agente Kelly (kelly) já existe com ID kelly
+[hermes-adapter] 🕵️ Verificando: maria (Nome: Maria)
+[hermes-adapter] Skip: Agente Maria (maria) já existe com ID maria
+[hermes-adapter] 🕵️ Verificando: pique (Nome: Pique)
+[hermes-adapter] Skip: Agente Pique (pique) já existe com ID pique
+[hermes-adapter] 🕵️ Verificando: ruck (Nome: Ruck)
+[hermes-adapter] Skip: Agente Ruck (ruck) já existe com ID ruck
+
+[hermes-adapter] ✓ Listening on ws://localhost:18789
+[hermes-adapter] ✓ Forwarding to Hermes API at https://api.groq.com/openai
+[hermes-adapter] ✓ Model: llama-3.3-70b-versatile
+[hermes-adapter] ✓ Multi-agent orchestration: ENABLED
+
+Open Claw3D → ws://localhost:18789
+
+[hermes-adapter] Broadcasting initial presence...
+[WS IN] Method: connect, ID: auth-hub-1777861353720
+[WS IN] Method: chat.send, ID: req-1777861416437
+[hermes-adapter] 🚀 CHAT.SEND received. agentId: hermes, sessionKey: agent:hermes:main
+[2026-05-04T02:23:36.443Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[hermes-adapter] ⚙️ Starting background worker for runId: hub-run-1777861413753
+[hermes-adapter] 🧠 Calling runAgenticLoop...
+[AgenticLoop] CRITICAL DEBUG: agentId='hermes', actingAgentName='Edy', inRegistry=true
+[DEBUG PROMPT] Sending messages to LLM (Est. Tokens: 249 )
+[AgenticLoop] Entering while loop for hermes. Tools count: 33
+[streamOneTurn] Model: llama-3.3-70b-versatile, Retry: 0, Tools: 33
+[hermes-adapter] Tool call: search_properties {"city":"Goiânia","query":""}
+[PropertySearch] Searching... max=undefined, city=Goiânia, q=
+[streamOneTurn] Model: llama-3.3-70b-versatile, Retry: 0, Tools: 33
+[2026-05-04T02:23:37.712Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 183
+[hermes-adapter] ✅ runAgenticLoop finished. Result length: 183
+[WS IN] Method: chat.send, ID: req-1777861418321
+[hermes-adapter] 🚀 CHAT.SEND received. agentId: hermes, sessionKey: agent:hermes:main
+[2026-05-04T02:23:38.322Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[hermes-adapter] ⚙️ Starting background worker for runId: hub-run-1777861417726
+[hermes-adapter] 🧠 Calling runAgenticLoop...
+[AgenticLoop] CRITICAL DEBUG: agentId='hermes', actingAgentName='Edy', inRegistry=true
+[DEBUG PROMPT] Sending messages to LLM (Est. Tokens: 158 )
+[AgenticLoop] Entering while loop for hermes. Tools count: 33
+[streamOneTurn] Model: llama-3.3-70b-versatile, Retry: 0, Tools: 33
+[hermes-adapter] Tool call: search_properties {"city":"Goiânia","max_price":800000,"min_bedrooms":3,"query":"imóveis em Goiânia"}
+[PropertySearch] Searching... max=800000, city=Goiânia, q=imóveis em Goiânia
+[streamOneTurn] Model: llama-3.3-70b-versatile, Retry: 0, Tools: 33
+[2026-05-04T02:23:39.549Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 367
+[hermes-adapter] ✅ runAgenticLoop finished. Result length: 367
+[WS IN] Method: chat.send, ID: req-1777861420382
+[hermes-adapter] 🚀 CHAT.SEND received. agentId: hermes, sessionKey: agent:hermes:main
+[hermes-adapter] ⚙️ Starting background worker for runId: hub-run-1777861419550
+[2026-05-04T02:23:40.383Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[hermes-adapter] 🧠 Calling runAgenticLoop...
+[AgenticLoop] CRITICAL DEBUG: agentId='hermes', actingAgentName='Edy', inRegistry=true
+[DEBUG PROMPT] Sending messages to LLM (Est. Tokens: 210 )
+[AgenticLoop] Entering while loop for hermes. Tools count: 33
+[streamOneTurn] Model: llama-3.3-70b-versatile, Retry: 0, Tools: 33
+[Hermes API ERROR] Status: 429, Message: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01j5ne028aepa9tgmb5pskq0ry` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 10365, Requested 2674. Please try again in 5.195s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing, Payload: {"error":{"message":"Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01j5ne028aepa9tgmb5pskq0ry` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 10365, Requested 2674. Please try again in 5.195s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+[streamOneTurn] Model: gpt-4o-mini, Retry: 1, Tools: 0
+[API ROTATOR] Erro 429 em https://api.groq.com/openai. Tentativa 1...
+[API ROTATOR] Groq falhou. Alternando para OpenAI...
+[Hermes API ERROR] Status: 429, Message: You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors., Payload: {"error":{"message":"You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.","type":"insufficient_quota","param":null,"code":"insufficient_quota"}}
+[streamOneTurn] Model: gemini-2.0-flash, Retry: 2, Tools: 0
+[API ROTATOR] Erro 429 em https://api.openai.com. Tentativa 2...
+[API ROTATOR] OpenAI falhou. Alternando para Gemini...
+[Hermes API ERROR] Status: 429, Message: Hermes API HTTP 429, Payload: [{"error":{"code":429,"message":"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash\nPlease retry in 32.834613255s.","status":"RESOURCE_EXHAUSTED","details":[{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Learn more about Gemini API quotas","url":"https://ai.google.dev/gemini-api/docs/rate-limits"}]},{"@type":"type.googleapis.com/google.rpc.QuotaFailure","violations":[{"quotaMetric":"generativelanguage.googleapis.com/generate_content_free_tier_requests","quotaId":"GenerateRequestsPerDayPerProjectPerModel-FreeTier","quotaDimensions":{"location":"global","model":"gemini-2.0-flash"}},{"quotaMetric":"generativelanguage.googleapis.com/generate_content_free_tier_requests","quotaId":"GenerateRequestsPerMinutePerProjectPerModel-FreeTier","quotaDimensions":{"location":"global","model":"gemini-2.0-flash"}},{"quotaMetric":"generativelanguage.googleapis.com/generate_content_free_tier_input_token_count","quotaId":"GenerateContentInputTokensPerModelPerMinute-FreeTier","quotaDimensions":{"location":"global","model":"gemini-2.0-flash"}}]},{"@type":"type.googleapis.com/google.rpc.RetryInfo","retryDelay":"32s"}]}}]
+[streamOneTurn] Model: llama-3.1-8b-instant, Retry: 3, Tools: 0
+[API ROTATOR] Erro 429 em https://generativelanguage.googleapis.com/v1beta/openai. Tentativa 3...
+[API ROTATOR] Gemini falhou. Voltando ao Groq com modelo menor...
+[2026-05-04T02:23:42.806Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 463
+[hermes-adapter] ✅ runAgenticLoop finished. Result length: 463
+[WS IN] Method: chat.send, ID: req-1777861423415
+[2026-05-04T02:23:43.417Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[hermes-adapter] 🚀 CHAT.SEND received. agentId: hermes, sessionKey: agent:hermes:main
+[hermes-adapter] ⚙️ Starting background worker for runId: hub-run-1777861422807
+[hermes-adapter] 🧠 Calling runAgenticLoop...
+[AgenticLoop] CRITICAL DEBUG: agentId='hermes', actingAgentName='Edy', inRegistry=true
+[DEBUG PROMPT] Sending messages to LLM (Est. Tokens: 239 )
+[AgenticLoop] Entering while loop for hermes. Tools count: 33
+[streamOneTurn] Model: llama-3.3-70b-versatile, Retry: 0, Tools: 33
+[Hermes API ERROR] Status: 429, Message: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01j5ne028aepa9tgmb5pskq0ry` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9758, Requested 2755. Please try again in 2.565s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing, Payload: {"error":{"message":"Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01j5ne028aepa9tgmb5pskq0ry` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9758, Requested 2755. Please try again in 2.565s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+[streamOneTurn] Model: gpt-4o-mini, Retry: 1, Tools: 0
+[API ROTATOR] Erro 429 em https://api.groq.com/openai. Tentativa 1...
+[API ROTATOR] Groq falhou. Alternando para OpenAI...
+[Hermes API ERROR] Status: 429, Message: You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors., Payload: {"error":{"message":"You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.","type":"insufficient_quota","param":null,"code":"insufficient_quota"}}
+[API ROTATOR] Erro 429 em https://api.openai.com. Tentativa 2...
+[API ROTATOR] OpenAI falhou. Alternando para Gemini...
+[streamOneTurn] Model: gemini-2.0-flash, Retry: 2, Tools: 0
+[Hermes API ERROR] Status: 429, Message: Hermes API HTTP 429, Payload: [{"error":{"code":429,"message":"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\nPlease retry in 29.390279882s.","status":"RESOURCE_EXHAUSTED","details":[{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Learn more about Gemini API quotas","url":"https://ai.google.dev/gemini-api/docs/rate-limits"}]},{"@type":"type.googleapis.com/google.rpc.QuotaFailure","violations":[{"quotaMetric":"generativelanguage.googleapis.com/generate_content_free_tier_input_token_count","quotaId":"GenerateContentInputTokensPerModelPerMinute-FreeTier","quotaDimensions":{"location":"global","model":"gemini-2.0-flash"}},{"quotaMetric":"generativelanguage.googleapis.com/generate_content_free_tier_requests","quotaId":"GenerateRequestsPerMinutePerProjectPerModel-FreeTier","quotaDimensions":{"location":"global","model":"gemini-2.0-flash"}},{"quotaMetric":"generativelanguage.googleapis.com/generate_content_free_tier_requests","quotaId":"GenerateRequestsPerDayPerProjectPerModel-FreeTier","quotaDimensions":{"model":"gemini-2.0-flash","location":"global"}}]},{"@type":"type.googleapis.com/google.rpc.RetryInfo","retryDelay":"29s"}]}}]
+[streamOneTurn] Model: llama-3.1-8b-instant, Retry: 3, Tools: 0
+[API ROTATOR] Erro 429 em https://generativelanguage.googleapis.com/v1beta/openai. Tentativa 3...
+[API ROTATOR] Gemini falhou. Voltando ao Groq com modelo menor...
+[2026-05-04T02:23:46.251Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 525
+[hermes-adapter] ✅ runAgenticLoop finished. Result length: 525
+[WS IN] Method: chat.send, ID: req-1777861450959
+[hermes-adapter] 🚀 CHAT.SEND received. agentId: hermes, sessionKey: agent:hermes:main
+[hermes-adapter] ⚙️ Starting background worker for runId: hub-run-1777861449569
+[2026-05-04T02:24:10.960Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[hermes-adapter] 🧠 Calling runAgenticLoop...
+[AgenticLoop] CRITICAL DEBUG: agentId='hermes', actingAgentName='Edy', inRegistry=true
+[DEBUG PROMPT] Sending messages to LLM (Est. Tokens: 256 )
+[AgenticLoop] Entering while loop for hermes. Tools count: 33
+[streamOneTurn] Model: llama-3.3-70b-versatile, Retry: 0, Tools: 33
+[hermes-adapter] Tool call: generate_location_link {"address":"Conjunto Feirao, Goiânia - GO, Brasil"}
+[v8 GPS] Generating link for: Conjunto Feirao, Goiânia - GO, Brasil...
+[streamOneTurn] Model: llama-3.3-70b-versatile, Retry: 0, Tools: 33
+[Hermes API ERROR] Status: 429, Message: Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01j5ne028aepa9tgmb5pskq0ry` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9574, Requested 2902. Please try again in 2.38s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing, Payload: {"error":{"message":"Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01j5ne028aepa9tgmb5pskq0ry` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9574, Requested 2902. Please try again in 2.38s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+[streamOneTurn] Model: gpt-4o-mini, Retry: 1, Tools: 0
+[API ROTATOR] Erro 429 em https://api.groq.com/openai. Tentativa 1...
+[API ROTATOR] Groq falhou. Alternando para OpenAI...
+[Hermes API ERROR] Status: 429, Message: You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors., Payload: {"error":{"message":"You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.","type":"insufficient_quota","param":null,"code":"insufficient_quota"}}
+[streamOneTurn] Model: gemini-2.0-flash, Retry: 2, Tools: 0
+[API ROTATOR] Erro 429 em https://api.openai.com. Tentativa 2...
+[API ROTATOR] OpenAI falhou. Alternando para Gemini...
+[Hermes API ERROR] Status: 429, Message: Hermes API HTTP 429, Payload: [{"error":{"code":429,"message":"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash\nPlease retry in 1.84595468s.","status":"RESOURCE_EXHAUSTED","details":[{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Learn more about Gemini API quotas","url":"https://ai.google.dev/gemini-api/docs/rate-limits"}]},{"@type":"type.googleapis.com/google.rpc.QuotaFailure","violations":[{"quotaMetric":"generativelanguage.googleapis.com/generate_content_free_tier_requests","quotaId":"GenerateRequestsPerDayPerProjectPerModel-FreeTier","quotaDimensions":{"model":"gemini-2.0-flash","location":"global"}},{"quotaMetric":"generativelanguage.googleapis.com/generate_content_free_tier_requests","quotaId":"GenerateRequestsPerMinutePerProjectPerModel-FreeTier","quotaDimensions":{"model":"gemini-2.0-flash","location":"global"}},{"quotaMetric":"generativelanguage.googleapis.com/generate_content_free_tier_input_token_count","quotaId":"GenerateContentInputTokensPerModelPerMinute-FreeTier","quotaDimensions":{"location":"global","model":"gemini-2.0-flash"}}]},{"@type":"type.googleapis.com/google.rpc.RetryInfo","retryDelay":"1s"}]}}]
+[streamOneTurn] Model: llama-3.1-8b-instant, Retry: 3, Tools: 0
+[API ROTATOR] Erro 429 em https://generativelanguage.googleapis.com/v1beta/openai. Tentativa 3...
+[API ROTATOR] Gemini falhou. Voltando ao Groq com modelo menor...
+[2026-05-04T02:24:13.709Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 170
+[hermes-adapter] ✅ runAgenticLoop finished. Result length: 170
+[hermes-adapter] BOOTING AT 2026-05-05T00:03:38.837Z | CWD: C:\Users\User\Downloads\IAmobil Imobiliaria
+[2026-05-05T22:43:34.778Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-05T22:43:40.638Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 222
+[2026-05-05T22:43:40.641Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-05T22:43:42.505Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 440
+[2026-05-05T22:44:13.579Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-05T22:44:14.814Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 351
+[2026-05-05T22:44:15.339Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-05T22:44:16.513Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 454
+[2026-05-05T22:44:40.917Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-05T22:44:42.146Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 350
+[2026-05-05T22:44:42.631Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-05T22:44:44.054Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 1102
+[2026-05-05T22:46:33.710Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-05T22:46:34.696Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 490
+[2026-05-05T22:46:35.163Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-05T22:46:36.301Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 542
+[2026-05-05T22:58:58.408Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-05T22:59:00.205Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 162
+[2026-05-05T23:01:22.693Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-05T23:01:23.569Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 132
+[2026-05-05T23:01:38.424Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-05T23:01:39.150Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 160
+[2026-05-05T23:03:29.328Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-05T23:03:30.017Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 46
+[2026-05-06T00:00:58.731Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-06T00:00:59.680Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 125
+[2026-05-06T00:00:59.683Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-06T00:01:00.398Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 185
+[2026-05-06T00:01:00.403Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-06T00:01:01.362Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 241
+[2026-05-06T00:01:01.365Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-06T00:01:02.161Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 217
+[2026-05-06T00:01:02.168Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-06T00:01:04.452Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 298
+[2026-05-06T00:01:04.454Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-06T00:01:06.257Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 277
+[2026-05-06T00:02:51.241Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-06T00:02:52.346Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 529
+[2026-05-06T00:02:53.137Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-06T00:02:54.266Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 808
+[2026-05-06T00:03:17.793Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-06T00:03:18.743Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 284
+[2026-05-06T00:04:07.778Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-06T00:04:09.245Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 902
+[2026-05-06T00:04:10.953Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-06T00:04:12.414Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 1147
+[2026-05-06T00:10:52.938Z] [hermes-adapter] 🧠 Calling runAgenticLoop...
+[2026-05-06T00:10:53.931Z] [hermes-adapter] ✅ runAgenticLoop finished. Result length: 290
+[hermes-adapter] BOOTING AT 2026-05-06T10:20:17.291Z | CWD: C:\Users\User\Downloads\IAmobil Imobiliaria
+[hermes-adapter] API Base URL: https://api.groq.com/openai
+[hermes-adapter] Loaded history for 4 session(s).
+[hermes-adapter] Loaded and synced registry for 8 sub-agent(s).
+[hermes-adapter] 🔍 Iniciando auto-descoberta em: C:\Users\User\Downloads\IAmobil Imobiliaria\agents
+[hermes-adapter] 📁 Pastas encontradas: dika, dragon, edy, genio-fix, kaua, kelly, maria, pique, ruck
+[hermes-adapter] 🕵️ Verificando: dika (Nome: Dika)
+[hermes-adapter] Skip: Agente Dika (dika) já existe com ID dika
+[hermes-adapter] 🕵️ Verificando: dragon (Nome: Dragon)
+[hermes-adapter] Skip: Agente Dragon (dragon) já existe com ID dragon
+[hermes-adapter] 🕵️ Verificando: edy (Nome: Edy)
+[hermes-adapter] Skip: Agente Edy (edy) já existe com ID hermes
+[hermes-adapter] 🕵️ Verificando: genio-fix (Nome: Genio Fix)
+[hermes-adapter] Skip: Agente Genio Fix (genio-fix) já existe com ID genio-fix
+[hermes-adapter] 🕵️ Verificando: kaua (Nome: Kaua)
+[hermes-adapter] Skip: Agente Kaua (kaua) já existe com ID kaua
+[hermes-adapter] 🕵️ Verificando: kelly (Nome: Kelly)
+[hermes-adapter] Skip: Agente Kelly (kelly) já existe com ID kelly
+[hermes-adapter] 🕵️ Verificando: maria (Nome: Maria)
+[hermes-adapter] Skip: Agente Maria (maria) já existe com ID maria
+[hermes-adapter] 🕵️ Verificando: pique (Nome: Pique)
+[hermes-adapter] Skip: Agente Pique (pique) já existe com ID pique
+[hermes-adapter] 🕵️ Verificando: ruck (Nome: Ruck)
+[hermes-adapter] Skip: Agente Ruck (ruck) já existe com ID ruck
+
+[hermes-adapter] ✓ Listening on ws://localhost:18789
+[hermes-adapter] ✓ Forwarding to Hermes API at https://api.groq.com/openai
+[hermes-adapter] ✓ Model: llama-3.3-70b-versatile
+[hermes-adapter] ✓ Multi-agent orchestration: ENABLED
+
+Open Claw3D → ws://localhost:18789
+
+[hermes-adapter] Broadcasting initial presence...
+[WS IN] Method: connect, ID: auth-hub-1778062856012

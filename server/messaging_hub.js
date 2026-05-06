@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const { Readable } = require('stream');
 const ragEngine = require('./rag_engine');
+const dataEngine = require('./data_engine');
 const { generateSalesReportPDF } = require('./report_generator');
 
 // Carregar variáveis de ambiente
@@ -13,6 +14,10 @@ require('dotenv').config();
 
 const HERMES_WS_URL = process.env.HERMES_WS_URL || 'ws://127.0.0.1:18789';
 const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+
+// Diagnóstico de inicialização
+console.log(`[Hub] TELEGRAM_TOKEN: ${TELEGRAM_TOKEN ? 'CONFIGURADO ✅' : 'NÃO ENCONTRADO ❌'}`);
+console.log(`[Hub] HERMES_WS_URL: ${HERMES_WS_URL}`);
 
 const DEBUG_LOG = path.join(process.cwd(), "logs", "hub_debug.log");
 if (!fs.existsSync(path.join(process.cwd(), "logs"))) {
@@ -231,34 +236,29 @@ function connectHermes() {
                         
                         if (reqData.platform === 'Telegram' && tgBot) {
                             try {
-                                let docPath = null;
-                                const docMatch = ans.match(/\[TELEGRAM_DOCUMENT:\s*([^\]]+)\]/);
-                                if (docMatch) {
-                                    docPath = docMatch[1].trim();
-                                    ans = ans.replace(docMatch[0], '').trim();
-                                }
-
+                                 let docPath = null;
                                  let imgPath = null;
-                                 const imgMatch = ans.match(/\[?TELEGRAM_IMAGE:\s*([^\]\s\n]+)\]?/i);
+                                 let textForVoice = ans;
+
+                                 const docMatch = ans.match(/\[TELEGRAM_DOCUMENT:\s*([^\]]+)\]/);
+                                 if (docMatch) {
+                                     docPath = docMatch[1].trim();
+                                     ans = ans.replace(docMatch[0], '').trim();
+                                     textForVoice = ans;
+                                 }
+
+                                 const imgMatch = ans.match(/\[TELEGRAM_IMAGE:\s*([^\/]+)\]/);
                                  if (imgMatch) {
                                      imgPath = imgMatch[1].trim();
                                      ans = ans.replace(imgMatch[0], '').trim();
-                                     logDebug(`[Hub] Tag de imagem detectada: ${imgPath}`);
+                                     textForVoice = ans;
                                  }
 
-                                 // Nova limpeza de "vazamento" de tool calls (XML, func=, function tags)
-                                 ans = ans.replace(/<function[\s\S]*?<\/function>/gi, "")
-                                          .replace(/func=[a-zA-Z0-9_]+>[\s\S]*?(?:\n|$)/gi, "")
-                                          .replace(/<[a-zA-Z0-9_]+>[\s\S]*?<\/(?:[a-zA-Z0-9_]+|function)>/gi, "")
-                                          .trim();
-
-                                const textForVoice = (ans || "")
-                                    .replace(/https?:\/\/\S+/gi, '')
-                                    .replace(/[\*\#\_]/g, '')
-                                    .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '')
-                                    .replace(/\s+/g, ' ')
-                                    .trim();
-                                
+                                 const voiceMatch = ans.match(/\[TELEGRAM_VOICE:\s*([^\]]+)\]/);
+                                 if (voiceMatch) {
+                                     textForVoice = voiceMatch[1].trim();
+                                     ans = ans.replace(voiceMatch[0], '').trim();
+                                 }
                                 // 1. Entrega do Texto (Com Split para Mensagens Longas)
                                  const safeAns = (typeof ans === 'string' && ans.length > 0) ? ans : "Desculpe, não consegui processar a resposta.";
                                  const textChunks = splitText(safeAns);
@@ -390,9 +390,10 @@ const messageQueue = [];
 let isProcessingQueue = false;
 
 function sendToAgents(task, platform, chatId, msgRef = null) {
-    // Sempre enfileira — se o Hermes não estiver pronto, a fila será processada quando conectar
-    logDebug(`🚦 [Broker] Nova tarefa recebida: "${task.substring(0, 20)}..." | Plataforma: ${platform} | ChatID: ${chatId}`);
-    messageQueue.push({ task, platform, chatId, msgRef });
+    // Normaliza plataforma para capitalização correta
+    const normalizedPlatform = platform.charAt(0).toUpperCase() + platform.slice(1).toLowerCase();
+    logDebug(`🚦 [Broker] Nova tarefa recebida: "${task.substring(0, 20)}..." | Plataforma: ${normalizedPlatform} | ChatID: ${chatId}`);
+    messageQueue.push({ task, platform: normalizedPlatform, chatId, msgRef });
     if (ws && ws.readyState === WebSocket.OPEN && hermesReady) {
         processQueue();
     } else {
@@ -464,6 +465,7 @@ function startTelegramBot() {
     try {
         // Modo Webhook: sem polling, recebe updates via HTTP /api/tg-webhook
         tgBot = new TelegramBot(TELEGRAM_TOKEN, {
+            polling: process.env.NODE_ENV !== 'production',
             request: { agentOptions: { family: 4 } }
         });
         global.tgBot = tgBot;
@@ -546,7 +548,7 @@ function startTelegramBot() {
         }
 
         if (text) {
-            sendToAgents(text, 'telegram', msg.chat.id, msg);
+            sendToAgents(text, 'Telegram', msg.chat.id, msg);
         }
           } catch (err) {
             logDebug(`❌ [Hub] Erro interno ao processar mensagem do Telegram: ${err.message}`);
@@ -561,48 +563,69 @@ function startTelegramBot() {
 
 function initCronJob() {
     logDebug('⏰ [Cron] Iniciando Motor de Autofollow-up Ativo (Varredura a cada 15 minutos)');
-    const sqlite3 = require('sqlite3').verbose();
-    const dbPath = path.join(process.cwd(), "data", "iamobil.db");
     
     setInterval(async () => {
-        if (!fs.existsSync(dbPath)) return;
-        const db = new sqlite3.Database(dbPath);
-        
-        db.all("SELECT * FROM leads WHERE status = 'Frio' AND score >= 80 LIMIT 1", [], async (err, rows) => {
-            if (err) { logDebug('[Cron] Erro no DataEngine:', err.message); db.close(); return; }
-            if (rows && rows.length > 0) {
-                const lead = rows[0];
-                logDebug(`⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: ${lead.name}`);
-                
-                // 1. Gerar Mensagem Autonoma Persuasiva
-                const groqKey = process.env.HERMES_API_KEY || process.env.OPENAI_API_KEY;
-                const prompt = `Você é o Edy, corretor chefe de alto padrão. Crie uma curta mensagem de WhatsApp informal, elegante e envolvente (máx 3 linhas) para reengajar o cliente "${lead.name}". 
-                Ele demonstrou interesse em: "${lead.interest}". Anotações do sistema: "${lead.notes}".
-                O objetivo é apenas puxar assunto e oferecer uma novidade exclusiva focada no interesse dele de forma natural. Não use saudações formais exageradas. Retorne APENAS a mensagem pronta.`;
-
-                try {
-                    const response = await axios.post("https://api.groq.com/openai/v1/chat/completions", {
-                        model: "llama-3.3-70b-versatile",
-                        messages: [{ role: "user", content: prompt }],
-                        temperature: 0.7
-                    }, { headers: { "Authorization": `Bearer ${groqKey}` } });
-
-                    let aiMessage = response.data.choices[0].message.content.trim();
-                    aiMessage = aiMessage.replace(/^"|"$/g, ""); // limpa aspas caso a IA devolva
-
-                    logDebug(`⚠️ [Cron] Sistema autônomo aguardando novas integrações.`);
-                    db.close();
-                } catch (aiErr) {
-                    logDebug(`❌ [Cron] Falha ao gerar abordagem autônoma: ${aiErr.message}`);
-                    db.close();
-                }
-            } else {
-                db.close();
+        try {
+            const leads = await dataEngine.getLeads();
+            const highPotentialLeads = leads.filter(l => (l.score || 0) >= 80 && l.status === 'Frio');
+            
+            if (highPotentialLeads.length === 0) {
+                // logDebug('[Cron] Sem leads frios de alta prioridade para follow-up.');
+                return;
             }
-        });
-    }, 900000); // Roda a cada 900.000ms (15 minutos)
+
+            const lead = highPotentialLeads[0];
+            logDebug(`⏰ [Cron] Autonomia Iniciada! Abordando ativo o Lead Top-Tier: ${lead.name}`);
+            
+            const groqKey = process.env.HERMES_API_KEY || process.env.GROQ_API_KEY || process.env.OPENAI_API_KEY;
+            if (!groqKey) {
+                logDebug('[Cron] ❌ Erro: Chave de API não configurada para Autonomia.');
+                return;
+            }
+
+            const prompt = `Você é o Edy, corretor chefe iAmobil de alto padrão em Goiânia. 
+            Crie uma curta mensagem de WhatsApp informal, elegante e envolvente (máx 3 linhas) para reengajar o cliente "${lead.name}". 
+            Ele demonstrou interesse em: "${lead.interest}". Anotações: "${lead.notes}". Valor: R$ ${lead.potential_value.toLocaleString('pt-BR')}.
+            Objetivo: Puxar assunto e oferecer uma novidade exclusiva. NÃO use saudações formais exageradas. Retorne APENAS a mensagem.`;
+
+            const response = await axios.post("https://api.groq.com/openai/v1/chat/completions", {
+                model: "llama-3.3-70b-versatile",
+                messages: [{ role: "user", content: prompt }],
+                temperature: 0.7
+            }, { headers: { "Authorization": `Bearer ${groqKey}` } });
+
+            let aiMessage = response.data.choices[0].message.content.trim();
+            aiMessage = aiMessage.replace(/^"|"$/g, ""); 
+
+            // Salvar no Vault Obsidian como uma "Oportunidade"
+            const VaultPath = path.join(process.env.USERPROFILE || process.env.HOME, "Downloads", "IAmobil_Vault", "IAmobil_Vault", "07_Oportunidades");
+            if (!fs.existsSync(VaultPath)) fs.mkdirSync(VaultPath, { recursive: true });
+
+            const filename = `Oportunidade_FollowUp_${lead.name.replace(/\s+/g, '_')}_${Date.now()}.md`;
+            const content = `# ⚡ Oportunidade Detectada: ${lead.name}\n\n` +
+                            `**Score:** ${lead.score}/100\n` +
+                            `**Interesse:** ${lead.interest}\n` +
+                            `**Valor:** R$ ${lead.potential_value.toLocaleString('pt-BR')}\n\n` +
+                            `## 💡 Sugestão de Abordagem (Edy):\n\n> ${aiMessage}\n\n` +
+                            `---\n**Gerado em:** ${new Date().toLocaleString('pt-BR')}`;
+
+            fs.writeFileSync(path.join(VaultPath, filename), content, "utf8");
+            logDebug(`✨ [Cron] Oportunidade salva no Vault: ${filename}`);
+
+            // Opcional: Se tivermos ChatID do CEO, notificar
+            const ceoFile = path.join(process.cwd(), '.ceo_id');
+            if (fs.existsSync(ceoFile) && global.tgBot) {
+                const ceoId = fs.readFileSync(ceoFile, 'utf8').trim();
+                global.tgBot.sendMessage(ceoId, `⚡ **Oportunidade de Venda!**\n\nIdentifiquei uma chance de reengajar **${lead.name}**.\nSugestão de mensagem salva no seu Vault.`, { parse_mode: 'Markdown' });
+            }
+
+        } catch (err) {
+            logDebug(`❌ [Cron] Erro no motor autônomo: ${err.message}`);
+        }
+    }, 900000); 
 }
 
 connectHermes();
 initCronJob();
 startTelegramBot();
+
