@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const sqlite3 = require("sqlite3").verbose();
+const { createClient } = require('@libsql/client');
 
 class DataEngine {
   constructor() {
@@ -9,47 +9,82 @@ class DataEngine {
     if (!fs.existsSync(path.join(process.cwd(), "data"))) {
       fs.mkdirSync(path.join(process.cwd(), "data"), { recursive: true });
     }
-    this.db = new sqlite3.Database(this.dbPath);
-    this.db.run("PRAGMA journal_mode = WAL;");
-    this.db.run("PRAGMA synchronous = NORMAL;");
+    
+    this.tursoUrl = process.env.TURSO_DB_URL;
+    this.tursoToken = process.env.TURSO_DB_AUTH_TOKEN;
+
+    if (this.tursoUrl && this.tursoToken) {
+      this.dbClient = createClient({
+        url: this.tursoUrl,
+        authToken: this.tursoToken
+      });
+      console.log("☁️ [Data Engine] Conectado ao Turso DB (Nuvem)");
+    } else {
+      this.dbClient = null;
+      this.db = new sqlite3.Database(this.dbPath);
+      this.db.run("PRAGMA journal_mode = WAL;");
+      this.db.run("PRAGMA synchronous = NORMAL;");
+      console.log("💾 [Data Engine] Conectado ao SQLite (Local)");
+    }
+
     this.initDB();
     this.isSyncing = false;
     this.needsSync = false;
   }
 
-  initDB() {
-    this.db.serialize(() => {
-      this.db.run(`
-        CREATE TABLE IF NOT EXISTS leads (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          name TEXT,
-          phone TEXT,
-          interest TEXT,
-          notes TEXT,
-          score INTEGER,
-          status TEXT DEFAULT 'Frio',
-          date TEXT,
-          potential_value INTEGER DEFAULT 0,
-          property_id INTEGER,
-          last_contacted TEXT
-        )
-      `);
-      
-      this.db.run("ALTER TABLE leads ADD COLUMN potential_value INTEGER DEFAULT 0", () => {});
-      this.db.run("ALTER TABLE leads ADD COLUMN property_id INTEGER", () => {});
-      this.db.run("ALTER TABLE leads ADD COLUMN last_contacted TEXT", () => {});
+  async executeQuery(sql, params = []) {
+    if (this.dbClient) {
+      const rs = await this.dbClient.execute({ sql, args: params });
+      return rs;
+    } else {
+      return new Promise((resolve, reject) => {
+        if (sql.trim().toUpperCase().startsWith("SELECT")) {
+          this.db.all(sql, params, (err, rows) => {
+            if (err) reject(err);
+            else resolve({ rows });
+          });
+        } else {
+          this.db.run(sql, params, function(err) {
+            if (err) reject(err);
+            else resolve({ lastInsertRowid: this.lastID, rowsAffected: this.changes });
+          });
+        }
+      });
+    }
+  }
 
-      this.db.run(`
-        CREATE TABLE IF NOT EXISTS appointments (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          lead_name TEXT,
-          property_title TEXT,
-          date_time TEXT,
-          status TEXT DEFAULT 'Agendado',
-          notes TEXT
-        )
-      `);
-    });
+  async initDB() {
+    await this.executeQuery(`
+      CREATE TABLE IF NOT EXISTS leads (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        phone TEXT,
+        interest TEXT,
+        notes TEXT,
+        score INTEGER,
+        status TEXT DEFAULT 'Frio',
+        date TEXT,
+        potential_value INTEGER DEFAULT 0,
+        property_id INTEGER,
+        last_contacted TEXT
+      )
+    `);
+    
+    // Tentativa de adicionar colunas (ignorando erros se já existirem)
+    try { await this.executeQuery("ALTER TABLE leads ADD COLUMN potential_value INTEGER DEFAULT 0"); } catch(e) {}
+    try { await this.executeQuery("ALTER TABLE leads ADD COLUMN property_id INTEGER"); } catch(e) {}
+    try { await this.executeQuery("ALTER TABLE leads ADD COLUMN last_contacted TEXT"); } catch(e) {}
+
+    await this.executeQuery(`
+       CREATE TABLE IF NOT EXISTS appointments (
+         id INTEGER PRIMARY KEY AUTOINCREMENT,
+         lead_name TEXT,
+         property_title TEXT,
+         date_time TEXT,
+         status TEXT DEFAULT 'Agendado',
+         notes TEXT
+       )
+    `);
   }
 
   calculateNeuroScore(data) {
@@ -63,87 +98,80 @@ class DataEngine {
   }
 
   async saveLead(leadData) {
-    return new Promise((resolve) => {
-      const timestamp = new Date().toLocaleString("pt-BR");
-      const score = this.calculateNeuroScore(leadData);
-      const potentialValue = parseInt(leadData.potential_value || 0, 10);
+    const timestamp = new Date().toLocaleString("pt-BR");
+    const score = this.calculateNeuroScore(leadData);
+    const potentialValue = parseInt(leadData.potential_value || 0, 10);
 
-      this.db.run(
+    try {
+      await this.executeQuery(
         `INSERT INTO leads (name, phone, interest, notes, score, status, date, potential_value, property_id, last_contacted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [leadData.name, leadData.phone, leadData.interest, leadData.notes, score, leadData.status || "Frio", timestamp, potentialValue, leadData.property_id || null, leadData.last_contacted || timestamp],
-        (err) => {
-          if (err) {
-            console.error("[DataEngine] DB Error:", err.message);
-            resolve({ ok: false });
-          } else {
-            this.syncMD();
-            resolve({ ok: true, score });
-          }
-        }
+        [leadData.name, leadData.phone, leadData.interest, leadData.notes, score, leadData.status || "Frio", timestamp, potentialValue, leadData.property_id || null, leadData.last_contacted || timestamp]
       );
-    });
+      this.syncMD();
+      return { ok: true, score };
+    } catch (err) {
+      console.error("[DataEngine] DB Error:", err.message);
+      return { ok: false };
+    }
   }
 
   async getFinancialReport() {
-    return new Promise((resolve) => {
-      this.db.get(
+    try {
+      const rs = await this.executeQuery(
         "SELECT SUM(potential_value) as total_vgv, COUNT(*) as lead_count FROM leads WHERE score >= 80",
-        [],
-        (err, row) => {
-          if (err) {
-            console.error("[DataEngine] Financial Report Error:", err.message);
-            resolve({ total_vgv: 0, commission: 0, lead_count: 0 });
-          } else {
-            const vgv = row?.total_vgv || 0;
-            resolve({
-              total_vgv: vgv,
-              commission: vgv * 0.05, // 5% de comissão padrão
-              lead_count: row?.lead_count || 0
-            });
-          }
-        }
+        []
       );
-    });
+      const row = rs.rows ? rs.rows[0] : null;
+      const vgv = row?.total_vgv || 0;
+      return {
+        total_vgv: vgv,
+        commission: vgv * 0.05, // 5% de comissão padrão
+        lead_count: row?.lead_count || 0
+      };
+    } catch (err) {
+      console.error("[DataEngine] Financial Report Error:", err.message);
+      return { total_vgv: 0, commission: 0, lead_count: 0 };
+    }
   }
 
   async getLeads() {
-    return new Promise((resolve) => {
-      this.db.all(`SELECT * FROM leads ORDER BY id DESC LIMIT 1000`, [], (err, rows) => {
-        if (err) resolve([]);
-        else resolve(rows);
-      });
-    });
+    try {
+      const rs = await this.executeQuery(`SELECT * FROM leads ORDER BY id DESC LIMIT 1000`, []);
+      return rs.rows || [];
+    } catch (err) {
+      return [];
+    }
   }
 
   async deleteLead(name, phone) {
-    return new Promise((resolve) => {
-      this.db.run(`DELETE FROM leads WHERE name = ? AND phone = ?`, [name, phone], (err) => {
-        this.syncMD();
-        resolve(!err);
-      });
-    });
+    try {
+      await this.executeQuery(`DELETE FROM leads WHERE name = ? AND phone = ?`, [name, phone]);
+      this.syncMD();
+      return true;
+    } catch (err) {
+      return false;
+    }
   }
 
   async scheduleVisit(data) {
-    return new Promise((resolve) => {
-      this.db.run(
+    try {
+      await this.executeQuery(
         `INSERT INTO appointments (lead_name, property_title, date_time, notes) VALUES (?, ?, ?, ?)`,
-        [data.lead_name, data.property_title, data.date_time, data.notes || ""],
-        (err) => {
-          if (err) resolve({ ok: false, error: err.message });
-          else resolve({ ok: true });
-        }
+        [data.lead_name, data.property_title, data.date_time, data.notes || ""]
       );
-    });
+      return { ok: true };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
   }
 
   async getAppointments() {
-    return new Promise((resolve) => {
-      this.db.all(`SELECT * FROM appointments ORDER BY date_time ASC`, [], (err, rows) => {
-        if (err) resolve([]);
-        else resolve(rows);
-      });
-    });
+    try {
+      const rs = await this.executeQuery(`SELECT * FROM appointments ORDER BY date_time ASC`, []);
+      return rs.rows || [];
+    } catch (err) {
+      return [];
+    }
   }
 
   async syncMD() {

@@ -33,6 +33,7 @@ const { createExternalBackup } = require("./backup_manager");
 const { takeScreenshot } = require("./screenshot-service");
 const multiposter = require("./multiposter_engine");
 const tokenOptimizer = require("./token_optimizer");
+const { createClient } = require('@libsql/client');
 
 function loadDotenvFile(filePath) {
   if (!fs.existsSync(filePath)) return;
@@ -1723,6 +1724,19 @@ async function execExecuteDbQuery(args) {
   if (!query) return JSON.stringify({ ok: false, error: "query required" });
   console.log(`[GenioFix] Database Query: ${query}`);
   
+  const tursoUrl = process.env.TURSO_DB_URL;
+  const tursoToken = process.env.TURSO_DB_AUTH_TOKEN;
+
+  if (tursoUrl && tursoToken) {
+    try {
+      const client = createClient({ url: tursoUrl, authToken: tursoToken });
+      const rs = await client.execute({ sql: query, args: params });
+      return JSON.stringify({ ok: true, results: rs.rows });
+    } catch (err) {
+      return JSON.stringify({ ok: false, error: err.message });
+    }
+  }
+
   return new Promise((resolve) => {
     const sqlite3 = require("sqlite3").verbose();
     const dbPath = path.join(process.cwd(), "data", "iamobil.db");

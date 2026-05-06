@@ -354,7 +354,7 @@ async function main() {
 
     // 🏓 Self-Ping: mantém o servidor acordado no Render (plano free dorme após 15min)
     if (process.env.NODE_ENV === 'production') {
-      const selfPingUrl = `http://localhost:${resolvePort()}/api/status`;
+      const selfPingUrl = `http://127.0.0.1:${resolvePort()}/api/status`;
       setInterval(async () => {
         try {
           const mod = require('http');
