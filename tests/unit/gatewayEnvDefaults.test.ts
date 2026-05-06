@@ -64,17 +64,26 @@ describe("loadLocalGatewayDefaults with CLAW3D_GATEWAY_URL", () => {
   it("prefers openclaw.json over env vars when both exist", async () => {
     process.env.CLAW3D_GATEWAY_URL = "ws://env-gateway:18789";
     process.env.CLAW3D_GATEWAY_TOKEN = "env-token";
-    // Use real state dir which has openclaw.json
-    delete process.env.OPENCLAW_STATE_DIR;
+
+    // Create a temp state dir with openclaw.json
+    const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), "claw3d-env-pref-"));
+    process.env.OPENCLAW_STATE_DIR = stateDir;
+    fs.writeFileSync(
+      path.join(stateDir, "openclaw.json"),
+      JSON.stringify({ gateway: { port: 9999 } }),
+      "utf8"
+    );
+
     const { loadLocalGatewayDefaults } = await import(
       "../../src/lib/studio/settings-store"
     );
     const result = loadLocalGatewayDefaults();
+    
     // Should return the file-based defaults, not the env vars
-    if (result) {
-      expect(result.url).not.toBe("ws://env-gateway:18789");
-    }
-    // If no file exists in CI, it falls back to env — that's also correct
+    expect(result?.url).toBe("ws://localhost:9999");
+
+    // Cleanup
+    fs.rmSync(stateDir, { recursive: true, force: true });
   });
 
   it("uses CLAW3D_GATEWAY_ADAPTER_TYPE for Hermes env defaults", async () => {

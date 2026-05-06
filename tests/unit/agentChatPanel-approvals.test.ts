@@ -83,9 +83,9 @@ describe("AgentChatPanel exec approvals", () => {
     );
 
     expect(screen.getByTestId("exec-approval-card-approval-1")).toBeInTheDocument();
-    expect(screen.getByText("Exec approval required")).toBeInTheDocument();
+    expect(screen.getByText("Aprovação de execução necessária")).toBeInTheDocument();
     expect(screen.getByText("npm run test")).toBeInTheDocument();
-    expect(screen.getByText("Host: gateway")).toBeInTheDocument();
+    expect(screen.getByText("Máquina: gateway")).toBeInTheDocument();
     expect(screen.getByText("CWD: /repo")).toBeInTheDocument();
   });
 
@@ -139,9 +139,9 @@ describe("AgentChatPanel exec approvals", () => {
       })
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Permitir uma vez" }));
-    fireEvent.click(screen.getByRole("button", { name: "Sempre permitir" }));
-    fireEvent.click(screen.getByRole("button", { name: "Negar" }));
+    fireEvent.click(screen.getByRole("button", { name: /Permitir uma vez/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Permitir sempre/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Negar/ }));
 
     expect(onResolveExecApproval).toHaveBeenNthCalledWith(1, "approval-1", "allow-once");
     expect(onResolveExecApproval).toHaveBeenNthCalledWith(2, "approval-1", "allow-always");
@@ -169,8 +169,8 @@ describe("AgentChatPanel exec approvals", () => {
       })
     );
 
-    expect(screen.getByRole("button", { name: "Permitir uma vez" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Sempre permitir" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Negar" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Permitir uma vez/ })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Permitir sempre/ })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Negar/ })).toBeDisabled();
   });
 });

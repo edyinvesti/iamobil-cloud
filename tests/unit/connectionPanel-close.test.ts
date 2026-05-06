@@ -72,7 +72,7 @@ describe("ConnectionPanel close control", () => {
       })
     );
 
-    const disconnected = screen.getByText("Disconnected");
+    const disconnected = screen.getByText(/Desconectado/i);
     expect(disconnected).toHaveAttribute("data-status", "disconnected");
     expect(disconnected).toHaveClass("ui-badge-status-disconnected");
 
@@ -93,7 +93,7 @@ describe("ConnectionPanel close control", () => {
       })
     );
 
-    const connected = screen.getByText("Connected");
+    const connected = screen.getByText(/Conectado/i);
     expect(connected).toHaveAttribute("data-status", "connected");
     expect(connected).toHaveClass("ui-badge-status-connected");
   });

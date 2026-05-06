@@ -26,10 +26,24 @@ class MockWebSocket {
     MockWebSocket.sent.push(String(data));
   }
 
+  addEventListener(type: string, listener: (event: any) => void) {
+    if (type === "message") this.onmessage = listener as any;
+    if (type === "close") this.onclose = listener as any;
+    if (type === "open") this.onopen = listener as any;
+    if (type === "error") this.onerror = listener as any;
+  }
+
+  removeEventListener(type: string, listener: any) {
+    if (type === "message" && this.onmessage === listener) this.onmessage = null;
+    if (type === "close" && this.onclose === listener) this.onclose = null;
+    if (type === "open" && this.onopen === listener) this.onopen = null;
+    if (type === "error" && this.onerror === listener) this.onerror = null;
+  }
+
   close(code?: number, reason?: string) {
     MockWebSocket.closes.push({ code: code ?? 1000, reason: reason ?? "" });
     this.readyState = MockWebSocket.CLOSED;
-    this.onclose?.({ code: code ?? 1000, reason: reason ?? "" } as CloseEvent);
+    this.onclose?.({ code: code ?? 1000, reason: reason ?? "", wasClean: true } as CloseEvent);
   }
 }
 
@@ -68,6 +82,7 @@ describe("GatewayBrowserClient", () => {
       onHello: () => {},
       onEvent: () => {},
       onClose: () => {},
+      disableDeviceAuth: true,
     });
     client.start();
 
@@ -78,7 +93,8 @@ describe("GatewayBrowserClient", () => {
 
     ws.onopen?.();
 
-    expect(MockWebSocket.sent).toHaveLength(0);
+    await vi.runAllTicks();
+    expect(MockWebSocket.sent).toHaveLength(1); // Initial connect on open
 
     ws.onmessage?.({
       data: JSON.stringify({
@@ -90,8 +106,8 @@ describe("GatewayBrowserClient", () => {
 
     await vi.runAllTicks();
 
-    expect(MockWebSocket.sent).toHaveLength(1);
-    const frame = JSON.parse(MockWebSocket.sent[0] ?? "{}");
+    expect(MockWebSocket.sent).toHaveLength(2);
+    const frame = JSON.parse(MockWebSocket.sent[1] ?? "{}");
     expect(frame.type).toBe("req");
     expect(frame.method).toBe("connect");
     expect(typeof frame.id).toBe("string");
@@ -107,6 +123,7 @@ describe("GatewayBrowserClient", () => {
       onHello: () => {},
       onEvent: () => {},
       onClose: () => {},
+      disableDeviceAuth: true,
     });
     client.start();
 
@@ -114,10 +131,8 @@ describe("GatewayBrowserClient", () => {
     if (!ws) {
       throw new Error("WebSocket not created");
     }
-
     ws.onopen?.();
-    vi.runAllTimers();
-
+    await vi.runAllTicks();
     const connectFrame = JSON.parse(MockWebSocket.sent[0] ?? "{}");
     const connectId = String(connectFrame.id ?? "");
     expect(connectId).toMatch(UUID_V4_RE);

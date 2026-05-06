@@ -322,7 +322,7 @@ export const GatewayConnectScreen = ({
             >
               {isLaunchingSimulator ? "Iniciando Simulador..." : "Iniciar Simulador Interno"}
             </button>
-            {launchError && <p className="mt-1 text-[10px] text-red-500">{launchError}</p>}
+            {launchError && <p className="mt-1 text-[10px] ui-text-danger">{launchError}</p>}
           </div>
           <div className="rounded-md border border-border bg-muted/30 px-3 py-3">
             <p className="text-xs font-medium text-foreground">Usando Hermes localmente?</p>

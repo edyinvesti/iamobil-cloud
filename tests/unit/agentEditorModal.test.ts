@@ -1,6 +1,6 @@
 import { createElement } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { AgentEditorModal } from "@/features/agents/components/AgentEditorModal";
 import { createDefaultAgentAvatarProfile } from "@/lib/avatars/profile";
 import type { AgentState } from "@/features/agents/state/store";
@@ -86,7 +86,9 @@ describe("AgentEditorModal", () => {
     );
 
     fireEvent.click(screen.getByRole("button", { name: "Backpack" }));
-    fireEvent.click(screen.getByRole("button", { name: "Save avatar" }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: "Save avatar" }));
+    });
 
     expect(onAvatarSave).toHaveBeenCalledTimes(1);
     expect(onAvatarSave).toHaveBeenCalledWith(

@@ -65,7 +65,7 @@ function createAccessGate(options) {
   const token = String(options?.token ?? "").trim();
   const cookieName = String(options?.cookieName ?? "studio_access").trim() || "studio_access";
 
-  const enabled = false; // Forced false for local dev bypass
+  const enabled = token !== ""; 
   const rateLimiter = createRateLimiter(10, 60_000);
 
   const getAuthState = (req) => {

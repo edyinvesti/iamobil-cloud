@@ -65,9 +65,27 @@ const loadUpstreamGatewaySettings = (env = process.env) => {
     typeof gateway?.adapterType === "string" && gateway.adapterType.trim()
       ? gateway.adapterType.trim()
       : "hermes";
+
+  let finalUrl = url || DEFAULT_GATEWAY_URL;
+  let finalToken = token;
+
+  // Fallback to openclaw.json if url is default or token is missing
+  if (!url || !token) {
+    const localConfigPath = path.join(resolveStateDir(env), "openclaw.json");
+    const localConfig = readJsonFile(localConfigPath);
+    if (localConfig?.gateway) {
+      if (!url && localConfig.gateway.port) {
+        finalUrl = `ws://localhost:${localConfig.gateway.port}`;
+      }
+      if (!token && localConfig.gateway.auth?.token) {
+        finalToken = localConfig.gateway.auth.token;
+      }
+    }
+  }
+
   return {
-    url: url || DEFAULT_GATEWAY_URL,
-    token,
+    url: finalUrl,
+    token: finalToken,
     adapterType,
     settingsPath,
   };

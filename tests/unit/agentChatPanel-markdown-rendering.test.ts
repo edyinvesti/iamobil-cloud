@@ -1,4 +1,4 @@
-﻿import { createElement } from "react";
+import { createElement } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import type { AgentState } from "@/features/agents/state/store";
@@ -83,8 +83,8 @@ describe("AgentChatPanel markdown rendering", () => {
     expect(screen.queryByText(/^Output$/)).not.toBeInTheDocument();
     expect(screen.queryByText("Extract output")).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByText("Thinking (internal)"));
-    const toolSummary = screen.getByText("SHELL Â· ok");
+    fireEvent.click(screen.getByText(/Pensando \(interno\)/));
+    const toolSummary = screen.getByText(/SHELL.*ok/);
     const toolDetails = toolSummary.closest("details");
     expect(toolDetails).toBeTruthy();
     fireEvent.click(toolSummary);
@@ -130,9 +130,9 @@ describe("AgentChatPanel markdown rendering", () => {
       })
     );
 
-    const thinkingDetails = screen.getByText("Thinking (internal)").closest("details");
+    const thinkingDetails = screen.getByText(/Pensando \(interno\)/).closest("details");
     expect(thinkingDetails).toBeTruthy();
-    fireEvent.click(screen.getByText("Thinking (internal)"));
+    fireEvent.click(screen.getByText(/Pensando \(interno\)/));
     expect(within(thinkingDetails as HTMLElement).getByText(/proposing multi-lane tracking system/i)).toBeInTheDocument();
 
     const memorySearchSummaries = screen.getAllByText(/MEMORY_SEARCH/);
@@ -170,7 +170,7 @@ describe("AgentChatPanel markdown rendering", () => {
       })
     );
 
-    fireEvent.click(screen.getByText("Thinking (internal)"));
+    fireEvent.click(screen.getByText(/Pensando \(interno\)/));
     expect(screen.getByText("read /tmp/README.md")).toBeInTheDocument();
     expect(screen.queryByText("read /tmp/README.md", { selector: "summary" })).toBeNull();
     expect(screen.queryByText(/"file_path"/)).toBeNull();

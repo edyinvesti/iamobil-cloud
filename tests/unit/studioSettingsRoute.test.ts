@@ -1,3 +1,4 @@
+/** @vitest-environment node */
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -147,11 +148,9 @@ describe("studio settings route", () => {
       gateway?: { url?: string; token?: string; adapterType?: string } | null;
       office?: Record<string, { title?: string }>;
     };
-    expect(parsed.gateway).toEqual({
-      url: "ws://example.test:1234",
-      token: "t",
-      adapterType: "hermes",
-    });
+    expect(parsed.gateway?.url).toBe("ws://example.test:1234");
+    expect(parsed.gateway?.token).toMatch(/^enc:/);
+    expect(parsed.gateway?.adapterType).toBe("hermes");
     expect(parsed.office?.["ws://example.test:1234"]).toEqual(
       expect.objectContaining({
         title: "Orbit Control",

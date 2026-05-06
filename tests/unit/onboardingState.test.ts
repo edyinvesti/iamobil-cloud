@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { act, renderHook } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import { useOnboardingState } from "@/features/onboarding/useOnboardingState";
 
 describe("useOnboardingState", () => {
@@ -12,14 +12,14 @@ describe("useOnboardingState", () => {
     }
   });
 
-  it("shows onboarding by default when localStorage is empty", () => {
+  it("shows onboarding by default when localStorage is empty", async () => {
     const { result } = renderHook(() => useOnboardingState());
-    expect(result.current.showOnboarding).toBe(true);
+    await waitFor(() => expect(result.current.showOnboarding).toBe(true));
   });
 
-  it("hides onboarding after completeOnboarding is called", () => {
+  it("hides onboarding after completeOnboarding is called", async () => {
     const { result } = renderHook(() => useOnboardingState());
-    expect(result.current.showOnboarding).toBe(true);
+    await waitFor(() => expect(result.current.showOnboarding).toBe(true));
 
     act(() => {
       result.current.completeOnboarding();
@@ -28,8 +28,9 @@ describe("useOnboardingState", () => {
     expect(result.current.showOnboarding).toBe(false);
   });
 
-  it("persists completion to localStorage", () => {
+  it("persists completion to localStorage", async () => {
     const { result } = renderHook(() => useOnboardingState());
+    await waitFor(() => expect(result.current.showOnboarding).toBe(true));
 
     act(() => {
       result.current.completeOnboarding();
@@ -40,14 +41,15 @@ describe("useOnboardingState", () => {
     );
   });
 
-  it("reads completion state from localStorage on mount", () => {
+  it("reads completion state from localStorage on mount", async () => {
     window.localStorage.setItem("claw3d:onboarding:completed", "true");
     const { result } = renderHook(() => useOnboardingState());
-    expect(result.current.showOnboarding).toBe(false);
+    await waitFor(() => expect(result.current.showOnboarding).toBe(false));
   });
 
-  it("resets onboarding when resetOnboarding is called", () => {
+  it("resets onboarding when resetOnboarding is called", async () => {
     const { result } = renderHook(() => useOnboardingState());
+    await waitFor(() => expect(result.current.showOnboarding).toBe(true));
 
     act(() => {
       result.current.completeOnboarding();

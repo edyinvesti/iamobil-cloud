@@ -6,7 +6,7 @@ import type { StudioSettings } from "@/lib/studio/settings";
 
 describe("deriveHydrateAgentFleetResult", () => {
   it("derives_seeds_and_sync_sets_from_snapshots", () => {
-    const gatewayUrl = "ws://127.0.0.1:18789";
+    const gatewayUrl = "ws://localhost:18789";
 
     const settings: StudioSettings = {
       version: 1,

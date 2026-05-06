@@ -179,7 +179,16 @@ export class GatewayBrowserClient {
           this.options.onHello(resFrame.payload as GatewayHelloOk ?? {});
         } else if (asRecord(resFrame.error) && typeof resFrame.error.code === "string") {
           // Connect failed — close will trigger onClose
-          socket.close(4008, `connect failed: ${resFrame.error.code} ${resFrame.error.message ?? ""}`);
+          const rawReason = `connect failed: ${resFrame.error.code} ${resFrame.error.message ?? ""}`;
+          // WebSocket reason must be <= 123 bytes
+          const encoder = new TextEncoder();
+          let encoded = encoder.encode(rawReason);
+          let reason = rawReason;
+          if (encoded.byteLength > 123) {
+            const truncated = encoded.slice(0, 123);
+            reason = new TextDecoder().decode(truncated);
+          }
+          socket.close(4008, reason);
         }
         return;
       }

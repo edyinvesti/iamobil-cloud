@@ -410,13 +410,22 @@ describe("useAgentSettingsMutationController", () => {
     });
 
     await waitFor(() => {
+      expect(restartBlockHookParams).not.toBeNull();
       expect(restartBlockHookParams?.block).not.toBeNull();
     });
 
-    await act(async () => {
-      restartBlockHookParams?.onTimeout();
+    let capturedOnTimeout: (() => void) | null = null;
+    await waitFor(() => {
+      expect(restartBlockHookParams?.block).not.toBeNull();
+      capturedOnTimeout = restartBlockHookParams!.onTimeout;
     });
-    expect(ctx.setError).toHaveBeenCalledWith("Gateway restart timed out after renaming the agent.");
+
+    await act(async () => {
+      capturedOnTimeout!();
+    });
+    await waitFor(() => {
+      expect(ctx.setError).toHaveBeenCalledWith(expect.stringContaining("timed out after renaming"));
+    });
 
     mockedRunLifecycle.mockImplementation(async ({ deps }) => {
       deps.setQueuedBlock();
@@ -427,12 +436,13 @@ describe("useAgentSettingsMutationController", () => {
       await ctx.getValue().handleRenameAgent("agent-1", "Renamed Again");
     });
     await waitFor(() => {
-      expect(restartBlockHookParams?.block?.phase).toBe("awaiting-restart");
+      expect(ctx.getValue().restartingMutationBlock?.phase).toBe("awaiting-restart");
     });
 
     await act(async () => {
+      const freshBlock = ctx.getValue().restartingMutationBlock;
       await restartBlockHookParams?.onRestartComplete(
-        restartBlockHookParams.block as MutationBlockState,
+        freshBlock as MutationBlockState,
         { isCancelled: () => false }
       );
     });

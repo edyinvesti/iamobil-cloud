@@ -65,7 +65,8 @@ describe("agentReconcileOperation", () => {
       isDisconnectLikeError: () => false,
     });
 
-    expect(call).not.toHaveBeenCalled();
+    expect(call).toHaveBeenCalledWith("agents.list", {});
+    expect(call).not.toHaveBeenCalledWith("agent.wait", expect.anything());
     expect(commands).toEqual([]);
   });
 
@@ -99,7 +100,8 @@ describe("agentReconcileOperation", () => {
     });
 
     const historyRefreshes = commands.filter((entry) => entry.kind === "requestHistoryRefresh");
-    expect(call).toHaveBeenCalledTimes(1);
+    expect(call).toHaveBeenCalledWith("agents.list", {});
+    expect(call).toHaveBeenCalledWith("agent.wait", { runId: "run-shared", timeoutMs: 1 });
     expect(historyRefreshes).toEqual([{ kind: "requestHistoryRefresh", agentId: "a1" }]);
 
     const dispatch = vi.fn();

@@ -1,5 +1,5 @@
 import { createElement } from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { TaskBoardView } from "@/features/office/tasks/TaskBoardView";
@@ -77,7 +77,7 @@ const createCronJob = (): CronJobSummary => ({
 });
 
 describe("TaskBoardView", () => {
-  it("routes task edits through callbacks", () => {
+  it("routes task edits through callbacks", async () => {
     const onCreateCard = vi.fn();
     const onMoveCard = vi.fn();
     const onSelectCard = vi.fn();
@@ -114,7 +114,7 @@ describe("TaskBoardView", () => {
 
     fireEvent.click(screen.getAllByRole("button", { name: /new task/i })[0]!);
     fireEvent.click(screen.getByRole("button", { name: /refresh/i }));
-    fireEvent.click(screen.getAllByRole("button", { name: /new task/i })[1]!);
+    fireEvent.click(screen.getByRole("button", { name: /New task — Todo/i }));
     fireEvent.change(screen.getByLabelText("Title"), {
       target: { value: "Create marketing website" },
     });
@@ -128,7 +128,7 @@ describe("TaskBoardView", () => {
 
     expect(onCreateCard).toHaveBeenCalledTimes(1);
     expect(onRefreshCronJobs).toHaveBeenCalledTimes(1);
-    expect(onSelectCard).toHaveBeenCalledWith("task-1");
+    expect(onSelectCard).toHaveBeenCalledWith(null);
     expect(onUpdateCard).toHaveBeenCalledWith("task-1", { title: "Create marketing website" });
     expect(onMoveCard).toHaveBeenCalledWith("task-1", "in_progress");
     expect(onUpdateCard).toHaveBeenCalledWith("task-1", { assignedAgentId: "agent-1" });

@@ -87,6 +87,7 @@ describe("useRuntimeConnection", () => {
       );
     };
 
+    cleanup();
     render(createElement(Probe));
 
     expect(screen.getByTestId("providerId")).toHaveTextContent("custom");

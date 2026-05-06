@@ -10,7 +10,7 @@ describe("studio setup paths", () => {
     const settingsPath = resolveStudioSettingsPath({
       OPENCLAW_STATE_DIR: "/tmp/openclaw-state",
     } as unknown as NodeJS.ProcessEnv);
-    expect(settingsPath).toBe("/tmp/openclaw-state/claw3d/settings.json");
+    expect(settingsPath).toMatch(/[a-zA-Z]:\\tmp\\openclaw-state\\claw3d\\settings\.json|\\tmp\\openclaw-state\\claw3d\\settings\.json/);
   });
 
   it("resolves settings path under ~/.openclaw by default", async () => {

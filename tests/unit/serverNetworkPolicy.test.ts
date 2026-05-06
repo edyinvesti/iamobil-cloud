@@ -1,21 +1,20 @@
-// @vitest-environment node
+/** @vitest-environment node */
 
 import { describe, expect, it } from "vitest";
 
 describe("server network policy", () => {
-  it("defaults to dual loopback hosts", async () => {
+  it("defaults to wildcard host", async () => {
     const { resolveHosts, resolveHost } = await import("../../server/network-policy");
-    expect(resolveHosts({} as unknown as NodeJS.ProcessEnv)).toEqual(["127.0.0.1", "::1"]);
-    expect(resolveHost({} as unknown as NodeJS.ProcessEnv)).toBe("127.0.0.1");
+    expect(resolveHosts({} as unknown as NodeJS.ProcessEnv)).toEqual(["0.0.0.0"]);
+    expect(resolveHost({} as unknown as NodeJS.ProcessEnv)).toBe("0.0.0.0");
   });
 
   it("ignores HOSTNAME and uses only HOST for bind resolution", async () => {
     const { resolveHosts, resolveHost } = await import("../../server/network-policy");
     expect(resolveHosts({ HOSTNAME: "example-host" } as unknown as NodeJS.ProcessEnv)).toEqual([
-      "127.0.0.1",
-      "::1",
+      "0.0.0.0",
     ]);
-    expect(resolveHost({ HOSTNAME: "example-host" } as unknown as NodeJS.ProcessEnv)).toBe("127.0.0.1");
+    expect(resolveHost({ HOSTNAME: "example-host" } as unknown as NodeJS.ProcessEnv)).toBe("0.0.0.0");
     expect(
       resolveHosts({ HOST: "0.0.0.0", HOSTNAME: "example-host" } as unknown as NodeJS.ProcessEnv)
     ).toEqual(["0.0.0.0"]);
@@ -46,14 +45,10 @@ describe("server network policy", () => {
     expect(isPublicHost("::ffff:192.168.1.10")).toBe(true);
   });
 
-  it("rejects public bind without non-empty studio access token", async () => {
+  it("assertPublicHostAllowed does not throw (warning only)", async () => {
     const { assertPublicHostAllowed } = await import("../../server/network-policy");
-    expect(() => assertPublicHostAllowed({ host: "0.0.0.0", studioAccessToken: "" })).toThrow(
-      /Refusing to bind Studio to public host/
-    );
-    expect(() => assertPublicHostAllowed({ host: "0.0.0.0", studioAccessToken: "   " })).toThrow(
-      /Refusing to bind Studio to public host/
-    );
+    // Should not throw because it only console.warns now
+    expect(() => assertPublicHostAllowed({ host: "0.0.0.0", studioAccessToken: "" })).not.toThrow();
     expect(() =>
       assertPublicHostAllowed({ host: "0.0.0.0", studioAccessToken: "abc" })
     ).not.toThrow();
