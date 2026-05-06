@@ -211,7 +211,7 @@ console.log(`[hermes-adapter] API Base URL: ${HERMES_API_URL}`);
 
 let HERMES_API_KEY = process.env.HERMES_API_KEY || "";
 const ADAPTER_PORT = parseInt(process.env.HERMES_ADAPTER_PORT || "18789", 10);
-const HERMES_MODEL = process.env.HERMES_MODEL || "llama-3.3-70b-versatile";
+const HERMES_MODEL = process.env.HERMES_MODEL || "llama-3.1-8b-instant";
 const HERMES_AGENT_NAME = identity.name || identity.nome || process.env.HERMES_AGENT_NAME || "Hermes";
 const HERMES_ROLE = identity.role || identity.papel || "Diretor de Vendas";
 const HERMES_VIBE = identity.vibe || "Efficient and helpful";
@@ -768,7 +768,13 @@ async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _r
       const currentUrl = HERMES_API_URL;
       console.warn(`[API ROTATOR] Erro ${res.statusCode} em ${currentUrl}. Tentativa ${_retryCount + 1}...`);
 
-      // Rotation Plan: Groq -> OpenAI -> Gemini -> Groq (Safe Model)
+      // Rotation Plan: Groq -> Gemini -> OpenAI -> Groq (Safe Model)
+      if (currentUrl.includes("groq") && geminiKey) {
+        console.warn(`[API ROTATOR] Groq falhou. Alternando para Gemini...`);
+        // Gemini use a special endpoint format, so we return a new call to a dedicated helper
+        return streamGeminiFallback(messages, onTextDelta, abortCheck, _retryCount + 1);
+      }
+
       if (currentUrl.includes("groq") && openaiKey) {
         console.warn(`[API ROTATOR] Groq falhou. Alternando para OpenAI...`);
         HERMES_API_URL = "https://api.openai.com";
@@ -776,12 +782,9 @@ async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _r
         return streamOneTurn(messages, "gpt-4o-mini", null, onTextDelta, abortCheck, _retryCount + 1);
       }
       
-      if (currentUrl.includes("openai.com")) {
-        // Pula Gemini (chave incompatível com Bearer header) — vai direto para Groq Safe
-        console.warn(`[API ROTATOR] OpenAI falhou. Alternando para Groq Safe (llama-3.1-8b-instant)...`);
-        HERMES_API_URL = groqUrl;
-        HERMES_API_KEY = groqKey;
-        return streamOneTurn(messages, "llama-3.1-8b-instant", null, onTextDelta, abortCheck, _retryCount + 1);
+      if (currentUrl.includes("openai.com") && geminiKey) {
+        console.warn(`[API ROTATOR] OpenAI falhou. Alternando para Gemini...`);
+        return streamGeminiFallback(messages, onTextDelta, abortCheck, _retryCount + 1);
       }
 
       if (currentUrl.includes("generativelanguage") && groqKey) {
@@ -880,7 +883,75 @@ async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _r
     };
   }
 
-  return { textContent, toolCalls, finishReason };
+}
+
+/**
+ * Fallback dedicated to Gemini (Google) due to different payload format.
+ */
+async function streamGeminiFallback(messages, onTextDelta, abortCheck, _retryCount = 0) {
+  const geminiKey = process.env.GEMINI_API_KEY;
+  if (!geminiKey) throw new Error("GEMINI_API_KEY not found for fallback.");
+
+  // Map messages to Gemini format
+  const contents = messages.map(m => ({
+    role: m.role === "assistant" ? "model" : "user",
+    parts: [{ text: m.content || "" }]
+  }));
+
+  // Gemini doesn't support 'system' role in 'contents', it uses 'system_instruction'
+  const systemMsg = messages.find(m => m.role === "system");
+  const body = {
+    contents: contents.filter(m => m.role !== "system"),
+    generationConfig: { maxOutputTokens: 2048, temperature: 0.7 }
+  };
+  if (systemMsg) {
+    body.system_instruction = { parts: [{ text: systemMsg.content }] };
+  }
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:streamGenerateContent?alt=sse&key=${geminiKey}`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) {
+    const errText = await res.text();
+    console.error("[Gemini Fallback Error]", errText);
+    throw new Error(`Gemini Fallback Failed: ${res.status}`);
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let textContent = "";
+  let buffer = "";
+
+  while (true) {
+    if (abortCheck && abortCheck()) {
+      await reader.cancel();
+      break;
+    }
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split("\n");
+    buffer = lines.pop() || "";
+
+    for (const line of lines) {
+      if (!line.startsWith("data: ")) continue;
+      try {
+        const data = JSON.parse(line.slice(6));
+        const delta = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (delta) {
+          textContent += delta;
+          if (onTextDelta) onTextDelta(textContent);
+        }
+      } catch (e) { /* ignore parse errors */ }
+    }
+  }
+
+  return { textContent, toolCalls: [], finishReason: "stop" };
 }
 
 // ---------------------------------------------------------------------------

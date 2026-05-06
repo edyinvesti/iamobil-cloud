@@ -32,7 +32,7 @@ services:
       - key: HERMES_API_KEY
         sync: false
       - key: HERMES_MODEL
-        value: llama-3.3-70b-versatile
+        value: llama-3.1-8b-instant
       - key: HERMES_AGENT_NAME
         value: Edy
       - key: HERMES_ADAPTER_PORT
