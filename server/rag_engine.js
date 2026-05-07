@@ -9,8 +9,6 @@ class RagEngine {
     constructor() {
         this.dbPath = path.join(process.cwd(), "data", "iamobil.db");
         this.kbPath = path.join(process.cwd(), "assets", "knowledge_base");
-        this.defaultOpenAiKey = process.env.OPENAI_API_KEY || process.env.HERMES_API_KEY;
-        this.geminiKey = process.env.GEMINI_API_KEY;
         
         this.tursoUrl = process.env.TURSO_DB_URL;
         this.tursoToken = process.env.TURSO_DB_AUTH_TOKEN;
@@ -113,20 +111,23 @@ class RagEngine {
     }
 
     async getEmbedding(input, retries = 2, delay = 3000) {
-        if (!this.defaultOpenAiKey && !this.geminiKey) {
+        const defaultOpenAiKey = process.env.OPENAI_API_KEY || process.env.HERMES_API_KEY;
+        const geminiKey = process.env.GEMINI_API_KEY;
+
+        if (!defaultOpenAiKey && !geminiKey) {
             console.error("❌ [RAG Engine] Nenhuma chave de API (OpenAI ou Gemini) encontrada.");
             return null;
         }
 
         try {
             // Tentativa Primária: OpenAI
-            if (this.defaultOpenAiKey) {
+            if (defaultOpenAiKey) {
                 try {
                     const response = await axios.post('https://api.openai.com/v1/embeddings', {
                         input: input,
                         model: "text-embedding-3-small"
                     }, {
-                        headers: { "Authorization": `Bearer ${this.defaultOpenAiKey}` },
+                        headers: { "Authorization": `Bearer ${defaultOpenAiKey}` },
                         timeout: 15000
                     });
                     
@@ -158,7 +159,8 @@ class RagEngine {
 
     // [Fallback] Mecanismo de Segurança via Gemini (Gratuito/Alta Estabilidade)
     async getGeminiEmbeddingFallback(input) {
-        if (!this.geminiKey) {
+        const geminiKey = process.env.GEMINI_API_KEY;
+        if (!geminiKey) {
             console.error("❌ [RAG Engine] Chave do Gemini (Fallback) não configurada.");
             return null;
         }

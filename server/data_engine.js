@@ -10,30 +10,31 @@ class DataEngine {
     if (!fs.existsSync(path.join(process.cwd(), "data"))) {
       fs.mkdirSync(path.join(process.cwd(), "data"), { recursive: true });
     }
-    
-    this.tursoUrl = process.env.TURSO_DB_URL;
-    this.tursoToken = process.env.TURSO_DB_AUTH_TOKEN;
-
-    if (this.tursoUrl && this.tursoToken) {
-      this.dbClient = createClient({
-        url: this.tursoUrl,
-        authToken: this.tursoToken
-      });
-      console.log("☁️ [Data Engine] Conectado ao Turso DB (Nuvem)");
-    } else {
-      this.dbClient = null;
-      this.db = new sqlite3.Database(this.dbPath);
-      this.db.run("PRAGMA journal_mode = WAL;");
-      this.db.run("PRAGMA synchronous = NORMAL;");
-      console.log("💾 [Data Engine] Conectado ao SQLite (Local)");
-    }
-
+    this.dbClient = null;
+    this.db = null;
     this.initDB();
     this.isSyncing = false;
     this.needsSync = false;
   }
 
+  async checkClient() {
+    if (this.dbClient || this.db) return;
+    const tursoUrl = process.env.TURSO_DB_URL;
+    const tursoToken = process.env.TURSO_DB_AUTH_TOKEN;
+
+    if (tursoUrl && tursoToken) {
+      this.dbClient = createClient({ url: tursoUrl, authToken: tursoToken });
+      console.log("☁️ [Data Engine] Conectado ao Turso DB (Nuvem)");
+    } else {
+      this.db = new sqlite3.Database(this.dbPath);
+      console.log("💾 [Data Engine] Conectado ao SQLite (Local)");
+    }
+  }
+
+
+
   async executeQuery(sql, params = []) {
+    await this.checkClient();
     if (this.dbClient) {
       try {
         const rs = await this.dbClient.execute({ sql, args: params });

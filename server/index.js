@@ -9,6 +9,7 @@ if (process.platform === 'linux' && fs_init.existsSync(cloudEnvPath)) {
 } else {
   require('dotenv').config();
 }
+console.log(`📡 [Env] Variáveis carregadas: ${Object.keys(process.env).join(", ")}`);
 const https = require("node:https");
 const net = require("node:net");
 const next = require("next");
