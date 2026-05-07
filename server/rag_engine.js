@@ -35,7 +35,11 @@ class RagEngine {
                 const rs = await this.dbClient.execute({ sql, args: params });
                 return rs.rows;
             } catch (e) {
-                if (e.message && (e.message.includes('no such table') || e.message.includes('tabela inexistente'))) {
+                if (e.message && (
+                    e.message.includes('no such table') || 
+                    e.message.includes('tabela inexistente') || 
+                    e.message.includes('tabela não encontrada')
+                )) {
                     console.warn("⚠️ [RAG Engine] Tabela não encontrada, inicializando...");
                     await this.initVectorDB();
                     try {

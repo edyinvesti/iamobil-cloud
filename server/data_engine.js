@@ -35,8 +35,21 @@ class DataEngine {
 
   async executeQuery(sql, params = []) {
     if (this.dbClient) {
-      const rs = await this.dbClient.execute({ sql, args: params });
-      return rs;
+      try {
+        const rs = await this.dbClient.execute({ sql, args: params });
+        return rs;
+      } catch (e) {
+        if (e.message && (
+          e.message.includes('no such table') || 
+          e.message.includes('tabela inexistente') || 
+          e.message.includes('tabela não encontrada')
+        )) {
+          console.warn("⚠️ [Data Engine] Tabela não encontrada, inicializando...");
+          await this.initDB();
+          return await this.dbClient.execute({ sql, args: params });
+        }
+        throw e;
+      }
     } else {
       return new Promise((resolve, reject) => {
         if (sql.trim().toUpperCase().startsWith("SELECT")) {
