@@ -350,7 +350,7 @@ function connectHermes() {
                             tgBot.sendMessage(reqData.chatId, `🔄 *Sincronizando sistema...* Tivemos um excesso de informações, estou limpando o histórico para continuarmos. Por favor, envie sua mensagem novamente em um instante.`, { parse_mode: 'Markdown' });
                             ws.send(JSON.stringify({ type: "req", id: `reset-${Date.now()}`, method: "sessions.reset", params: { key: reqData.sessionKey || "agent:hermes:main" } }));
                         } else {
-                            tgBot.sendMessage(reqData.chatId, `🚨 *Instabilidade Momentânea:* Tivemos um soluço na nossa inteligência central. Estou tentando me reconectar.`, { parse_mode: 'Markdown' });
+                            tgBot.sendMessage(reqData.chatId, `🚨 *Instabilidade Central:* ${errorMsg || "Erro desconhecido"}. Estou tentando restabelecer o contato.`, { parse_mode: 'Markdown' });
                         }
                     }
                     pendingRequests.delete(payload.runId);
