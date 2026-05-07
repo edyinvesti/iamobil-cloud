@@ -122,3 +122,24 @@ export async function POST(req: Request) {
   }
 }
 
+// Endpoint para buscar imóveis de um corretor específico
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const creci = searchParams.get('creci');
+
+    if (!creci) {
+      return NextResponse.json({ success: false, error: "CRECI é obrigatório para buscar propriedades do parceiro." }, { status: 400 });
+    }
+
+    const properties = await dataEngine.getPropertiesByBroker(creci);
+    
+    return NextResponse.json({
+      success: true,
+      properties
+    });
+  } catch (error: any) {
+    console.error("Error fetching properties GET:", error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}

@@ -304,6 +304,25 @@ class DataEngine {
     }
   }
 
+  async getPropertiesByBroker(creci) {
+    try {
+      const rs = await this.executeQuery(`SELECT * FROM properties WHERE brokerCreci = ? ORDER BY receivedAt DESC`, [creci]);
+      const rows = rs.rows || [];
+      return rows.map(p => {
+        try {
+          return { ...p, images: p.images ? JSON.parse(p.images) : [] };
+        } catch {
+          return { ...p, images: [] };
+        }
+      });
+    } catch (err) {
+      console.error("[DataEngine] getPropertiesByBroker Error:", err.message);
+      return [];
+    }
+  }
+
+
+
   async getPropertyStatus(id) {
     try {
       const rs = await this.executeQuery(`SELECT status FROM properties WHERE id = ?`, [id]);
