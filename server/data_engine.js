@@ -143,6 +143,17 @@ class DataEngine {
         aiDescription TEXT
       )
     `);
+
+    await this.executeQuery(`
+      CREATE TABLE IF NOT EXISTS brokers (
+        creci TEXT PRIMARY KEY,
+        name TEXT,
+        email TEXT,
+        phone TEXT,
+        photo TEXT,
+        lastActive TEXT
+      )
+    `);
   }
 
   calculateNeuroScore(data) {
@@ -268,6 +279,32 @@ class DataEngine {
       return rs.rows?.[0]?.status || "unknown";
     } catch (err) {
       return "unknown";
+    }
+  }
+
+  async saveBroker(data) {
+    const timestamp = new Date().toISOString();
+    try {
+      await this.executeQuery(
+        `INSERT INTO brokers (creci, name, email, phone, photo, lastActive) 
+         VALUES (?, ?, ?, ?, ?, ?)
+         ON CONFLICT(creci) DO UPDATE SET
+         name=excluded.name, email=excluded.email, phone=excluded.phone, photo=excluded.photo, lastActive=excluded.lastActive`,
+        [data.creci, data.name, data.email, data.phone, data.photo || null, timestamp]
+      );
+      return { ok: true };
+    } catch (err) {
+      console.error("[DataEngine] Broker DB Error:", err.message);
+      return { ok: false, error: err.message };
+    }
+  }
+
+  async getBrokers() {
+    try {
+      const rs = await this.executeQuery(`SELECT * FROM brokers ORDER BY lastActive DESC`, []);
+      return rs.rows || [];
+    } catch (err) {
+      return [];
     }
   }
 
