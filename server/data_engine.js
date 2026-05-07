@@ -138,11 +138,21 @@ class DataEngine {
         images TEXT,
         brokerName TEXT,
         brokerCreci TEXT,
+        suites INTEGER DEFAULT 0,
+        livingRooms INTEGER DEFAULT 0,
+        kitchens INTEGER DEFAULT 0,
+        parkingSpaces INTEGER DEFAULT 0,
         status TEXT DEFAULT 'pending',
         receivedAt TEXT,
         aiDescription TEXT
       )
     `);
+
+    // Migração de colunas novas
+    try { await this.executeQuery("ALTER TABLE properties ADD COLUMN suites INTEGER DEFAULT 0"); } catch(e) {}
+    try { await this.executeQuery("ALTER TABLE properties ADD COLUMN livingRooms INTEGER DEFAULT 0"); } catch(e) {}
+    try { await this.executeQuery("ALTER TABLE properties ADD COLUMN kitchens INTEGER DEFAULT 0"); } catch(e) {}
+    try { await this.executeQuery("ALTER TABLE properties ADD COLUMN parkingSpaces INTEGER DEFAULT 0"); } catch(e) {}
 
     await this.executeQuery(`
       CREATE TABLE IF NOT EXISTS brokers (
@@ -246,14 +256,17 @@ class DataEngine {
   async savePartnerProperty(data) {
     try {
       await this.executeQuery(
-        `INSERT INTO properties (id, title, price, bedrooms, bathrooms, area, location, description, imagePath, images, brokerName, brokerCreci, status, receivedAt, aiDescription) 
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `INSERT INTO properties (id, title, price, bedrooms, bathrooms, area, location, description, imagePath, images, brokerName, brokerCreci, suites, livingRooms, kitchens, parkingSpaces, status, receivedAt, aiDescription) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON CONFLICT(id) DO UPDATE SET
-         title=excluded.title, price=excluded.price, status=excluded.status`,
+         title=excluded.title, price=excluded.price, status=excluded.status, 
+         bedrooms=excluded.bedrooms, bathrooms=excluded.bathrooms, suites=excluded.suites, 
+         livingRooms=excluded.livingRooms, kitchens=excluded.kitchens, parkingSpaces=excluded.parkingSpaces`,
         [
-          data.id, data.title, data.price, data.bedrooms, data.bathrooms, 
-          data.area, data.location, data.description, data.imagePath, 
+          data.id, data.title, data.price, data.bedrooms || 0, data.bathrooms || 0, 
+          data.size || 0, data.address, data.description, data.imagePath, 
           JSON.stringify(data.images || []), data.brokerName, data.brokerCreci, 
+          data.suites || 0, data.livingRooms || 0, data.kitchens || 0, data.parkingSpaces || 0,
           data.status || "pending", data.receivedAt, data.aiDescription
         ]
       );
