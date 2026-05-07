@@ -10,7 +10,7 @@ const dataEngine = require('./data_engine');
 const { generateSalesReportPDF } = require('./report_generator');
 
 // Carregar variáveis de ambiente
-require('dotenv').config();
+require('dotenv').config({ path: (process.platform === 'linux' && require('fs').existsSync('/etc/secrets/.env')) ? '/etc/secrets/.env' : '.env' });
 
 const HERMES_WS_URL = process.env.HERMES_WS_URL || 'ws://127.0.0.1:18789';
 const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN;

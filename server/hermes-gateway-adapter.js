@@ -60,6 +60,12 @@ function loadRuntimeEnv() {
   const cwd = process.cwd();
   loadDotenvFile(path.join(cwd, ".env.local"));
   loadDotenvFile(path.join(cwd, ".env"));
+  
+  // Render Secret Files Support
+  if (path.sep === '/') { // Linux (Render)
+    loadDotenvFile("/etc/secrets/.env");
+    loadDotenvFile("/etc/secrets/IDENTITY.md"); // If uploaded as secret
+  }
 }
 
 loadRuntimeEnv();

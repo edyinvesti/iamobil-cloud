@@ -1,4 +1,14 @@
 const http = require("node:http");
+const fs_init = require("node:fs");
+const path_init = require("node:path");
+
+// Carregamento Global de Ambiente para Nuvem (Render Secrets)
+const cloudEnvPath = "/etc/secrets/.env";
+if (process.platform === 'linux' && fs_init.existsSync(cloudEnvPath)) {
+  require('dotenv').config({ path: cloudEnvPath });
+} else {
+  require('dotenv').config();
+}
 const https = require("node:https");
 const net = require("node:net");
 const next = require("next");
