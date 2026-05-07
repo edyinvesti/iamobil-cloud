@@ -55,19 +55,50 @@ class RagEngine {
         } else {
             return new Promise((resolve, reject) => {
                 const db = new sqlite3.Database(this.dbPath);
-                if (sql.trim().toUpperCase().startsWith("SELECT")) {
-                    db.all(sql, params, (err, rows) => {
-                        db.close();
-                        if (err) reject(err);
-                        else resolve(rows || []);
-                    });
-                } else {
-                    db.run(sql, params, function(err) {
-                        db.close();
-                        if (err) reject(err);
-                        else resolve({ insertId: this.lastID, changes: this.changes });
-                    });
-                }
+                const runQuery = () => {
+                    if (sql.trim().toUpperCase().startsWith("SELECT")) {
+                        db.all(sql, params, (err, rows) => {
+                            if (err && (err.message.includes('no such table') || err.message.includes('tabela não encontrada'))) {
+                                console.warn("⚠️ [RAG Engine] Tabela SQLite não encontrada, inicializando...");
+                                db.run(`CREATE TABLE IF NOT EXISTS rag_vectors (id INTEGER PRIMARY KEY AUTOINCREMENT, source TEXT, content TEXT, embedding TEXT)`, [], (err2) => {
+                                    if (err2) { db.close(); reject(err2); }
+                                    else {
+                                        db.all(sql, params, (err3, rows3) => {
+                                            db.close();
+                                            if (err3) reject(err3);
+                                            else resolve(rows3 || []);
+                                        });
+                                    }
+                                });
+                            } else {
+                                db.close();
+                                if (err) reject(err);
+                                else resolve(rows || []);
+                            }
+                        });
+                    } else {
+                        db.run(sql, params, function(err) {
+                            if (err && (err.message.includes('no such table') || err.message.includes('tabela não encontrada'))) {
+                                 console.warn("⚠️ [RAG Engine] Tabela SQLite não encontrada, inicializando...");
+                                 db.run(`CREATE TABLE IF NOT EXISTS rag_vectors (id INTEGER PRIMARY KEY AUTOINCREMENT, source TEXT, content TEXT, embedding TEXT)`, [], (err2) => {
+                                     if (err2) { db.close(); reject(err2); }
+                                     else {
+                                         db.run(sql, params, function(err3) {
+                                             db.close();
+                                             if (err3) reject(err3);
+                                             else resolve({ insertId: this.lastID, changes: this.changes });
+                                         });
+                                     }
+                                 });
+                            } else {
+                                db.close();
+                                if (err) reject(err);
+                                else resolve({ insertId: this.lastID, changes: this.changes });
+                            }
+                        });
+                    }
+                };
+                runQuery();
             });
         }
     }

@@ -52,17 +52,40 @@ class DataEngine {
       }
     } else {
       return new Promise((resolve, reject) => {
-        if (sql.trim().toUpperCase().startsWith("SELECT")) {
-          this.db.all(sql, params, (err, rows) => {
-            if (err) reject(err);
-            else resolve({ rows });
-          });
-        } else {
-          this.db.run(sql, params, function(err) {
-            if (err) reject(err);
-            else resolve({ lastInsertRowid: this.lastID, rowsAffected: this.changes });
-          });
-        }
+        const runQuery = () => {
+          if (sql.trim().toUpperCase().startsWith("SELECT")) {
+            this.db.all(sql, params, (err, rows) => {
+              if (err && (err.message.includes('no such table') || err.message.includes('tabela não encontrada'))) {
+                console.warn("⚠️ [Data Engine] Tabela SQLite não encontrada, inicializando...");
+                this.initDB().then(() => {
+                  this.db.all(sql, params, (err2, rows2) => {
+                    if (err2) reject(err2);
+                    else resolve({ rows: rows2 });
+                  });
+                }).catch(reject);
+              } else {
+                if (err) reject(err);
+                else resolve({ rows });
+              }
+            });
+          } else {
+            this.db.run(sql, params, function(err) {
+              if (err && (err.message.includes('no such table') || err.message.includes('tabela não encontrada'))) {
+                console.warn("⚠️ [Data Engine] Tabela SQLite não encontrada, inicializando...");
+                this.initDB().then(() => {
+                  this.db.run(sql, params, function(err2) {
+                    if (err2) reject(err2);
+                    else resolve({ lastInsertRowid: this.lastID, rowsAffected: this.changes });
+                  });
+                }).catch(reject);
+              } else {
+                if (err) reject(err);
+                else resolve({ lastInsertRowid: this.lastID, rowsAffected: this.changes });
+              }
+            });
+          }
+        };
+        runQuery();
       });
     }
   }
