@@ -358,6 +358,16 @@ class DataEngine {
     }
   }
 
+  async getBrokerByCreci(creci) {
+    try {
+      const rs = await this.executeQuery(`SELECT * FROM brokers WHERE creci = ?`, [creci]);
+      return rs.rows?.[0] || null;
+    } catch (err) {
+      console.error("[DataEngine] getBrokerByCreci Error:", err.message);
+      return null;
+    }
+  }
+
   async syncMD() {
     if (this.isSyncing) {
       this.needsSync = true;

@@ -22,8 +22,16 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
     try {
+        const { searchParams } = new URL(req.url);
+        const creci = searchParams.get('creci');
+
+        if (creci) {
+            const broker = await dataEngine.getBrokerByCreci(creci);
+            return NextResponse.json({ broker });
+        }
+
         const brokers = await dataEngine.getBrokers();
         return NextResponse.json({ brokers });
     } catch (error: any) {

@@ -97,7 +97,9 @@ function createAccessGate(options) {
       url.startsWith("/_next/") ||
       url.startsWith("/favicon.ico") ||
       url.startsWith("/api/status") ||
-      url.startsWith("/api/tg-webhook")
+      url.startsWith("/api/tg-webhook") ||
+      url.startsWith("/api/partner/properties") ||
+      url.startsWith("/api/partner/register")
     ) {
       return false; 
     }
