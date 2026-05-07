@@ -150,7 +150,8 @@ class DataEngine {
         city TEXT,
         state TEXT,
         streetNumber TEXT,
-        complement TEXT
+        complement TEXT,
+        sizeUnit TEXT DEFAULT 'm²'
       )
     `);
 
@@ -165,6 +166,7 @@ class DataEngine {
     try { await this.executeQuery("ALTER TABLE properties ADD COLUMN state TEXT"); } catch(e) {}
     try { await this.executeQuery("ALTER TABLE properties ADD COLUMN streetNumber TEXT"); } catch(e) {}
     try { await this.executeQuery("ALTER TABLE properties ADD COLUMN complement TEXT"); } catch(e) {}
+    try { await this.executeQuery("ALTER TABLE properties ADD COLUMN sizeUnit TEXT DEFAULT 'm²'"); } catch(e) {}
 
     await this.executeQuery(`
       CREATE TABLE IF NOT EXISTS brokers (
@@ -268,21 +270,22 @@ class DataEngine {
   async savePartnerProperty(data) {
     try {
       await this.executeQuery(
-        `INSERT INTO properties (id, title, price, bedrooms, bathrooms, area, location, description, imagePath, images, brokerName, brokerCreci, suites, livingRooms, kitchens, parkingSpaces, status, receivedAt, aiDescription, zipCode, neighborhood, city, state, streetNumber, complement) 
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `INSERT INTO properties (id, title, price, bedrooms, bathrooms, area, location, description, imagePath, images, brokerName, brokerCreci, suites, livingRooms, kitchens, parkingSpaces, status, receivedAt, aiDescription, zipCode, neighborhood, city, state, streetNumber, complement, sizeUnit) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON CONFLICT(id) DO UPDATE SET
          title=excluded.title, price=excluded.price, status=excluded.status, 
          bedrooms=excluded.bedrooms, bathrooms=excluded.bathrooms, suites=excluded.suites, 
          livingRooms=excluded.livingRooms, kitchens=excluded.kitchens, parkingSpaces=excluded.parkingSpaces,
          location=excluded.location, description=excluded.description, images=excluded.images,
-         zipCode=excluded.zipCode, neighborhood=excluded.neighborhood, city=excluded.city, state=excluded.state, streetNumber=excluded.streetNumber, complement=excluded.complement`,
+         zipCode=excluded.zipCode, neighborhood=excluded.neighborhood, city=excluded.city, state=excluded.state, streetNumber=excluded.streetNumber, complement=excluded.complement, sizeUnit=excluded.sizeUnit`,
         [
           data.id, data.title, data.price, data.bedrooms || 0, data.bathrooms || 0, 
           data.size || 0, data.address || "", data.description || "", data.imagePath || "", 
           JSON.stringify(data.images || []), data.brokerName || "", data.brokerCreci || "", 
           data.suites || 0, data.livingRooms || 0, data.kitchens || 0, data.parkingSpaces || 0,
           data.remoteStatus || "pending", data.receivedAt || new Date().toISOString(), data.aiDescription || "",
-          data.zipCode || "", data.neighborhood || "", data.city || "", data.state || "", data.streetNumber || "", data.complement || ""
+          data.zipCode || "", data.neighborhood || "", data.city || "", data.state || "", data.streetNumber || "", data.complement || "",
+          data.sizeUnit || 'm²'
         ]
       );
       return { ok: true };
