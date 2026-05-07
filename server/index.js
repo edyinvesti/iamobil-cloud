@@ -4,12 +4,21 @@ const path_init = require("node:path");
 
 // Carregamento Global de Ambiente para Nuvem (Render Secrets)
 const cloudEnvPath = "/etc/secrets/.env";
-if (process.platform === 'linux' && fs_init.existsSync(cloudEnvPath)) {
-  require('dotenv').config({ path: cloudEnvPath });
+if (process.platform === 'linux') {
+  const exists = fs_init.existsSync(cloudEnvPath);
+  console.log(`🔍 [Cloud-Init] Buscando segredos em: ${cloudEnvPath} | Existe: ${exists ? 'SIM ✅' : 'NÃO ❌'}`);
+  if (exists) {
+    const stats = fs_init.statSync(cloudEnvPath);
+    console.log(`🔍 [Cloud-Init] Tamanho do .env: ${stats.size} bytes`);
+    require('dotenv').config({ path: cloudEnvPath });
+  } else {
+    require('dotenv').config();
+  }
 } else {
   require('dotenv').config();
 }
-console.log(`📡 [Env] Variáveis carregadas: ${Object.keys(process.env).join(", ")}`);
+const envKeysDetected = Object.keys(process.env);
+console.log(`📡 [Env] Chaves no process.env: ${envKeysDetected.filter(k => k.match(/KEY|TOKEN|URL|ID/)).join(", ")}`);
 const https = require("node:https");
 const net = require("node:net");
 const next = require("next");
