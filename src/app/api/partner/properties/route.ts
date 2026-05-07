@@ -4,17 +4,7 @@ import path from "path";
 import { NodeGatewayClient } from "@/lib/gateway/nodeGatewayClient";
 
 
-const PENDING_FILE = path.join(process.cwd(), "data", "pending_properties.json");
-
-function readPending(): object[] {
-  if (!fs.existsSync(PENDING_FILE)) return [];
-  try { return JSON.parse(fs.readFileSync(PENDING_FILE, "utf8")); } catch { return []; }
-}
-
-function writePending(data: object[]) {
-  fs.mkdirSync(path.dirname(PENDING_FILE), { recursive: true });
-  fs.writeFileSync(PENDING_FILE, JSON.stringify(data, null, 2), "utf8");
-}
+const dataEngine = require("../../../../../server/data_engine");
 
 // As notificações agora são governadas pelo Agente via eventos do Gateway.
 // O Hub de Mensageria cuidará da entrega baseada em eventos 'notification'.
@@ -104,8 +94,7 @@ export async function POST(req: Request) {
       console.warn("[API] Falha ao enviar para o Gateway (Usando Fallback Local):", err.message);
     }
 
-    // 3. Salvar na fila de aprovação em vez de publicar direto
-    const pending = readPending();
+    // 3. Salvar no Turso DB (Cloud)
     const newProperty = {
       id: `prop_${Date.now()}`,
       receivedAt: new Date().toISOString(),
@@ -115,11 +104,11 @@ export async function POST(req: Request) {
       aiDescription,
       ...data,
     };
-    pending.push(newProperty);
-    writePending(pending);
-    console.log("Imóvel salvo na fila de aprovação:", newProperty.id);
+    
+    await dataEngine.savePartnerProperty(newProperty);
+    console.log("Imóvel salvo no Turso DB:", newProperty.id);
 
-    // 4. Feedback pro Corretor Parceiro (Notificado via Gateway ou fallback direto)
+    // 4. Feedback pro Corretor Parceiro
     await notifyBrokerTelegram(newProperty);
 
     return NextResponse.json({

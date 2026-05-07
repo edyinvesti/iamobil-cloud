@@ -1,0 +1,56 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mC:/Users/User/Downloads/IAmobil Imobiliaria[39m
+
+ [31m❯[39m tests/unit/onboardingState.test.ts [2m([22m[2m5 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 366[2mms[22m[39m
+[31m     [31m×[31m shows onboarding by default when localStorage is empty[39m[33m 335[2mms[22m[39m
+[31m     [31m×[31m hides onboarding after completeOnboarding is called[39m[32m 8[2mms[22m[39m
+     [32m✓[39m persists completion to localStorage[32m 9[2mms[22m[39m
+     [32m✓[39m reads completion state from localStorage on mount[32m 4[2mms[22m[39m
+     [32m✓[39m resets onboarding when resetOnboarding is called[32m 4[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/unit/onboardingState.test.ts[2m > [22museOnboardingState[2m > [22mshows onboarding by default when localStorage is empty
+[31m[1mAssertionError[22m: expected false to be true // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+[36m [2m❯[22m tests/unit/onboardingState.test.ts:[2m17:43[22m[39m
+    [90m 15| [39m  [34mit[39m([32m"shows onboarding by default when localStorage is empty"[39m[33m,[39m () [33m=>[39m {
+    [90m 16| [39m    [35mconst[39m { result } [33m=[39m [34mrenderHook[39m(() [33m=>[39m [34museOnboardingState[39m())[33m;[39m
+    [90m 17| [39m    [34mexpect[39m(result[33m.[39mcurrent[33m.[39mshowOnboarding)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m   | [39m                                          [31m^[39m
+    [90m 18| [39m  })[33m;[39m
+    [90m 19| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/onboardingState.test.ts[2m > [22museOnboardingState[2m > [22mhides onboarding after completeOnboarding is called
+[31m[1mAssertionError[22m: expected false to be true // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+[36m [2m❯[22m tests/unit/onboardingState.test.ts:[2m22:43[22m[39m
+    [90m 20| [39m  [34mit[39m([32m"hides onboarding after completeOnboarding is called"[39m[33m,[39m () [33m=>[39m {
+    [90m 21| [39m    [35mconst[39m { result } [33m=[39m [34mrenderHook[39m(() [33m=>[39m [34museOnboardingState[39m())[33m;[39m
+    [90m 22| [39m    [34mexpect[39m(result[33m.[39mcurrent[33m.[39mshowOnboarding)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m   | [39m                                          [31m^[39m
+    [90m 23| [39m
+    [90m 24| [39m    [34mact[39m(() [33m=>[39m {
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m3 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 08:58:57
+[2m   Duration [22m 16.98s[2m (transform 2.37s, setup 2.56s, import 3.10s, tests 366ms, environment 9.73s)[22m
+

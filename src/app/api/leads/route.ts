@@ -29,7 +29,8 @@ export async function GET() {
 
     let totalVgv = 0;
     leads.forEach((l: any) => {
-      totalVgv += propertyPrices[l.interest] || 0;
+      // Priorizar o valor potencial gravado no banco, fallback pro catálogo
+      totalVgv += l.potential_value || propertyPrices[l.interest] || 0;
     });
     
     return NextResponse.json({ 

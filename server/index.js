@@ -122,14 +122,15 @@ async function main() {
   const hostname = hostnames[0] ?? "127.0.0.1";
   const port = resolvePort();
   
+  const studioToken = process.env.STUDIO_ACCESS_TOKEN || "local-dev-bypass";
   const accessGate = createAccessGate({
-    token: process.env.STUDIO_ACCESS_TOKEN || "local-dev-bypass"
+    token: studioToken
   });
 
   for (const host of hostnames) {
     assertPublicHostAllowed({
       host,
-      studioAccessToken: process.env.STUDIO_ACCESS_TOKEN,
+      studioAccessToken: studioToken,
     });
   }
 

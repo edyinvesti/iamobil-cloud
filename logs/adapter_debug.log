@@ -351,3 +351,108 @@ Open Claw3D → ws://localhost:18789
 
 [hermes-adapter] Broadcasting initial presence...
 [WS IN] Method: connect, ID: auth-hub-1778062856012
+[hermes-adapter] BOOTING AT 2026-05-07T10:54:15.117Z | CWD: C:\Users\User\Downloads\IAmobil Imobiliaria
+☁️ [Data Engine] Conectado ao Turso DB (Nuvem)
+[hermes-adapter] API Base URL: https://api.groq.com/openai
+[hermes-adapter] Loaded history for 4 session(s).
+[hermes-adapter] Loaded and synced registry for 8 sub-agent(s).
+[hermes-adapter] 🔍 Iniciando auto-descoberta em: C:\Users\User\Downloads\IAmobil Imobiliaria\agents
+[hermes-adapter] 📁 Pastas encontradas: dika, dragon, edy, genio-fix, kaua, kelly, maria, pique, ruck
+[hermes-adapter] 🕵️ Verificando: dika (Nome: Dika)
+[hermes-adapter] Skip: Agente Dika (dika) já existe com ID dika
+[hermes-adapter] 🕵️ Verificando: dragon (Nome: Dragon)
+[hermes-adapter] Skip: Agente Dragon (dragon) já existe com ID dragon
+[hermes-adapter] 🕵️ Verificando: edy (Nome: Edy)
+[hermes-adapter] Skip: Agente Edy (edy) já existe com ID hermes
+[hermes-adapter] 🕵️ Verificando: genio-fix (Nome: Genio Fix)
+[hermes-adapter] Skip: Agente Genio Fix (genio-fix) já existe com ID genio-fix
+[hermes-adapter] 🕵️ Verificando: kaua (Nome: Kaua)
+[hermes-adapter] Skip: Agente Kaua (kaua) já existe com ID kaua
+[hermes-adapter] 🕵️ Verificando: kelly (Nome: Kelly)
+[hermes-adapter] Skip: Agente Kelly (kelly) já existe com ID kelly
+[hermes-adapter] 🕵️ Verificando: maria (Nome: Maria)
+[hermes-adapter] Skip: Agente Maria (maria) já existe com ID maria
+[hermes-adapter] 🕵️ Verificando: pique (Nome: Pique)
+[hermes-adapter] Skip: Agente Pique (pique) já existe com ID pique
+[hermes-adapter] 🕵️ Verificando: ruck (Nome: Ruck)
+[hermes-adapter] Skip: Agente Ruck (ruck) já existe com ID ruck
+
+[hermes-adapter] ✓ Listening on ws://localhost:18789
+[hermes-adapter] ✓ Forwarding to Hermes API at https://api.groq.com/openai
+[hermes-adapter] ✓ Model: llama-3.3-70b-versatile
+[hermes-adapter] ✓ Multi-agent orchestration: ENABLED
+
+Open Claw3D → ws://localhost:18789
+
+[hermes-adapter] Broadcasting initial presence...
+[WS IN] Method: connect, ID: auth-hub-1778151278124
+[hermes-adapter] BOOTING AT 2026-05-07T11:02:52.021Z | CWD: C:\Users\User\Downloads\IAmobil Imobiliaria
+☁️ [Data Engine] Conectado ao Turso DB (Nuvem)
+[hermes-adapter] API Base URL: https://api.groq.com/openai
+[hermes-adapter] Loaded history for 4 session(s).
+[hermes-adapter] Loaded and synced registry for 8 sub-agent(s).
+[hermes-adapter] 🔍 Iniciando auto-descoberta em: C:\Users\User\Downloads\IAmobil Imobiliaria\agents
+[hermes-adapter] 📁 Pastas encontradas: dika, dragon, edy, genio-fix, kaua, kelly, maria, pique, ruck
+[hermes-adapter] 🕵️ Verificando: dika (Nome: Dika)
+[hermes-adapter] Skip: Agente Dika (dika) já existe com ID dika
+[hermes-adapter] 🕵️ Verificando: dragon (Nome: Dragon)
+[hermes-adapter] Skip: Agente Dragon (dragon) já existe com ID dragon
+[hermes-adapter] 🕵️ Verificando: edy (Nome: Edy)
+[hermes-adapter] Skip: Agente Edy (edy) já existe com ID hermes
+[hermes-adapter] 🕵️ Verificando: genio-fix (Nome: Genio Fix)
+[hermes-adapter] Skip: Agente Genio Fix (genio-fix) já existe com ID genio-fix
+[hermes-adapter] 🕵️ Verificando: kaua (Nome: Kaua)
+[hermes-adapter] Skip: Agente Kaua (kaua) já existe com ID kaua
+[hermes-adapter] 🕵️ Verificando: kelly (Nome: Kelly)
+[hermes-adapter] Skip: Agente Kelly (kelly) já existe com ID kelly
+[hermes-adapter] 🕵️ Verificando: maria (Nome: Maria)
+[hermes-adapter] Skip: Agente Maria (maria) já existe com ID maria
+[hermes-adapter] 🕵️ Verificando: pique (Nome: Pique)
+[hermes-adapter] Skip: Agente Pique (pique) já existe com ID pique
+[hermes-adapter] 🕵️ Verificando: ruck (Nome: Ruck)
+[hermes-adapter] Skip: Agente Ruck (ruck) já existe com ID ruck
+
+[hermes-adapter] ✓ Listening on ws://localhost:18789
+[hermes-adapter] ✓ Forwarding to Hermes API at https://api.groq.com/openai
+[hermes-adapter] ✓ Model: llama-3.3-70b-versatile
+[hermes-adapter] ✓ Multi-agent orchestration: ENABLED
+
+Open Claw3D → ws://localhost:18789
+
+[hermes-adapter] Broadcasting initial presence...
+[WS IN] Method: connect, ID: auth-hub-1778151777318
+[hermes-adapter] BOOTING AT 2026-05-07T11:23:48.181Z | CWD: C:\Users\User\Downloads\IAmobil Imobiliaria
+☁️ [Data Engine] Conectado ao Turso DB (Nuvem)
+[hermes-adapter] API Base URL: https://api.groq.com/openai
+[hermes-adapter] Loaded history for 4 session(s).
+[hermes-adapter] Loaded and synced registry for 8 sub-agent(s).
+[hermes-adapter] 🔍 Iniciando auto-descoberta em: C:\Users\User\Downloads\IAmobil Imobiliaria\agents
+[hermes-adapter] 📁 Pastas encontradas: dika, dragon, edy, genio-fix, kaua, kelly, maria, pique, ruck
+[hermes-adapter] 🕵️ Verificando: dika (Nome: Dika)
+[hermes-adapter] Skip: Agente Dika (dika) já existe com ID dika
+[hermes-adapter] 🕵️ Verificando: dragon (Nome: Dragon)
+[hermes-adapter] Skip: Agente Dragon (dragon) já existe com ID dragon
+[hermes-adapter] 🕵️ Verificando: edy (Nome: Edy)
+[hermes-adapter] Skip: Agente Edy (edy) já existe com ID hermes
+[hermes-adapter] 🕵️ Verificando: genio-fix (Nome: Genio Fix)
+[hermes-adapter] Skip: Agente Genio Fix (genio-fix) já existe com ID genio-fix
+[hermes-adapter] 🕵️ Verificando: kaua (Nome: Kaua)
+[hermes-adapter] Skip: Agente Kaua (kaua) já existe com ID kaua
+[hermes-adapter] 🕵️ Verificando: kelly (Nome: Kelly)
+[hermes-adapter] Skip: Agente Kelly (kelly) já existe com ID kelly
+[hermes-adapter] 🕵️ Verificando: maria (Nome: Maria)
+[hermes-adapter] Skip: Agente Maria (maria) já existe com ID maria
+[hermes-adapter] 🕵️ Verificando: pique (Nome: Pique)
+[hermes-adapter] Skip: Agente Pique (pique) já existe com ID pique
+[hermes-adapter] 🕵️ Verificando: ruck (Nome: Ruck)
+[hermes-adapter] Skip: Agente Ruck (ruck) já existe com ID ruck
+
+[hermes-adapter] ✓ Listening on ws://localhost:18789
+[hermes-adapter] ✓ Forwarding to Hermes API at https://api.groq.com/openai
+[hermes-adapter] ✓ Model: llama-3.3-70b-versatile
+[hermes-adapter] ✓ Multi-agent orchestration: ENABLED
+
+Open Claw3D → ws://localhost:18789
+
+[hermes-adapter] Broadcasting initial presence...
+[WS IN] Method: connect, ID: auth-hub-1778153112596

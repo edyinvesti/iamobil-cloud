@@ -123,6 +123,26 @@ class DataEngine {
          notes TEXT
        )
     `);
+
+    await this.executeQuery(`
+      CREATE TABLE IF NOT EXISTS properties (
+        id TEXT PRIMARY KEY,
+        title TEXT,
+        price REAL,
+        bedrooms INTEGER,
+        bathrooms INTEGER,
+        area REAL,
+        location TEXT,
+        description TEXT,
+        imagePath TEXT,
+        images TEXT,
+        brokerName TEXT,
+        brokerCreci TEXT,
+        status TEXT DEFAULT 'pending',
+        receivedAt TEXT,
+        aiDescription TEXT
+      )
+    `);
   }
 
   calculateNeuroScore(data) {
@@ -209,6 +229,45 @@ class DataEngine {
       return rs.rows || [];
     } catch (err) {
       return [];
+    }
+  }
+
+  async savePartnerProperty(data) {
+    try {
+      await this.executeQuery(
+        `INSERT INTO properties (id, title, price, bedrooms, bathrooms, area, location, description, imagePath, images, brokerName, brokerCreci, status, receivedAt, aiDescription) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         ON CONFLICT(id) DO UPDATE SET
+         title=excluded.title, price=excluded.price, status=excluded.status`,
+        [
+          data.id, data.title, data.price, data.bedrooms, data.bathrooms, 
+          data.area, data.location, data.description, data.imagePath, 
+          JSON.stringify(data.images || []), data.brokerName, data.brokerCreci, 
+          data.status || "pending", data.receivedAt, data.aiDescription
+        ]
+      );
+      return { ok: true };
+    } catch (err) {
+      console.error("[DataEngine] Property DB Error:", err.message);
+      return { ok: false, error: err.message };
+    }
+  }
+
+  async getPendingProperties() {
+    try {
+      const rs = await this.executeQuery(`SELECT * FROM properties WHERE status = 'pending' ORDER BY receivedAt DESC`, []);
+      return rs.rows || [];
+    } catch (err) {
+      return [];
+    }
+  }
+
+  async getPropertyStatus(id) {
+    try {
+      const rs = await this.executeQuery(`SELECT status FROM properties WHERE id = ?`, [id]);
+      return rs.rows?.[0]?.status || "unknown";
+    } catch (err) {
+      return "unknown";
     }
   }
 

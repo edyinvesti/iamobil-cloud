@@ -1,0 +1,1081 @@
+
+> claw3d@0.1.5 test
+> vitest --run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mC:/Users/User/Downloads/IAmobil Imobiliaria[39m
+
+ [31m❯[39m tests/unit/gatewayBrowserClient.test.ts [2m([22m[2m2 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 31[2mms[22m[39m
+[31m     [31m×[31m sends connect when connect.challenge arrives[39m[32m 21[2mms[22m[39m
+[31m     [31m×[31m truncates connect-failed close reason to websocket limit[39m[32m 5[2mms[22m[39m
+ [31m❯[39m tests/unit/taskBoardView.test.ts [2m([22m[2m1 test[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 1823[2mms[22m[39m
+[31m     [31m×[31m routes task edits through callbacks[39m[33m 1818[2mms[22m[39m
+ [31m❯[39m tests/unit/useGatewayConnection.test.ts [2m([22m[2m17 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 3097[2mms[22m[39m
+     [33m[2m✓[22m[39m defaults_to_env_url_when_set [33m 1583[2mms[22m[39m
+     [32m✓[39m falls_back_to_local_default_when_env_unset[32m 18[2mms[22m[39m
+     [33m[2m✓[22m[39m connects_via_studio_proxy_ws_and_does_not_pass_token [33m 976[2mms[22m[39m
+     [32m✓[39m uses_webchat_identity_for_remote_openclaw_connections[32m 90[2mms[22m[39m
+     [32m✓[39m keeps_control_ui_identity_for_local_openclaw_connections[32m 112[2mms[22m[39m
+     [32m✓[39m does_not_auto_connect_without_a_last_known_good_state[32m 20[2mms[22m[39m
+     [32m✓[39m uses_a_small_initial_auto_connect_delay_for_hermes_and_demo_only[32m 4[2mms[22m[39m
+     [32m✓[39m retries_only_the_first_connect_for_hermes_and_demo[32m 4[2mms[22m[39m
+     [32m✓[39m uses_webchat_client_id_only_for_remote_openclaw[32m 6[2mms[22m[39m
+     [32m✓[39m auto_applies_runtime_local_defaults_when_no_saved_gateway_and_build_time_empty[32m 20[2mms[22m[39m
+     [32m✓[39m applies_local_defaults_from_settings_envelope[32m 47[2mms[22m[39m
+[31m     [31m×[31m loads_and_persists_selected_adapter_type[39m[32m 62[2mms[22m[39m
+     [32m✓[39m prefers_the_saved_selected_adapter_over_a_different_last_known_good_backend[32m 13[2mms[22m[39m
+     [32m✓[39m loads_custom_adapter_type_without_requiring_a_token[32m 17[2mms[22m[39m
+     [32m✓[39m still_prompts_to_reconnect_for_custom_with_last_known_good_state[32m 13[2mms[22m[39m
+     [32m✓[39m persists_the_detected_backend_identity_in_last_known_good[32m 78[2mms[22m[39m
+     [32m✓[39m restores_backend_specific_profiles_when_switching_adapter_type[32m 30[2mms[22m[39m
+ [31m❯[39m tests/unit/onboardingState.test.ts [2m([22m[2m5 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 91[2mms[22m[39m
+[31m     [31m×[31m shows onboarding by default when localStorage is empty[39m[32m 62[2mms[22m[39m
+[31m     [31m×[31m hides onboarding after completeOnboarding is called[39m[32m 8[2mms[22m[39m
+     [32m✓[39m persists completion to localStorage[32m 6[2mms[22m[39m
+     [32m✓[39m reads completion state from localStorage on mount[32m 5[2mms[22m[39m
+     [32m✓[39m resets onboarding when resetOnboarding is called[32m 5[2mms[22m[39m
+ [32m✓[39m tests/unit/connectionPanel-close.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 176[2mms[22m[39m
+ [31m❯[39m tests/unit/agentChatPanel-markdown-rendering.test.ts [2m([22m[2m3 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[33m 562[2mms[22m[39m
+[31m     [31m×[31m renders assistant markdown separately from tool detail cards[39m[33m 360[2mms[22m[39m
+[31m     [31m×[31m nests tool calls inside the associated thinking details block[39m[32m 147[2mms[22m[39m
+[31m     [31m×[31m renders read tool calls as inline path labels instead of collapsible JSON blocks[39m[32m 49[2mms[22m[39m
+ [32m✓[39m tests/unit/studioUpstreamGatewaySettings.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 56[2mms[22m[39m
+ [31m❯[39m tests/unit/agentFleetHydrationDerivation.test.ts [2m([22m[2m2 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 57[2mms[22m[39m
+[31m     [31m×[31m derives_seeds_and_sync_sets_from_snapshots[39m[32m 46[2mms[22m[39m
+     [32m✓[39m derives_summary_patches_and_suggested_agent_when_preview_present[32m 7[2mms[22m[39m
+ [32m✓[39m tests/unit/packagedSkills.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [31m❯[39m tests/unit/gatewayAgentFiles.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[32m 66[2mms[22m[39m
+[31m     [31m×[31m returns exists=false when gateway reports missing[39m[32m 51[2mms[22m[39m
+[31m     [31m×[31m returns exists=true and content when gateway returns content[39m[32m 4[2mms[22m[39m
+[31m     [31m×[31m coerces non-string content to empty string[39m[32m 3[2mms[22m[39m
+     [32m✓[39m throws when agentId is empty[32m 4[2mms[22m[39m
+ [31m❯[39m tests/unit/colorSemanticsGuard.test.ts [2m([22m[2m1 test[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 37[2mms[22m[39m
+[31m     [31m×[31m blocks raw hue utility classes in color-owned UI files[39m[32m 33[2mms[22m[39m
+ [31m❯[39m tests/unit/studioSetupPaths.test.ts [2m([22m[2m2 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 26[2mms[22m[39m
+[31m     [31m×[31m resolves settings path under OPENCLAW_STATE_DIR when set[39m[32m 20[2mms[22m[39m
+     [32m✓[39m resolves settings path under ~/.openclaw by default[32m 2[2mms[22m[39m
+ [31m❯[39m tests/unit/agentReconcileOperation.test.ts [2m([22m[2m3 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 32[2mms[22m[39m
+     [32m✓[39m reconciles terminal runs and requests history refresh[32m 11[2mms[22m[39m
+[31m     [31m×[31m skips when agent is not eligible[39m[32m 14[2mms[22m[39m
+[31m     [31m×[31m reconciles shared run only once and triggers one history refresh[39m[32m 2[2mms[22m[39m
+ [32m✓[39m tests/unit/agentChatPanel-controls.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 1776[2mms[22m[39m
+     [33m[2m✓[22m[39m shows_stop_button_while_running_and_invokes_stop_handler [33m 305[2mms[22m[39m
+     [33m[2m✓[22m[39m disables_stop_button_with_tooltip_when_stop_is_unavailable [33m 449[2mms[22m[39m
+ [32m✓[39m tests/unit/agentEditorModal.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 4285[2mms[22m[39m
+     [33m[2m✓[22m[39m saves avatar changes from the avatar section [33m 2932[2mms[22m[39m
+     [33m[2m✓[22m[39m switches to another file section [33m 1134[2mms[22m[39m
+ [32m✓[39m tests/unit/agentBrainPanel.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 1956[2mms[22m[39m
+     [33m[2m✓[22m[39m renders_behavior_sections_and_loads_agent_files [33m 898[2mms[22m[39m
+ [32m✓[39m tests/unit/agentSettingsPanel.test.ts [2m([22m[2m35 tests[22m[2m)[22m[33m 12621[2mms[22m[39m
+     [33m[2m✓[22m[39m does_not_render_name_editor_in_capabilities_mode [33m 1193[2mms[22m[39m
+     [33m[2m✓[22m[39m renders_permissions_controls [33m 409[2mms[22m[39m
+     [33m[2m✓[22m[39m autosaves_updated_permissions_draft [33m 862[2mms[22m[39m
+     [33m[2m✓[22m[39m preserves_pending_permissions_toggles_during_props_refresh [33m 339[2mms[22m[39m
+     [33m[2m✓[22m[39m runs_system_setup_actions_from_modal [33m 939[2mms[22m[39m
+     [33m[2m✓[22m[39m prompts_before_removing_skill_files_and_confirms_action [33m 936[2mms[22m[39m
+     [33m[2m✓[22m[39m disables_api_key_save_when_input_is_blank [33m 673[2mms[22m[39m
+     [33m[2m✓[22m[39m shows_os_incompatible_skills_for_visibility_in_agent_view [33m 605[2mms[22m[39m
+     [33m[2m✓[22m[39m invokes_run_now_and_disables_play_while_pending [33m 736[2mms[22m[39m
+     [33m[2m✓[22m[39m invokes_delete_and_disables_trash_while_pending [33m 702[2mms[22m[39m
+     [33m[2m✓[22m[39m updates_template_defaults_when_switching_templates [33m 1869[2mms[22m[39m
+     [33m[2m✓[22m[39m submits_modal_with_agent_scoped_draft [33m 1149[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps_modal_open_and_shows_error_when_create_fails [33m 396[2mms[22m[39m
+ [31m❯[39m tests/unit/cronCreatePayloadBuilder.test.ts [2m([22m[2m6 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 8904[2mms[22m[39m
+[31m     [31m×[31m builds_agent_scoped_isolated_every_days_payload_with_anchor[39m[33m 8322[2mms[22m[39m
+     [32m✓[39m builds_main_system_event_payload_when_advanced_mode_selected[32m 1[2mms[22m[39m
+     [32m✓[39m rejects_invalid_one_time_schedule_input[32m 3[2mms[22m[39m
+     [32m✓[39m rejects_invalid_interval_amount_for_every_schedule[32m 1[2mms[22m[39m
+     [32m✓[39m rejects_every_days_without_time[32m 2[2mms[22m[39m
+     [33m[2m✓[22m[39m rejects_invalid_timezone_for_every_days [33m 568[2mms[22m[39m
+ [32m✓[39m tests/unit/agentChatPanel-scroll.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1383[2mms[22m[39m
+     [33m[2m✓[22m[39m shows jump-to-latest when unpinned and new output arrives, and jumps on click [33m 1308[2mms[22m[39m
+ [32m✓[39m tests/unit/agentChatPanel-approvals.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 2300[2mms[22m[39m
+     [33m[2m✓[22m[39m renders pending approval card with metadata [33m 347[2mms[22m[39m
+     [33m[2m✓[22m[39m invokes resolve callback for all approval decisions [33m 1249[2mms[22m[39m
+     [33m[2m✓[22m[39m disables actions while approval is resolving [33m 439[2mms[22m[39m
+ [32m✓[39m tests/unit/cronSelectors.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/unit/agentCreateModal.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 1517[2mms[22m[39m
+     [33m[2m✓[22m[39m submits simple payload with name and avatar seed [33m 764[2mms[22m[39m
+ [32m✓[39m tests/unit/agentChatPanel-composer-autoresize.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 1097[2mms[22m[39m
+     [33m[2m✓[22m[39m resets_textarea_height_after_send_when_draft_is_cleared [33m 1092[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayProxy.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 680[2mms[22m[39m
+     [33m[2m✓[22m[39m injects gateway token into connect request [33m 361[2mms[22m[39m
+ [32m✓[39m tests/unit/themeToggle.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 536[2mms[22m[39m
+     [33m[2m✓[22m[39m applies and persists theme when toggled [33m 497[2mms[22m[39m
+ [32m✓[39m tests/unit/useGatewayConfigSyncController.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 906[2mms[22m[39m
+     [33m[2m✓[22m[39m runs settings-route refresh only when inspect agent id is present [33m 338[2mms[22m[39m
+[90mstderr[2m | tests/unit/useAgentSettingsMutationController.test.ts[2m > [22m[2museAgentSettingsMutationController[2m > [22m[2mrejects_empty_selected_skills_allowlist_before_gateway_call
+[22m[39mCannot set selected skills mode: choose at least one skill.
+
+[90mstderr[2m | tests/unit/useAgentSettingsMutationController.test.ts[2m > [22m[2museAgentSettingsMutationController[2m > [22m[2mpreserves_api_key_draft_and_sets_error_message_when_save_fails
+[22m[39minvalid key
+
+ [31m❯[39m tests/unit/useAgentSettingsMutationController.test.ts [2m([22m[2m22 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 690[2mms[22m[39m
+     [32m✓[39m delete_denied_by_guard_does_not_run_delete_side_effect[32m 66[2mms[22m[39m
+     [32m✓[39m delete_cancelled_by_confirmation_does_not_run_delete_side_effect[32m 9[2mms[22m[39m
+     [32m✓[39m reserved_main_delete_sets_error_and_skips_enqueue[32m 11[2mms[22m[39m
+     [32m✓[39m cron_delete_is_denied_while_run_busy_without_changing_error_state[32m 19[2mms[22m[39m
+     [32m✓[39m allowed_rename_and_delete_delegate_to_lifecycle_runner[32m 12[2mms[22m[39m
+     [32m✓[39m permissions_update_keeps_load_refresh_and_focus_side_effects[32m 11[2mms[22m[39m
+[31m     [31m×[31m exposes_restart_block_state_and_timeout_completion_handlers[39m[32m 33[2mms[22m[39m
+     [32m✓[39m create_cron_handler_delegates_to_create_operation[32m 6[2mms[22m[39m
+     [32m✓[39m cron_mutations_fail_fast_when_runtime_lacks_cron_capability[32m 5[2mms[22m[39m
+     [32m✓[39m loads_skills_when_settings_skills_tab_is_active[32m 77[2mms[22m[39m
+     [32m✓[39m loads_skills_when_settings_system_tab_is_active[32m 78[2mms[22m[39m
+     [32m✓[39m use_all_and_disable_all_skills_write_via_config_queue[32m 9[2mms[22m[39m
+     [32m✓[39m sets_selected_skills_allowlist_via_config_queue[32m 6[2mms[22m[39m
+     [32m✓[39m rejects_empty_selected_skills_allowlist_before_gateway_call[32m 8[2mms[22m[39m
+     [32m✓[39m installs_skill_dependencies_with_per_skill_busy_and_message_state[32m 8[2mms[22m[39m
+     [32m✓[39m refreshes_skills_after_system_setup_mutation_when_system_tab_is_active[32m 14[2mms[22m[39m
+     [32m✓[39m removes_skill_files_with_per_skill_busy_and_message_state[32m 126[2mms[22m[39m
+     [32m✓[39m saves_skill_api_key_via_config_queue_and_refreshes_skills[32m 14[2mms[22m[39m
+     [32m✓[39m toggles_global_skill_enabled_via_skill_update[32m 18[2mms[22m[39m
+     [32m✓[39m preserves_api_key_draft_and_sets_error_message_when_save_fails[32m 15[2mms[22m[39m
+     [32m✓[39m rejects_empty_api_key_before_gateway_call[32m 50[2mms[22m[39m
+     [32m✓[39m disabling_one_skill_from_implicit_all_writes_explicit_allowlist[32m 87[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayMediaRoute.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1200[2mms[22m[39m
+[90mstderr[2m | tests/unit/customRuntimeRoute.test.ts[2m > [22m[2m/api/runtime/custom route[2m > [22m[2mblocks custom runtime proxying in production when no allowlist is configured
+[22m[39m[runtime/custom] Proxy request failed. Error: runtimeUrl is not in the allowed hosts list.
+    at normalizeRuntimeUrl (C:/Users/User/Downloads/IAmobil Imobiliaria/src/app/api/runtime/custom/route.ts:51:11)
+    at POST (C:/Users/User/Downloads/IAmobil Imobiliaria/src/app/api/runtime/custom/route.ts:84:24)
+[90m    at processTicksAndRejections (node:internal/process/task_queues:104:5)[39m
+    at C:/Users/User/Downloads/IAmobil Imobiliaria/tests/unit/customRuntimeRoute.test.ts:19:22
+    at [90mfile:///C:/Users/User/Downloads/IAmobil%20Imobiliaria/[39mnode_modules/[4m@vitest/runner[24m/dist/index.js:915:20
+
+[90mstderr[2m | tests/unit/customRuntimeRoute.test.ts[2m > [22m[2m/api/runtime/custom route[2m > [22m[2mreturns 400 for malformed JSON request bodies
+[22m[39m[runtime/custom] Invalid JSON request body. SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+[90m    at parseJSONFromBytes (node:internal/deps/undici/undici:4319:19)[39m
+[90m    at successSteps (node:internal/deps/undici/undici:6967:27)[39m
+[90m    at readAllBytes (node:internal/deps/undici/undici:5890:13)[39m
+[90m    at processTicksAndRejections (node:internal/process/task_queues:104:5)[39m
+
+ [32m✓[39m tests/unit/customRuntimeRoute.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 339[2mms[22m[39m
+     [33m[2m✓[22m[39m blocks custom runtime proxying in production when no allowlist is configured [33m 312[2mms[22m[39m
+ [32m✓[39m tests/unit/taskStoreRoute.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 78[2mms[22m[39m
+ [32m✓[39m tests/unit/useRuntimeConnection.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1254[2mms[22m[39m
+     [33m[2m✓[22m[39m selects the hermes provider from the active adapter type [33m 1230[2mms[22m[39m
+ [32m✓[39m tests/unit/agentSettingsPanel-header.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 329[2mms[22m[39m
+     [33m[2m✓[22m[39m uses inspect header style with agent title [33m 325[2mms[22m[39m
+ [32m✓[39m tests/unit/pathSuggestionsRoute.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 384[2mms[22m[39m
+ [32m✓[39m tests/unit/fleetSidebar-create.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 278[2mms[22m[39m
+ [32m✓[39m tests/unit/headerBar-brain-toggle.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 157[2mms[22m[39m
+ [32m✓[39m tests/unit/useRuntimeSyncController.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 153[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayEnvDefaults.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 231[2mms[22m[39m
+ [32m✓[39m tests/unit/useChatInteractionController.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 160[2mms[22m[39m
+ [32m✓[39m tests/unit/officePathfinding.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 98[2mms[22m[39m
+ [32m✓[39m tests/unit/agentStateRoute.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 47[2mms[22m[39m
+ [32m✓[39m tests/unit/studioSettingsRoute.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 78[2mms[22m[39m
+ [32m✓[39m tests/unit/useSettingsRouteController.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 134[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayRuntimeEventHandler.chat.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 94[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayAgentSkillsAllowlist.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 67[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayRuntimeEventHandler.agent.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 72[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsRemoveRoute.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 48[2mms[22m[39m
+ [32m✓[39m tests/unit/sharedTaskStore.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 207[2mms[22m[39m
+ [32m✓[39m tests/unit/officeEventTriggers.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 66[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayRuntimeEventHandler.policyDelegation.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 40[2mms[22m[39m
+[90mstderr[2m | tests/unit/serverNetworkPolicy.test.ts[2m > [22m[2mserver network policy[2m > [22m[2massertPublicHostAllowed does not throw (warning only)
+[22m[39mWARNING: Refusing to bind Studio to public host "0.0.0.0" without STUDIO_ACCESS_TOKEN. Bypassing check for cloud deploy.
+
+ [32m✓[39m tests/unit/serverNetworkPolicy.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+ [32m✓[39m tests/unit/chatSendOperation.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 47[2mms[22m[39m
+ [32m✓[39m tests/unit/cronGatewayClient.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 49[2mms[22m[39m
+ [32m✓[39m tests/unit/historySyncOperation.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+ [32m✓[39m tests/unit/historySyncOperation.integration.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+ [32m✓[39m tests/unit/deskDirectives.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+ [32m✓[39m tests/unit/eventTriggers.gymDirective.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+ [32m✓[39m tests/unit/deleteAgentOperation.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m tests/unit/cronCreateFlowState.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayAgentOverrides.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m tests/unit/navigation.astarFallback.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32m✓[39m tests/unit/companyBootstrapOperation.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsRemoveLocal.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+ [32m✓[39m tests/unit/runtimeAgentEventWorkflow.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalRunControlOperation.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsInstallGateway.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+ [32m✓[39m tests/unit/voiceTranscribe.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m tests/unit/chatItems.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+ [32m✓[39m tests/unit/accessGate.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32m✓[39m tests/unit/mutationLifecycleWorkflow.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m tests/unit/agentStateLocal.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+[90mstdout[2m | tests/unit/agentFleetHydration.test.ts[2m > [22m[2mhydrateAgentFleetFromGateway[2m > [22m[2mmaps_gateway_results_into_seeds_and_selects_latest_assistant_agent
+[22m[39m[agent-hydration] Finished seeds mapping. Count: 2
+
+[90mstdout[2m | tests/unit/agentFleetHydration.test.ts[2m > [22m[2mhydrateAgentFleetFromGateway[2m > [22m[2mmaps_gateway_results_into_seeds_and_selects_latest_assistant_agent
+[22m[39m[agent-hydration] Received agentsResult from gateway: [{"id":"agent-1","name":"One"},{"id":"agent-2","name":"Two"}]
+
+ [32m✓[39m tests/unit/agentFleetHydration.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m tests/unit/studioSettingsCoordinator.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsGatewayClient.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m tests/unit/navigation.navBlockers.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+[90mstdout[2m | tests/unit/studioBootstrapOperation.test.ts[2m > [22m[2mstudioBootstrapOperation[2m > [22m[2mbuilds bootstrap commands from hydrated fleet result
+[22m[39m[studio-bootstrap] hydrateAgentFleetFromGateway returned 2 seeds
+[studio-bootstrap] Generated 2 commands. hydrate-agents seeds count: 2
+
+ [32m✓[39m tests/unit/studioBootstrapOperation.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+ [32m✓[39m tests/unit/agentPermissionsOperation.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m tests/unit/sessionSettings.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m tests/unit/runtimeChatEventWorkflow.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m tests/unit/historyLifecycleWorkflow.integration.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayConfigPatch.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+ [32m✓[39m tests/unit/agentStore.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m tests/unit/companyBuilderPlanning.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m tests/unit/sessionSettingsMutations.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m tests/unit/mutationLifecycleWorkflow.integration.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayRuntimeEventHandler.summaryRefresh.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/unit/transcript.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m tests/unit/specialLatestUpdateOperation.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m tests/unit/studioSettings.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m tests/unit/taskGatewayClient.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m tests/unit/runtimeEventBridge.test.ts [2m([22m[2m26 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalControlLoopWorkflow.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/unit/taskBoardController.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/unit/messageExtract.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsRemoveClient.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m tests/unit/heartbeatAgentConfig.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsRemoveGateway.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsPresentation.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayReloadMode.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m tests/unit/settingsRouteWorkflow.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalResolveOperation.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+ [32m✓[39m tests/unit/mutationLifecycleWorkflow.lifecycle.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/unit/standupStore.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m tests/unit/pendingExecApprovalsStore.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m tests/unit/deskMonitor.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m tests/unit/navigation.diagonalCorner.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/unit/mutationLifecycleWorkflow.create.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m tests/unit/createAgentBootstrapOperation.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalRuntimeCoordinator.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m tests/unit/runtimeEventCoordinatorWorkflow.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m tests/unit/studioBootstrapWorkflow.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/agentStateExecutor.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayEventIngressWorkflow.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m tests/unit/agentPermissionsRoleHelpers.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsRemoveExecutor.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m tests/unit/skillTriggers.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+ [32m✓[39m tests/unit/store.transcript-upsert.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m tests/unit/personalityBuilder.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m tests/unit/fetchJson.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalLifecycleWorkflow.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m tests/unit/heartbeatGatewayClient.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m tests/unit/agentFilesBootstrap.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m tests/unit/extractThinking.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayExecApprovals.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m tests/unit/onboardingTypes.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m tests/unit/fleetLifecycleWorkflow.integration.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m tests/unit/runtimeEventPolicy.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayClient.gap.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalRunControlWorkflow.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/chatInteractionWorkflow.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m tests/unit/runtimeSyncControlWorkflow.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/rafBatcher.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/unit/agentSettingsMutationWorkflow.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m tests/unit/janitorReset.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/voiceTranscription.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/unit/janitorActors.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayConfigSyncWorkflow.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/unit/studioDeskAssignments.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/unit/fleetLifecycleWorkflow.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/uuid.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/unit/multiavatar.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayClient.reconnect-recovery.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalEvents.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewaySshTarget.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/createAgentBootstrapWorkflow.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/historyLifecycleWorkflow.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m tests/unit/latestUpdateWorkflow.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayModelsPolicy.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/unit/messageHelpers.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m tests/unit/mediaMarkdown.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/unit/browserPreview.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayConnectRetryPolicy.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/unit/runtimeTerminalWorkflow.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m tests/unit/livePatchQueue.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalPausePolicy.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/unit/colorSemantics.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/configMutationGatePolicy.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayClient.connectErrors.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/lifecycleControllerWorkflow.integration.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayRestartPolicy.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m tests/unit/sessionKey.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/unit/runSshJson.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/unit/packageManifest.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m tests/unit/worktreeHelpers.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayFrames.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/unit/settingsSidebarTabs.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m tests/unit/scrollNearBottom.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [2m[90m↓[39m[22m tests/unit/demoGatewayAdapter.test.ts [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 19 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/unit/agentChatPanel-markdown-rendering.test.ts[2m > [22mAgentChatPanel markdown rendering[2m > [22mrenders assistant markdown separately from tool detail cards
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: /Pensamento \(interno\)/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"group fade-up glass-panel relative flex h-full w-full flex-col"[39m
+      [33mdata-agent-panel[39m=[32m"true"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"px-3 pt-2 sm:px-4 sm:pt-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-start justify-between gap-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-w-0 items-start gap-3"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"group/avatar relative"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-center overflow-hidden rounded-full border border-border/80 bg-card transition-transform duration-300 agent-avatar-selected scale-[1.02]"[39m
+                [33mstyle[39m=[32m"width: 52px; height: 52px;"[39m
+              [36m>[39m
+                [36m<img[39m
+                  [33malt[39m=[32m"Avatar for Agent One"[39m
+                  [33mclass[39m=[32m"pointer-events-none h-full w-full select-none"[39m
+                  [33mdata-nimg[39m=[32m"1"[39m
+                  [33mdecoding[39m=[32m"async"[39m
+                  [33mdraggable[39m=[32m"false"[39m
+                  [33mheight[39m=[32m"52"[39m
+                  [33msrc[39m=[32m"data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2080%2080%22%20role%3D%22img%22%20aria-label%3D%22S1%20avatar%22%3E%3Crect%20width%3D%2280%22%20height%3D%2280%22%20rx%3D%2218%22%20fill%3D%22%230f172a%22%2F%3E%3Ccircle%20cx%3D%2238%22%20cy%3D%2218%22%20r%3D%2214%22%20fill%3D%22%23bfdbfe%22%20opacity%3D%220.65%22%2F%3E%3Ccircle%20cx%3D%2247%22%20cy%3D%2266%22%20r%3D%2218%22%20fill%3D%22%23bfdbfe%22%20opacity%3D%220.42%22%2F%3E%3Cpath%20d%3D%22M10%2060%20Q40%2037%2070%2022%20L70%2080%20L10%2080%20Z%22%20fill%3D%22%23eff6ff%22%20opacity%3D%220.14%22%2F%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2232%22%20r%3D%2216%22%20fill%3D%22%23eff6ff%22%20opacity%3D%220.92%22%2F%3E%3Cpath%20d%3D%22M20%2072c4-12%2014-18%2020-18s16%206%2020%2018%22%20fill%3D%22%23eff6ff%22%20opacity%3D%220.92%22%2F%3E%3Ctext%20x%3D%2240%22%20y%3D%2237%22%20text-anchor%3D%22middle%22%20font-family%3D%22system-ui%2C%20sans-serif%22%20font-size%3D%2211%22%20font-weight%3D%22700%22%20fill%3D%22%230f172a%22%3ES1%3C%2Ftext%3E%3C%2Fsvg%3E"[39m
+                  [33mstyle[39m=[32m"color: transparent;"[39m
+                  [33mwidth[39m=[32m"52"[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33maria-label[39m=[32m"Customize avatar"[39m
+                [33mclass[39m=[32m"nodrag ui-btn-icon ui-btn-icon-xs agent-avatar-shuffle-btn absolute bottom-0 right-0"[39m
+                [33mdata-testid[39m=[32m"agent-avatar-customize"[39m
+                [33mstyle[39m=[32m"--ui-btn-icon-size: 1.1rem;"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"lucide lucide-pencil h-2 w-2"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m15 5 4 4"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</button>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"min-w-0 flex-1"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex min-w-0 items-center gap-2"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"min-w-0 w-[clamp(11rem,34vw,16rem)]"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"flex h-8 min-w-0 items-center gap-1.5"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"type-agent-name min-w-0 truncate text-foreground"[39m
+                    [36m>[39m
+                      [0mAgent One[0m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"mt-0.5 flex items-center gap-2"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Iniciar nova sessão"[39m
+              [33mclass[39m=[32m"nodrag inline-flex items-center whitespace-nowrap rounded border border-[color:var(--status-approval-border)] bg-[color:var(--status-approval-bg)] px-2 py-0.5 font-mono text-[9px] font-medium tracking-[0.02em] text-white transition hover:bg-[color:var(--status-approval-bg)] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"[39m
+              [33mdata-testid[39m=[32m"agent-new-session-toggle"[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mtitle[39m=[32m"Iniciar nova sessão"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mNova sessão[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"mt-3 flex min-h-0 flex-1 flex-col px-3 pb-3 sm:px-4 sm:pb-4"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"relative flex-1 overflow-hidden"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"ui-chat-scroll ui-chat-scroll-borderless h-full overflow-auto p-4 dark:p-6 sm:p-5 dark:sm:p-7 "[39m
+            [33mdata-testid[39m=[32m"agent-chat-scroll"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"relative flex flex-col gap-6 dark:gap-8 text-[14px] leading-[1.65] text-foreground"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m...
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m tests/unit/agentChatPanel-markdown-rendering.test.ts:[2m86:28[22m[39m
+    [90m 84| [39m    expect(screen.queryByText("Extract output")).not.toBeInTheDocument…
+    [90m 85| [39m
+    [90m 86| [39m    fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByText[39m([36m/Pensamento \(interno\)/[39m))[33m;[39m
+    [90m   | [39m                           [31m^[39m
+    [90m 87| [39m    [35mconst[39m toolSummary [33m=[39m screen[33m.[39m[34mgetByText[39m([36m/SHELL.*ok/[39m)[33m;[39m
+    [90m 88| [39m    [35mconst[39m toolDetails [33m=[39m toolSummary[33m.[39m[34mclosest[39m([32m"details"[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/agentChatPanel-markdown-rendering.test.ts[2m > [22mAgentChatPanel markdown rendering[2m > [22mnests tool calls inside the associated thinking details block
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: /Pensamento \(interno\)/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"group fade-up glass-panel relative flex h-full w-full flex-col"[39m
+      [33mdata-agent-panel[39m=[32m"true"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"px-3 pt-2 sm:px-4 sm:pt-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-start justify-between gap-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-w-0 items-start gap-3"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"group/avatar relative"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-center overflow-hidden rounded-full border border-border/80 bg-card transition-transform duration-300 agent-avatar-selected scale-[1.02]"[39m
+                [33mstyle[39m=[32m"width: 52px; height: 52px;"[39m
+              [36m>[39m
+                [36m<img[39m
+                  [33malt[39m=[32m"Avatar for Agent One"[39m
+                  [33mclass[39m=[32m"pointer-events-none h-full w-full select-none"[39m
+                  [33mdata-nimg[39m=[32m"1"[39m
+                  [33mdecoding[39m=[32m"async"[39m
+                  [33mdraggable[39m=[32m"false"[39m
+                  [33mheight[39m=[32m"52"[39m
+                  [33msrc[39m=[32m"data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2080%2080%22%20role%3D%22img%22%20aria-label%3D%22S1%20avatar%22%3E%3Crect%20width%3D%2280%22%20height%3D%2280%22%20rx%3D%2218%22%20fill%3D%22%230f172a%22%2F%3E%3Ccircle%20cx%3D%2238%22%20cy%3D%2218%22%20r%3D%2214%22%20fill%3D%22%23bfdbfe%22%20opacity%3D%220.65%22%2F%3E%3Ccircle%20cx%3D%2247%22%20cy%3D%2266%22%20r%3D%2218%22%20fill%3D%22%23bfdbfe%22%20opacity%3D%220.42%22%2F%3E%3Cpath%20d%3D%22M10%2060%20Q40%2037%2070%2022%20L70%2080%20L10%2080%20Z%22%20fill%3D%22%23eff6ff%22%20opacity%3D%220.14%22%2F%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2232%22%20r%3D%2216%22%20fill%3D%22%23eff6ff%22%20opacity%3D%220.92%22%2F%3E%3Cpath%20d%3D%22M20%2072c4-12%2014-18%2020-18s16%206%2020%2018%22%20fill%3D%22%23eff6ff%22%20opacity%3D%220.92%22%2F%3E%3Ctext%20x%3D%2240%22%20y%3D%2237%22%20text-anchor%3D%22middle%22%20font-family%3D%22system-ui%2C%20sans-serif%22%20font-size%3D%2211%22%20font-weight%3D%22700%22%20fill%3D%22%230f172a%22%3ES1%3C%2Ftext%3E%3C%2Fsvg%3E"[39m
+                  [33mstyle[39m=[32m"color: transparent;"[39m
+                  [33mwidth[39m=[32m"52"[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33maria-label[39m=[32m"Customize avatar"[39m
+                [33mclass[39m=[32m"nodrag ui-btn-icon ui-btn-icon-xs agent-avatar-shuffle-btn absolute bottom-0 right-0"[39m
+                [33mdata-testid[39m=[32m"agent-avatar-customize"[39m
+                [33mstyle[39m=[32m"--ui-btn-icon-size: 1.1rem;"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"lucide lucide-pencil h-2 w-2"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m15 5 4 4"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</button>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"min-w-0 flex-1"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex min-w-0 items-center gap-2"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"min-w-0 w-[clamp(11rem,34vw,16rem)]"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"flex h-8 min-w-0 items-center gap-1.5"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"type-agent-name min-w-0 truncate text-foreground"[39m
+                    [36m>[39m
+                      [0mAgent One[0m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"mt-0.5 flex items-center gap-2"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Iniciar nova sessão"[39m
+              [33mclass[39m=[32m"nodrag inline-flex items-center whitespace-nowrap rounded border border-[color:var(--status-approval-border)] bg-[color:var(--status-approval-bg)] px-2 py-0.5 font-mono text-[9px] font-medium tracking-[0.02em] text-white transition hover:bg-[color:var(--status-approval-bg)] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"[39m
+              [33mdata-testid[39m=[32m"agent-new-session-toggle"[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mtitle[39m=[32m"Iniciar nova sessão"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mNova sessão[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"mt-3 flex min-h-0 flex-1 flex-col px-3 pb-3 sm:px-4 sm:pb-4"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"relative flex-1 overflow-hidden"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"ui-chat-scroll ui-chat-scroll-borderless h-full overflow-auto p-4 dark:p-6 sm:p-5 dark:sm:p-7 "[39m
+            [33mdata-testid[39m=[32m"agent-chat-scroll"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"relative flex flex-col gap-6 dark:gap-8 text-[14px] leading-[1.65] text-foreground"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m...
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m tests/unit/agentChatPanel-markdown-rendering.test.ts:[2m133:36[22m[39m
+    [90m131| [39m    )[33m;[39m
+    [90m132| [39m
+    [90m133| [39m    const thinkingDetails = screen.getByText(/Pensamento \(interno\)/)…
+    [90m   | [39m                                   [31m^[39m
+    [90m134| [39m    [34mexpect[39m(thinkingDetails)[33m.[39m[34mtoBeTruthy[39m()[33m;[39m
+    [90m135| [39m    fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByText[39m([36m/Pensamento \(interno\)/[39m))[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/agentChatPanel-markdown-rendering.test.ts[2m > [22mAgentChatPanel markdown rendering[2m > [22mrenders read tool calls as inline path labels instead of collapsible JSON blocks
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: /Pensamento \(interno\)/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"group fade-up glass-panel relative flex h-full w-full flex-col"[39m
+      [33mdata-agent-panel[39m=[32m"true"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"px-3 pt-2 sm:px-4 sm:pt-3"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-start justify-between gap-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-w-0 items-start gap-3"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"group/avatar relative"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-center overflow-hidden rounded-full border border-border/80 bg-card transition-transform duration-300 agent-avatar-selected scale-[1.02]"[39m
+                [33mstyle[39m=[32m"width: 52px; height: 52px;"[39m
+              [36m>[39m
+                [36m<img[39m
+                  [33malt[39m=[32m"Avatar for Agent One"[39m
+                  [33mclass[39m=[32m"pointer-events-none h-full w-full select-none"[39m
+                  [33mdata-nimg[39m=[32m"1"[39m
+                  [33mdecoding[39m=[32m"async"[39m
+                  [33mdraggable[39m=[32m"false"[39m
+                  [33mheight[39m=[32m"52"[39m
+                  [33msrc[39m=[32m"data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2080%2080%22%20role%3D%22img%22%20aria-label%3D%22S1%20avatar%22%3E%3Crect%20width%3D%2280%22%20height%3D%2280%22%20rx%3D%2218%22%20fill%3D%22%230f172a%22%2F%3E%3Ccircle%20cx%3D%2238%22%20cy%3D%2218%22%20r%3D%2214%22%20fill%3D%22%23bfdbfe%22%20opacity%3D%220.65%22%2F%3E%3Ccircle%20cx%3D%2247%22%20cy%3D%2266%22%20r%3D%2218%22%20fill%3D%22%23bfdbfe%22%20opacity%3D%220.42%22%2F%3E%3Cpath%20d%3D%22M10%2060%20Q40%2037%2070%2022%20L70%2080%20L10%2080%20Z%22%20fill%3D%22%23eff6ff%22%20opacity%3D%220.14%22%2F%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2232%22%20r%3D%2216%22%20fill%3D%22%23eff6ff%22%20opacity%3D%220.92%22%2F%3E%3Cpath%20d%3D%22M20%2072c4-12%2014-18%2020-18s16%206%2020%2018%22%20fill%3D%22%23eff6ff%22%20opacity%3D%220.92%22%2F%3E%3Ctext%20x%3D%2240%22%20y%3D%2237%22%20text-anchor%3D%22middle%22%20font-family%3D%22system-ui%2C%20sans-serif%22%20font-size%3D%2211%22%20font-weight%3D%22700%22%20fill%3D%22%230f172a%22%3ES1%3C%2Ftext%3E%3C%2Fsvg%3E"[39m
+                  [33mstyle[39m=[32m"color: transparent;"[39m
+                  [33mwidth[39m=[32m"52"[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33maria-label[39m=[32m"Customize avatar"[39m
+                [33mclass[39m=[32m"nodrag ui-btn-icon ui-btn-icon-xs agent-avatar-shuffle-btn absolute bottom-0 right-0"[39m
+                [33mdata-testid[39m=[32m"agent-avatar-customize"[39m
+                [33mstyle[39m=[32m"--ui-btn-icon-size: 1.1rem;"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"lucide lucide-pencil h-2 w-2"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m15 5 4 4"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</button>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"min-w-0 flex-1"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex min-w-0 items-center gap-2"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"min-w-0 w-[clamp(11rem,34vw,16rem)]"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"flex h-8 min-w-0 items-center gap-1.5"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"type-agent-name min-w-0 truncate text-foreground"[39m
+                    [36m>[39m
+                      [0mAgent One[0m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"mt-0.5 flex items-center gap-2"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Iniciar nova sessão"[39m
+              [33mclass[39m=[32m"nodrag inline-flex items-center whitespace-nowrap rounded border border-[color:var(--status-approval-border)] bg-[color:var(--status-approval-bg)] px-2 py-0.5 font-mono text-[9px] font-medium tracking-[0.02em] text-white transition hover:bg-[color:var(--status-approval-bg)] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"[39m
+              [33mdata-testid[39m=[32m"agent-new-session-toggle"[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mtitle[39m=[32m"Iniciar nova sessão"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mNova sessão[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"mt-3 flex min-h-0 flex-1 flex-col px-3 pb-3 sm:px-4 sm:pb-4"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"relative flex-1 overflow-hidden"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"ui-chat-scroll ui-chat-scroll-borderless h-full overflow-auto p-4 dark:p-6 sm:p-5 dark:sm:p-7 "[39m
+            [33mdata-testid[39m=[32m"agent-chat-scroll"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"relative flex flex-col gap-6 dark:gap-8 text-[14px] leading-[1.65] text-foreground"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m...
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m tests/unit/agentChatPanel-markdown-rendering.test.ts:[2m173:28[22m[39m
+    [90m171| [39m    )[33m;[39m
+    [90m172| [39m
+    [90m173| [39m    fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByText[39m([36m/Pensamento \(interno\)/[39m))[33m;[39m
+    [90m   | [39m                           [31m^[39m
+    [90m174| [39m    expect(screen.getByText("read /tmp/README.md")).toBeInTheDocument(…
+    [90m175| [39m    expect(screen.queryByText("read /tmp/README.md", { selector: "summ…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/agentFleetHydrationDerivation.test.ts[2m > [22mderiveHydrateAgentFleetResult[2m > [22mderives_seeds_and_sync_sets_from_snapshots
+[31m[1mAssertionError[22m: expected { agentId: 'agent-1', …(14) } to deeply equal ObjectContaining{…}[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -1,14 +1,39 @@[39m
+[32m- ObjectContaining {[39m
+[31m+ {[39m
+[2m    "agentId": "agent-1",[22m
+[32m-   "avatarProfile": ObjectContaining {[39m
+[32m-     "seed": "persisted-seed",[39m
+[31m+   "avatarProfile": {[39m
+[31m+     "accessories": {[39m
+[31m+       "backpack": false,[39m
+[31m+       "glasses": false,[39m
+[31m+       "hatStyle": "cap",[39m
+[31m+       "headset": true,[39m
+[31m+     },[39m
+[31m+     "body": {[39m
+[31m+       "skinTone": "#8a5a3b",[39m
+[31m+     },[39m
+[31m+     "clothing": {[39m
+[31m+       "bottomColor": "#f59e0b",[39m
+[31m+       "bottomStyle": "shorts",[39m
+[31m+       "shoesColor": "#1a1a1a",[39m
+[31m+       "topColor": "#f59e0b",[39m
+[31m+       "topStyle": "hoodie",[39m
+[2m      },[22m
+[32m-   "avatarSeed": "persisted-seed",[39m
+[31m+     "hair": {[39m
+[31m+       "color": "#7c3aed",[39m
+[31m+       "style": "short",[39m
+[31m+     },[39m
+[31m+     "seed": "agent-1",[39m
+[31m+     "version": 1,[39m
+[31m+   },[39m
+[31m+   "avatarSeed": "agent-1",[39m
+[2m    "avatarUrl": "https://example.com/one.png",[22m
+[31m+   "identityName": null,[39m
+[2m    "model": "openai/gpt-4.1",[22m
+[2m    "name": "One",[22m
+[31m+   "role": null,[39m
+[31m+   "runtimeName": "One",[39m
+[31m+   "sessionDisplayName": "Main",[39m
+[2m    "sessionExecAsk": "always",[22m
+[2m    "sessionExecHost": "gateway",[22m
+[2m    "sessionExecSecurity": "allowlist",[22m
+[2m    "sessionKey": "agent:agent-1:main",[22m
+[2m    "thinkingLevel": "medium",[22m
+
+[36m [2m❯[22m tests/unit/agentFleetHydrationDerivation.test.ts:[2m92:29[22m[39m
+    [90m 90| [39m
+    [90m 91| [39m    [34mexpect[39m(result[33m.[39mseeds)[33m.[39m[34mtoHaveLength[39m([34m2[39m)[33m;[39m
+    [90m 92| [39m    [34mexpect[39m(result[33m.[39mseeds[[34m0[39m])[33m.[39m[34mtoEqual[39m(
+    [90m   | [39m                            [31m^[39m
+    [90m 93| [39m      expect[33m.[39m[34mobjectContaining[39m({
+    [90m 94| [39m        agentId[33m:[39m [32m"agent-1"[39m[33m,[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/agentReconcileOperation.test.ts[2m > [22magentReconcileOperation[2m > [22mskips when agent is not eligible
+[31m[1mAssertionError[22m: expected "vi.fn()" to not be called at all, but actually been called 1 times[90m
+
+Received: 
+
+[1m  1st vi.fn() call:
+
+[22m    Array [
+      "agents.list",
+      Object {},
+    ]
+[31m[90m
+
+Number of calls: [1m1[22m
+[31m[39m
+[36m [2m❯[22m tests/unit/agentReconcileOperation.test.ts:[2m68:22[22m[39m
+    [90m 66| [39m    })[33m;[39m
+    [90m 67| [39m
+    [90m 68| [39m    [34mexpect[39m(call)[33m.[39mnot[33m.[39m[34mtoHaveBeenCalled[39m()[33m;[39m
+    [90m   | [39m                     [31m^[39m
+    [90m 69| [39m    [34mexpect[39m(commands)[33m.[39m[34mtoEqual[39m([])[33m;[39m
+    [90m 70| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/agentReconcileOperation.test.ts[2m > [22magentReconcileOperation[2m > [22mreconciles shared run only once and triggers one history refresh
+[31m[1mAssertionError[22m: expected "vi.fn()" to be called 1 times, but got 2 times[39m
+[36m [2m❯[22m tests/unit/agentReconcileOperation.test.ts:[2m102:18[22m[39m
+    [90m100| [39m
+    [90m101| [39m    const historyRefreshes = commands.filter((entry) => entry.kind ===…
+    [90m102| [39m    [34mexpect[39m(call)[33m.[39m[34mtoHaveBeenCalledTimes[39m([34m1[39m)[33m;[39m
+    [90m   | [39m                 [31m^[39m
+    [90m103| [39m    expect(historyRefreshes).toEqual([{ kind: "requestHistoryRefresh",…
+    [90m104| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/colorSemanticsGuard.test.ts[2m > [22mcolor semantic guard[2m > [22mblocks raw hue utility classes in color-owned UI files
+[31m[1mAssertionError[22m: expected [ Array(1) ] to deeply equal [][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   "src/features/agents/components/GatewayConnectScreen.tsx: text-red-500",[39m
+[31m+ ][39m
+
+[36m [2m❯[22m tests/unit/colorSemanticsGuard.test.ts:[2m35:23[22m[39m
+    [90m 33| [39m    }
+    [90m 34| [39m
+    [90m 35| [39m    [34mexpect[39m(offenders)[33m.[39m[34mtoEqual[39m([])[33m;[39m
+    [90m   | [39m                      [31m^[39m
+    [90m 36| [39m  })[33m;[39m
+    [90m 37| [39m})[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/cronCreatePayloadBuilder.test.ts[2m > [22mcron create payload builder[2m > [22mbuilds_agent_scoped_isolated_every_days_payload_with_anchor
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
+[36m [2m❯[22m tests/unit/cronCreatePayloadBuilder.test.ts:[2m9:3[22m[39m
+    [90m  7| [39m
+    [90m  8| [39m[34mdescribe[39m([32m"cron create payload builder"[39m[33m,[39m () [33m=>[39m {
+    [90m  9| [39m  it("builds_agent_scoped_isolated_every_days_payload_with_anchor", ()…
+    [90m   | [39m  [31m^[39m
+    [90m 10| [39m    [35mconst[39m nowMs [33m=[39m [33mDate[39m[33m.[39m[33mUTC[39m([34m2026[39m[33m,[39m [34m1[39m[33m,[39m [34m11[39m[33m,[39m [34m6[39m[33m,[39m [34m30[39m[33m,[39m [34m0[39m)[33m;[39m
+    [90m 11| [39m    [35mconst[39m draft[33m:[39m [33mCronCreateDraft[39m [33m=[39m {
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/gatewayAgentFiles.test.ts[2m > [22mgateway agent files helpers[2m > [22mreturns exists=false when gateway reports missing
+[31m[1mAssertionError[22m: expected { exists: false, content: '', …(2) } to deeply equal { exists: false, content: '' }[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "content": "",[22m
+[2m    "exists": false,[22m
+[31m+   "path": null,[39m
+[31m+   "workspace": null,[39m
+[2m  }[22m
+
+[36m [2m❯[22m tests/unit/gatewayAgentFiles.test.ts:[2m19:5[22m[39m
+    [90m 17| [39m    })[33m;[39m
+    [90m 18| [39m
+    [90m 19| [39m    [35mawait[39m [34mexpect[39m(
+    [90m   | [39m    [31m^[39m
+    [90m 20| [39m      readGatewayAgentFile({ client, agentId: "agent-1", name: "AGENTS…
+    [90m 21| [39m    )[33m.[39mresolves[33m.[39m[34mtoEqual[39m({ exists[33m:[39m [35mfalse[39m[33m,[39m content[33m:[39m [32m""[39m })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/gatewayAgentFiles.test.ts[2m > [22mgateway agent files helpers[2m > [22mreturns exists=true and content when gateway returns content
+[31m[1mAssertionError[22m: expected { Object (exists, content, ...) } to deeply equal { exists: true, content: 'hello' }[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "content": "hello",[22m
+[2m    "exists": true,[22m
+[31m+   "path": null,[39m
+[31m+   "workspace": null,[39m
+[2m  }[22m
+
+[36m [2m❯[22m tests/unit/gatewayAgentFiles.test.ts:[2m32:5[22m[39m
+    [90m 30| [39m    })[33m;[39m
+    [90m 31| [39m
+    [90m 32| [39m    [35mawait[39m [34mexpect[39m(
+    [90m   | [39m    [31m^[39m
+    [90m 33| [39m      readGatewayAgentFile({ client, agentId: "agent-1", name: "AGENTS…
+    [90m 34| [39m    )[33m.[39mresolves[33m.[39m[34mtoEqual[39m({ exists[33m:[39m [35mtrue[39m[33m,[39m content[33m:[39m [32m"hello"[39m })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/gatewayAgentFiles.test.ts[2m > [22mgateway agent files helpers[2m > [22mcoerces non-string content to empty string
+[31m[1mAssertionError[22m: expected { exists: true, content: '', …(2) } to deeply equal { exists: true, content: '' }[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "content": "",[22m
+[2m    "exists": true,[22m
+[31m+   "path": null,[39m
+[31m+   "workspace": null,[39m
+[2m  }[22m
+
+[36m [2m❯[22m tests/unit/gatewayAgentFiles.test.ts:[2m45:5[22m[39m
+    [90m 43| [39m    })[33m;[39m
+    [90m 44| [39m
+    [90m 45| [39m    [35mawait[39m [34mexpect[39m(
+    [90m   | [39m    [31m^[39m
+    [90m 46| [39m      readGatewayAgentFile({ client, agentId: "agent-1", name: "AGENTS…
+    [90m 47| [39m    )[33m.[39mresolves[33m.[39m[34mtoEqual[39m({ exists[33m:[39m [35mtrue[39m[33m,[39m content[33m:[39m [32m""[39m })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/gatewayBrowserClient.test.ts[2m > [22mGatewayBrowserClient[2m > [22msends connect when connect.challenge arrives
+[31m[1mTypeError[22m: socket.addEventListener is not a function[39m
+[36m [2m❯[22m GatewayBrowserClient.start src/lib/gateway/openclaw/GatewayBrowserClient.ts:[2m137:12[22m[39m
+    [90m135| [39m    [35mthis[39m[33m.[39msocket [33m=[39m socket[33m;[39m
+    [90m136| [39m
+    [90m137| [39m    socket[33m.[39m[34maddEventListener[39m([32m"message"[39m[33m,[39m (event) [33m=>[39m {
+    [90m   | [39m           [31m^[39m
+    [90m138| [39m      [35mconst[39m raw [33m=[39m [35mtypeof[39m event[33m.[39mdata [33m===[39m [32m"string"[39m [33m?[39m event[33m.[39mdata [33m:[39m [32m""[39m[33m;[39m
+    [90m139| [39m      [35mif[39m ([33m![39mraw) [35mreturn[39m[33m;[39m
+[90m [2m❯[22m tests/unit/gatewayBrowserClient.test.ts:[2m72:12[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/gatewayBrowserClient.test.ts[2m > [22mGatewayBrowserClient[2m > [22mtruncates connect-failed close reason to websocket limit
+[31m[1mTypeError[22m: socket.addEventListener is not a function[39m
+[36m [2m❯[22m GatewayBrowserClient.start src/lib/gateway/openclaw/GatewayBrowserClient.ts:[2m137:12[22m[39m
+    [90m135| [39m    [35mthis[39m[33m.[39msocket [33m=[39m socket[33m;[39m
+    [90m136| [39m
+    [90m137| [39m    socket[33m.[39m[34maddEventListener[39m([32m"message"[39m[33m,[39m (event) [33m=>[39m {
+    [90m   | [39m           [31m^[39m
+    [90m138| [39m      [35mconst[39m raw [33m=[39m [35mtypeof[39m event[33m.[39mdata [33m===[39m [32m"string"[39m [33m?[39m event[33m.[39mdata [33m:[39m [32m""[39m[33m;[39m
+    [90m139| [39m      [35mif[39m ([33m![39mraw) [35mreturn[39m[33m;[39m
+[90m [2m❯[22m tests/unit/gatewayBrowserClient.test.ts:[2m111:12[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/onboardingState.test.ts[2m > [22museOnboardingState[2m > [22mshows onboarding by default when localStorage is empty
+[31m[1mAssertionError[22m: expected false to be true // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+[36m [2m❯[22m tests/unit/onboardingState.test.ts:[2m17:43[22m[39m
+    [90m 15| [39m  [34mit[39m([32m"shows onboarding by default when localStorage is empty"[39m[33m,[39m () [33m=>[39m {
+    [90m 16| [39m    [35mconst[39m { result } [33m=[39m [34mrenderHook[39m(() [33m=>[39m [34museOnboardingState[39m())[33m;[39m
+    [90m 17| [39m    [34mexpect[39m(result[33m.[39mcurrent[33m.[39mshowOnboarding)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m   | [39m                                          [31m^[39m
+    [90m 18| [39m  })[33m;[39m
+    [90m 19| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/onboardingState.test.ts[2m > [22museOnboardingState[2m > [22mhides onboarding after completeOnboarding is called
+[31m[1mAssertionError[22m: expected false to be true // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+[36m [2m❯[22m tests/unit/onboardingState.test.ts:[2m22:43[22m[39m
+    [90m 20| [39m  [34mit[39m([32m"hides onboarding after completeOnboarding is called"[39m[33m,[39m () [33m=>[39m {
+    [90m 21| [39m    [35mconst[39m { result } [33m=[39m [34mrenderHook[39m(() [33m=>[39m [34museOnboardingState[39m())[33m;[39m
+    [90m 22| [39m    [34mexpect[39m(result[33m.[39mcurrent[33m.[39mshowOnboarding)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m   | [39m                                          [31m^[39m
+    [90m 23| [39m
+    [90m 24| [39m    [34mact[39m(() [33m=>[39m {
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/studioSetupPaths.test.ts[2m > [22mstudio setup paths[2m > [22mresolves settings path under OPENCLAW_STATE_DIR when set
+[31m[1mAssertionError[22m: expected 'C:\tmp\openclaw-state\claw3d\settings…' to be '\tmp\openclaw-state\claw3d\settings.j…' // Object.is equality[39m
+
+Expected: [32m"\tmp\openclaw-state\claw3d\settings.json"[39m
+Received: [31m"[7mC:[27m\tmp\openclaw-state\claw3d\settings.json"[39m
+
+[36m [2m❯[22m tests/unit/studioSetupPaths.test.ts:[2m13:26[22m[39m
+    [90m 11| [39m      [33mOPENCLAW_STATE_DIR[39m[33m:[39m [32m"/tmp/openclaw-state"[39m[33m,[39m
+    [90m 12| [39m    } [35mas[39m unknown [35mas[39m [33mNodeJS[39m[33m.[39m[33mProcessEnv[39m)[33m;[39m
+    [90m 13| [39m    expect(settingsPath).toBe(path.join("/tmp/openclaw-state", "claw3d…
+    [90m   | [39m                         [31m^[39m
+    [90m 14| [39m  })[33m;[39m
+    [90m 15| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/taskBoardView.test.ts[2m > [22mTaskBoardView[2m > [22mroutes task edits through callbacks
+[31m[1mError[22m: Unable to fire a "click" event - please provide a DOM element.[39m
+[90m [2m❯[22m createEvent node_modules/@testing-library/dom/dist/events.js:[2m27:11[22m[39m
+[90m [2m❯[22m createEvent.<computed> [as click] node_modules/@testing-library/dom/dist/events.js:[2m106:38[22m[39m
+[90m [2m❯[22m fireEvent.<computed> [as click] node_modules/@testing-library/dom/dist/events.js:[2m110:68[22m[39m
+[90m [2m❯[22m fireEvent.<computed> [as click] node_modules/@testing-library/react/dist/fire-event.js:[2m15:52[22m[39m
+[36m [2m❯[22m tests/unit/taskBoardView.test.ts:[2m117:15[22m[39m
+    [90m115| [39m    fireEvent.click(screen.getAllByRole("button", { name: /new task/i …
+    [90m116| [39m    fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByRole[39m([32m"button"[39m[33m,[39m { name[33m:[39m [36m/refresh/i[39m }))[33m;[39m
+    [90m117| [39m    fireEvent.click(screen.queryAllByRole("button", { name: /new task/…
+    [90m   | [39m              [31m^[39m
+    [90m118| [39m    fireEvent[33m.[39m[34mchange[39m(screen[33m.[39m[34mgetByLabelText[39m([32m"Title"[39m)[33m,[39m {
+    [90m119| [39m      target[33m:[39m { value[33m:[39m [32m"Create marketing website"[39m }[33m,[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/useAgentSettingsMutationController.test.ts[2m > [22museAgentSettingsMutationController[2m > [22mexposes_restart_block_state_and_timeout_completion_handlers
+[31m[1mAssertionError[22m: expected "vi.fn()" to be called with arguments: [ Array(1) ][90m
+
+Number of calls: [1m0[22m
+[31m[39m
+[36m [2m❯[22m tests/unit/useAgentSettingsMutationController.test.ts:[2m419:26[22m[39m
+    [90m417| [39m      restartBlockHookParams[33m?.[39m[34monTimeout[39m()[33m;[39m
+    [90m418| [39m    })[33m;[39m
+    [90m419| [39m    expect(ctx.setError).toHaveBeenCalledWith("Gateway restart timed o…
+    [90m   | [39m                         [31m^[39m
+    [90m420| [39m
+    [90m421| [39m    mockedRunLifecycle[33m.[39m[34mmockImplementation[39m([35masync[39m ({ deps }) [33m=>[39m {
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/19]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/useGatewayConnection.test.ts[2m > [22museGatewayConnection[2m > [22mloads_and_persists_selected_adapter_type
+[31m[1mAssertionError[22m: expected [ { gateway: { …(4) } }, …(1) ] to deeply equal [][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   {[39m
+[31m+     "gateway": {[39m
+[31m+       "adapterType": "hermes",[39m
+[31m+       "profiles": {[39m
+[31m+         "hermes": {[39m
+[31m+           "token": "",[39m
+[31m+           "tokenConfigured": false,[39m
+[31m+           "url": "ws://localhost:18789",[39m
+[31m+         },[39m
+[31m+       },[39m
+[31m+       "token": "",[39m
+[31m+       "url": "ws://localhost:18789",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   {[39m
+[31m+     "gateway": {[39m
+[31m+       "adapterType": "hermes",[39m
+[31m+       "profiles": {[39m
+[31m+         "hermes": {[39m
+[31m+           "token": "",[39m
+[31m+           "tokenConfigured": false,[39m
+[31m+           "url": "ws://localhost:18789",[39m
+[31m+         },[39m
+[31m+       },[39m
+[31m+       "token": "",[39m
+[31m+       "url": "ws://localhost:18789",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+ ][39m
+
+[36m [2m❯[22m tests/unit/useGatewayConnection.test.ts:[2m537:21[22m[39m
+    [90m535| [39m      expect(screen.getByTestId("activeAdapterType")).toHaveTextConten…
+    [90m536| [39m    })[33m;[39m
+    [90m537| [39m    [34mexpect[39m(patches)[33m.[39m[34mtoEqual[39m([])[33m;[39m
+    [90m   | [39m                    [31m^[39m
+    [90m538| [39m  })[33m;[39m
+    [90m539| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/19]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m12 failed[39m[22m[2m | [22m[1m[32m154 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (167)[39m
+[2m      Tests [22m [1m[31m19 failed[39m[22m[2m | [22m[1m[32m998 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (1018)[39m
+[2m   Start at [22m 08:48:41
+[2m   Duration [22m 326.44s[2m (transform 76.52s, setup 68.09s, import 114.98s, tests 52.92s, environment 507.58s)[22m
+

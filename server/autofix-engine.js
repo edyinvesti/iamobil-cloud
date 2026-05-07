@@ -15,6 +15,7 @@ let lastReadSize = 0;
 class AutofixEngine {
   constructor() {
     console.log("🚀 [Autofix-Engine] Iniciado. Vigilante ativo com Memória.");
+    this.repairAttempts = new Map(); // Para evitar loops de reparo
     if (fs.existsSync(LOG_FILE)) {
       lastReadSize = fs.statSync(LOG_FILE).size;
     }
@@ -42,7 +43,16 @@ class AutofixEngine {
       lastReadSize = stats.size;
 
       if (this.isFatalError(newContent)) {
+        const errorKey = newContent.split('\n')[0].slice(0, 100);
+        const attempts = this.repairAttempts.get(errorKey) || 0;
+        
+        if (attempts >= 3) {
+          console.warn(`⚠️ [Autofix-Engine] Abortando reparo para erro recorrente: ${errorKey}`);
+          return;
+        }
+
         console.log("🚨 [Autofix-Engine] Erro fatal detectado! Consultando Genio Fix...");
+        this.repairAttempts.set(errorKey, attempts + 1);
         await this.triggerRepair(newContent);
       }
     } catch (err) {

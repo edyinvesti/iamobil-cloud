@@ -70,7 +70,7 @@ const assertPublicHostAllowed = ({ host, studioAccessToken }) => {
   if (token) return;
 
   const normalized = normalizeHost(host) || String(host ?? "").trim() || "(unknown)";
-  console.warn(`WARNING: Refusing to bind Studio to public host "${normalized}" without STUDIO_ACCESS_TOKEN. Bypassing check for cloud deploy.`);
+  console.warn(`AVISO: Recusando-se a vincular o Studio ao host público "${normalized}" sem o STUDIO_ACCESS_TOKEN. Ignorando a verificação para implantação na nuvem.`);
   return;
 };
 

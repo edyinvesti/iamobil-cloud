@@ -34704,3 +34704,18 @@
 [2026-05-06T10:20:56.005Z] ✅ [Hub] Conectado à iAmobil!
 [2026-05-06T10:20:56.048Z] 🤝 [Hub] Handshake OK! Hermes Adapter está PRONTO para receber mensagens.
 [2026-05-06T10:22:25.876Z] ❌ [Hub] Conexão perdidda. Reconectando em 5s... (tentativa 1)
+[2026-05-07T10:54:28.547Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 1)
+[2026-05-07T10:54:28.557Z] ⏰ [Cron] Iniciando Motor de Autofollow-up Ativo (Varredura a cada 15 minutos)
+[2026-05-07T10:54:28.558Z] ✅ [Telegram] Bot inicializado! Aguardando Webhook do Telegram...
+[2026-05-07T10:54:38.124Z] ✅ [Hub] Conectado à iAmobil!
+[2026-05-07T10:54:38.191Z] 🤝 [Hub] Handshake OK! Hermes Adapter está PRONTO para receber mensagens.
+[2026-05-07T11:02:55.528Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 1)
+[2026-05-07T11:02:55.536Z] ⏰ [Cron] Iniciando Motor de Autofollow-up Ativo (Varredura a cada 15 minutos)
+[2026-05-07T11:02:55.537Z] ✅ [Telegram] Bot inicializado! Aguardando Webhook do Telegram...
+[2026-05-07T11:02:57.317Z] ✅ [Hub] Conectado à iAmobil!
+[2026-05-07T11:02:57.325Z] 🤝 [Hub] Handshake OK! Hermes Adapter está PRONTO para receber mensagens.
+[2026-05-07T11:25:02.311Z] [Hub] Conectando ao Hermes 3D Adapter em ws://127.0.0.1:18789 (tentativa 1)
+[2026-05-07T11:25:02.613Z] ⏰ [Cron] Iniciando Motor de Autofollow-up Ativo (Varredura a cada 15 minutos)
+[2026-05-07T11:25:02.616Z] ✅ [Telegram] Bot inicializado! Aguardando Webhook do Telegram...
+[2026-05-07T11:25:12.596Z] ✅ [Hub] Conectado à iAmobil!
+[2026-05-07T11:25:12.605Z] 🤝 [Hub] Handshake OK! Hermes Adapter está PRONTO para receber mensagens.

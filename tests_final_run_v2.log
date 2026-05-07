@@ -1,0 +1,360 @@
+npm warn Unknown cli config "--run". This will stop working in the next major version of npm.
+
+> claw3d@0.1.5 test
+> vitest
+
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mC:/Users/User/Downloads/IAmobil Imobiliaria[39m
+
+ [32m✓[39m tests/unit/gatewayAgentFiles.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [31m❯[39m tests/unit/taskBoardView.test.ts [2m([22m[2m1 test[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 1599[2mms[22m[39m
+[31m     [31m×[31m routes task edits through callbacks[39m[33m 1594[2mms[22m[39m
+ [31m❯[39m tests/unit/useGatewayConnection.test.ts [2m([22m[2m17 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 2295[2mms[22m[39m
+     [33m[2m✓[22m[39m defaults_to_env_url_when_set [33m 750[2mms[22m[39m
+     [32m✓[39m falls_back_to_local_default_when_env_unset[32m 19[2mms[22m[39m
+     [33m[2m✓[22m[39m connects_via_studio_proxy_ws_and_does_not_pass_token [33m 1022[2mms[22m[39m
+     [32m✓[39m uses_webchat_identity_for_remote_openclaw_connections[32m 82[2mms[22m[39m
+     [32m✓[39m keeps_control_ui_identity_for_local_openclaw_connections[32m 90[2mms[22m[39m
+     [32m✓[39m does_not_auto_connect_without_a_last_known_good_state[32m 22[2mms[22m[39m
+     [32m✓[39m uses_a_small_initial_auto_connect_delay_for_hermes_and_demo_only[32m 6[2mms[22m[39m
+     [32m✓[39m retries_only_the_first_connect_for_hermes_and_demo[32m 4[2mms[22m[39m
+     [32m✓[39m uses_webchat_client_id_only_for_remote_openclaw[32m 3[2mms[22m[39m
+     [32m✓[39m auto_applies_runtime_local_defaults_when_no_saved_gateway_and_build_time_empty[32m 20[2mms[22m[39m
+     [32m✓[39m applies_local_defaults_from_settings_envelope[32m 51[2mms[22m[39m
+[31m     [31m×[31m loads_and_persists_selected_adapter_type[39m[32m 61[2mms[22m[39m
+     [32m✓[39m prefers_the_saved_selected_adapter_over_a_different_last_known_good_backend[32m 18[2mms[22m[39m
+     [32m✓[39m loads_custom_adapter_type_without_requiring_a_token[32m 16[2mms[22m[39m
+     [32m✓[39m still_prompts_to_reconnect_for_custom_with_last_known_good_state[32m 14[2mms[22m[39m
+     [32m✓[39m persists_the_detected_backend_identity_in_last_known_good[32m 90[2mms[22m[39m
+     [32m✓[39m restores_backend_specific_profiles_when_switching_adapter_type[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/studioSetupPaths.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m tests/unit/agentFleetHydrationDerivation.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [31m❯[39m tests/unit/gatewayBrowserClient.test.ts [2m([22m[2m2 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 46[2mms[22m[39m
+[31m     [31m×[31m sends connect when connect.challenge arrives[39m[32m 35[2mms[22m[39m
+[31m     [31m×[31m truncates connect-failed close reason to websocket limit[39m[32m 7[2mms[22m[39m
+ [32m✓[39m tests/unit/colorSemanticsGuard.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/agentReconcileOperation.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/unit/agentEditorModal.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 3640[2mms[22m[39m
+     [33m[2m✓[22m[39m saves avatar changes from the avatar section [33m 2404[2mms[22m[39m
+     [33m[2m✓[22m[39m switches to another file section [33m 1180[2mms[22m[39m
+ [32m✓[39m tests/unit/agentChatPanel-controls.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 2423[2mms[22m[39m
+     [33m[2m✓[22m[39m shows_stop_button_while_running_and_invokes_stop_handler [33m 381[2mms[22m[39m
+     [33m[2m✓[22m[39m allows_send_while_running_so_follow_up_can_be_queued [33m 443[2mms[22m[39m
+ [32m✓[39m tests/unit/agentSettingsPanel.test.ts [2m([22m[2m35 tests[22m[2m)[22m[33m 7140[2mms[22m[39m
+     [33m[2m✓[22m[39m does_not_render_name_editor_in_capabilities_mode [33m 584[2mms[22m[39m
+     [33m[2m✓[22m[39m renders_permissions_controls [33m 406[2mms[22m[39m
+     [33m[2m✓[22m[39m autosaves_updated_permissions_draft [33m 846[2mms[22m[39m
+     [33m[2m✓[22m[39m preserves_pending_permissions_toggles_during_props_refresh [33m 314[2mms[22m[39m
+     [33m[2m✓[22m[39m runs_system_setup_actions_from_modal [33m 790[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps_system_setup_modal_open_until_user_closes_and_then_clears_handoff [33m 321[2mms[22m[39m
+     [33m[2m✓[22m[39m updates_template_defaults_when_switching_templates [33m 559[2mms[22m[39m
+     [33m[2m✓[22m[39m submits_modal_with_agent_scoped_draft [33m 542[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps_modal_open_and_shows_error_when_create_fails [33m 678[2mms[22m[39m
+ [32m✓[39m tests/unit/agentBrainPanel.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 2153[2mms[22m[39m
+     [33m[2m✓[22m[39m renders_behavior_sections_and_loads_agent_files [33m 1201[2mms[22m[39m
+ [32m✓[39m tests/unit/agentChatPanel-approvals.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 1373[2mms[22m[39m
+     [33m[2m✓[22m[39m renders pending approval card with metadata [33m 358[2mms[22m[39m
+     [33m[2m✓[22m[39m invokes resolve callback for all approval decisions [33m 603[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayMediaRoute.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 543[2mms[22m[39m
+[90mstderr[2m | tests/unit/customRuntimeRoute.test.ts[2m > [22m[2m/api/runtime/custom route[2m > [22m[2mblocks custom runtime proxying in production when no allowlist is configured
+[22m[39m[runtime/custom] Proxy request failed. Error: runtimeUrl is not in the allowed hosts list.
+    at normalizeRuntimeUrl (C:/Users/User/Downloads/IAmobil Imobiliaria/src/app/api/runtime/custom/route.ts:51:11)
+    at POST (C:/Users/User/Downloads/IAmobil Imobiliaria/src/app/api/runtime/custom/route.ts:84:24)
+[90m    at processTicksAndRejections (node:internal/process/task_queues:104:5)[39m
+    at C:/Users/User/Downloads/IAmobil Imobiliaria/tests/unit/customRuntimeRoute.test.ts:19:22
+    at [90mfile:///C:/Users/User/Downloads/IAmobil%20Imobiliaria/[39mnode_modules/[4m@vitest/runner[24m/dist/index.js:915:20
+
+[90mstderr[2m | tests/unit/customRuntimeRoute.test.ts[2m > [22m[2m/api/runtime/custom route[2m > [22m[2mreturns 400 for malformed JSON request bodies
+[22m[39m[runtime/custom] Invalid JSON request body. SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+[90m    at parseJSONFromBytes (node:internal/deps/undici/undici:4319:19)[39m
+[90m    at successSteps (node:internal/deps/undici/undici:6967:27)[39m
+[90m    at readAllBytes (node:internal/deps/undici/undici:5890:13)[39m
+[90m    at processTicksAndRejections (node:internal/process/task_queues:104:5)[39m
+
+ [32m✓[39m tests/unit/customRuntimeRoute.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 306[2mms[22m[39m
+ [32m✓[39m tests/unit/agentCreateModal.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 1735[2mms[22m[39m
+     [33m[2m✓[22m[39m submits simple payload with name and avatar seed [33m 782[2mms[22m[39m
+     [33m[2m✓[22m[39m renders one-step create form without guided wizard copy [33m 392[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayProxy.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 478[2mms[22m[39m
+ [32m✓[39m tests/unit/agentChatPanel-scroll.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 983[2mms[22m[39m
+     [33m[2m✓[22m[39m shows jump-to-latest when unpinned and new output arrives, and jumps on click [33m 897[2mms[22m[39m
+ [32m✓[39m tests/unit/pathSuggestionsRoute.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 272[2mms[22m[39m
+ [32m✓[39m tests/unit/useGatewayConfigSyncController.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 533[2mms[22m[39m
+ [32m✓[39m tests/unit/useRuntimeConnection.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 256[2mms[22m[39m
+ [32m✓[39m tests/unit/agentChatPanel-composer-autoresize.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 663[2mms[22m[39m
+     [33m[2m✓[22m[39m resets_textarea_height_after_send_when_draft_is_cleared [33m 659[2mms[22m[39m
+[90mstderr[2m | tests/unit/useAgentSettingsMutationController.test.ts[2m > [22m[2museAgentSettingsMutationController[2m > [22m[2mrejects_empty_selected_skills_allowlist_before_gateway_call
+[22m[39mCannot set selected skills mode: choose at least one skill.
+
+[90mstderr[2m | tests/unit/useAgentSettingsMutationController.test.ts[2m > [22m[2museAgentSettingsMutationController[2m > [22m[2mpreserves_api_key_draft_and_sets_error_message_when_save_fails
+[22m[39minvalid key
+
+ [32m✓[39m tests/unit/useAgentSettingsMutationController.test.ts [2m([22m[2m22 tests[22m[2m)[22m[33m 601[2mms[22m[39m
+ [32m✓[39m tests/unit/themeToggle.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 623[2mms[22m[39m
+     [33m[2m✓[22m[39m applies and persists theme when toggled [33m 551[2mms[22m[39m
+ [32m✓[39m tests/unit/agentChatPanel-markdown-rendering.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 795[2mms[22m[39m
+     [33m[2m✓[22m[39m renders assistant markdown separately from tool detail cards [33m 566[2mms[22m[39m
+ [32m✓[39m tests/unit/onboardingState.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 397[2mms[22m[39m
+ [32m✓[39m tests/unit/cronCreatePayloadBuilder.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 75[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayEnvDefaults.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 98[2mms[22m[39m
+ [32m✓[39m tests/unit/agentSettingsPanel-header.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 436[2mms[22m[39m
+     [33m[2m✓[22m[39m uses inspect header style with agent title [33m 432[2mms[22m[39m
+ [32m✓[39m tests/unit/fleetSidebar-create.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 261[2mms[22m[39m
+ [32m✓[39m tests/unit/connectionPanel-close.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 187[2mms[22m[39m
+ [32m✓[39m tests/unit/useChatInteractionController.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 159[2mms[22m[39m
+ [32m✓[39m tests/unit/officePathfinding.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 108[2mms[22m[39m
+ [32m✓[39m tests/unit/headerBar-brain-toggle.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 139[2mms[22m[39m
+ [32m✓[39m tests/unit/useRuntimeSyncController.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 128[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayRuntimeEventHandler.chat.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 91[2mms[22m[39m
+ [32m✓[39m tests/unit/useSettingsRouteController.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 139[2mms[22m[39m
+ [32m✓[39m tests/unit/sharedTaskStore.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 76[2mms[22m[39m
+ [32m✓[39m tests/unit/taskStoreRoute.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 82[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayRuntimeEventHandler.agent.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 70[2mms[22m[39m
+ [32m✓[39m tests/unit/accessGate.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayAgentSkillsAllowlist.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 61[2mms[22m[39m
+ [32m✓[39m tests/unit/officeEventTriggers.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 58[2mms[22m[39m
+ [32m✓[39m tests/unit/sessionSettings.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsRemoveRoute.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 54[2mms[22m[39m
+ [32m✓[39m tests/unit/studioSettingsRoute.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 59[2mms[22m[39m
+[90mstderr[2m | tests/unit/serverNetworkPolicy.test.ts[2m > [22m[2mserver network policy[2m > [22m[2massertPublicHostAllowed does not throw (warning only)
+[22m[39mWARNING: Refusing to bind Studio to public host "0.0.0.0" without STUDIO_ACCESS_TOKEN. Bypassing check for cloud deploy.
+
+ [32m✓[39m tests/unit/serverNetworkPolicy.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32m✓[39m tests/unit/chatSendOperation.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+ [32m✓[39m tests/unit/runtimeEventBridge.test.ts [2m([22m[2m26 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+ [32m✓[39m tests/unit/historySyncOperation.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayRuntimeEventHandler.policyDelegation.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalRunControlOperation.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32m✓[39m tests/unit/eventTriggers.gymDirective.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m tests/unit/agentStateRoute.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 45[2mms[22m[39m
+ [32m✓[39m tests/unit/historySyncOperation.integration.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+ [32m✓[39m tests/unit/navigation.astarFallback.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+ [32m✓[39m tests/unit/cronGatewayClient.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+ [32m✓[39m tests/unit/runtimeAgentEventWorkflow.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+ [32m✓[39m tests/unit/deskDirectives.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsInstallGateway.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsRemoveLocal.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+ [32m✓[39m tests/unit/companyBootstrapOperation.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+ [32m✓[39m tests/unit/cronCreateFlowState.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32m✓[39m tests/unit/createAgentBootstrapOperation.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m tests/unit/chatItems.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+ [32m✓[39m tests/unit/voiceTranscribe.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+ [32m✓[39m tests/unit/specialLatestUpdateOperation.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m tests/unit/deleteAgentOperation.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+[90mstdout[2m | tests/unit/agentFleetHydration.test.ts[2m > [22m[2mhydrateAgentFleetFromGateway[2m > [22m[2mmaps_gateway_results_into_seeds_and_selects_latest_assistant_agent
+[22m[39m[agent-hydration] Finished seeds mapping. Count: 2
+
+[90mstdout[2m | tests/unit/agentFleetHydration.test.ts[2m > [22m[2mhydrateAgentFleetFromGateway[2m > [22m[2mmaps_gateway_results_into_seeds_and_selects_latest_assistant_agent
+[22m[39m[agent-hydration] Received agentsResult from gateway: [{"id":"agent-1","name":"One"},{"id":"agent-2","name":"Two"}]
+
+ [32m✓[39m tests/unit/agentFleetHydration.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 152[2mms[22m[39m
+ [32m✓[39m tests/unit/navigation.navBlockers.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 74[2mms[22m[39m
+ [32m✓[39m tests/unit/companyBuilderPlanning.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m tests/unit/agentStateLocal.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayAgentOverrides.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayConfigPatch.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+[90mstdout[2m | tests/unit/studioBootstrapOperation.test.ts[2m > [22m[2mstudioBootstrapOperation[2m > [22m[2mbuilds bootstrap commands from hydrated fleet result
+[22m[39m[studio-bootstrap] hydrateAgentFleetFromGateway returned 2 seeds
+[studio-bootstrap] Generated 2 commands. hydrate-agents seeds count: 2
+
+ [32m✓[39m tests/unit/studioBootstrapOperation.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+ [32m✓[39m tests/unit/studioSettingsCoordinator.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m tests/unit/agentPermissionsOperation.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/unit/agentStore.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsGatewayClient.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m tests/unit/sessionSettingsMutations.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m tests/unit/historyLifecycleWorkflow.integration.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsRemoveGateway.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m tests/unit/mutationLifecycleWorkflow.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m tests/unit/studioSettings.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m tests/unit/runtimeChatEventWorkflow.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m tests/unit/transcript.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m tests/unit/studioUpstreamGatewaySettings.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsRemoveClient.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayReloadMode.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsPresentation.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayRuntimeEventHandler.summaryRefresh.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+ [32m✓[39m tests/unit/taskBoardController.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalResolveOperation.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m tests/unit/heartbeatAgentConfig.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m tests/unit/taskGatewayClient.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m tests/unit/standupStore.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m tests/unit/mutationLifecycleWorkflow.integration.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/navigation.diagonalCorner.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m tests/unit/mutationLifecycleWorkflow.lifecycle.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/unit/mutationLifecycleWorkflow.create.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m tests/unit/agentStateExecutor.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m tests/unit/settingsRouteWorkflow.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalControlLoopWorkflow.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m tests/unit/pendingExecApprovalsStore.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/messageExtract.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m tests/unit/runtimeEventCoordinatorWorkflow.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m tests/unit/onboardingTypes.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m tests/unit/packagedSkills.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m tests/unit/deskMonitor.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m tests/unit/skillTriggers.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/heartbeatGatewayClient.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayModelsPolicy.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayExecApprovals.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalRuntimeCoordinator.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m tests/unit/fleetLifecycleWorkflow.integration.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/extractThinking.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/chatInteractionWorkflow.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m tests/unit/skillsRemoveExecutor.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayEventIngressWorkflow.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/runtimeTerminalWorkflow.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/cronSelectors.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/store.transcript-upsert.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/agentFilesBootstrap.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalLifecycleWorkflow.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/agentPermissionsRoleHelpers.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/fetchJson.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m tests/unit/runtimeEventPolicy.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayConnectRetryPolicy.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m tests/unit/personalityBuilder.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/agentSettingsMutationWorkflow.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalRunControlWorkflow.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/runtimeSyncControlWorkflow.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalEvents.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/studioBootstrapWorkflow.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/janitorActors.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m tests/unit/historyLifecycleWorkflow.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayConfigSyncWorkflow.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayClient.gap.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/unit/studioDeskAssignments.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewaySshTarget.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/unit/janitorReset.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m tests/unit/latestUpdateWorkflow.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayClient.reconnect-recovery.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m tests/unit/createAgentBootstrapWorkflow.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/unit/fleetLifecycleWorkflow.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayClient.connectErrors.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/uuid.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/unit/multiavatar.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/unit/mediaMarkdown.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/unit/lifecycleControllerWorkflow.integration.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m tests/unit/voiceTranscription.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m tests/unit/browserPreview.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m tests/unit/livePatchQueue.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m tests/unit/configMutationGatePolicy.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayRestartPolicy.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m tests/unit/colorSemantics.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m tests/unit/execApprovalPausePolicy.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m tests/unit/sessionKey.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m tests/unit/packageManifest.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m tests/unit/runSshJson.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/unit/rafBatcher.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m tests/unit/messageHelpers.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/unit/gatewayFrames.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/unit/scrollNearBottom.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m tests/unit/worktreeHelpers.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m tests/unit/settingsSidebarTabs.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [2m[90m↓[39m[22m tests/unit/demoGatewayAdapter.test.ts [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 4 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/unit/gatewayBrowserClient.test.ts[2m > [22mGatewayBrowserClient[2m > [22msends connect when connect.challenge arrives
+[31m[1mAssertionError[22m: expected [] to have a length of 1 but got +0[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 1[39m
+[31m+ 0[39m
+
+[36m [2m❯[22m tests/unit/gatewayBrowserClient.test.ts:[2m107:32[22m[39m
+    [90m105| [39m    [35mawait[39m vi[33m.[39m[34mrunAllTicks[39m()[33m;[39m
+    [90m106| [39m
+    [90m107| [39m    [34mexpect[39m([33mMockWebSocket[39m[33m.[39msent)[33m.[39m[34mtoHaveLength[39m([34m1[39m)[33m;[39m
+    [90m   | [39m                               [31m^[39m
+    [90m108| [39m    [35mconst[39m frame [33m=[39m [33mJSON[39m[33m.[39m[34mparse[39m([33mMockWebSocket[39m[33m.[39msent[[34m0[39m] [33m??[39m [32m"{}"[39m)[33m;[39m
+    [90m109| [39m    [34mexpect[39m(frame[33m.[39mtype)[33m.[39m[34mtoBe[39m([32m"req"[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/gatewayBrowserClient.test.ts[2m > [22mGatewayBrowserClient[2m > [22mtruncates connect-failed close reason to websocket limit
+[31m[1mAssertionError[22m: expected '' to match /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3…/i[39m
+
+[32m- Expected:[39m 
+/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+
+[31m+ Received:[39m 
+""
+
+[36m [2m❯[22m tests/unit/gatewayBrowserClient.test.ts:[2m137:23[22m[39m
+    [90m135| [39m    [35mconst[39m connectFrame [33m=[39m [33mJSON[39m[33m.[39m[34mparse[39m([33mMockWebSocket[39m[33m.[39msent[[34m0[39m] [33m??[39m [32m"{}"[39m)[33m;[39m
+    [90m136| [39m    [35mconst[39m connectId [33m=[39m [33mString[39m(connectFrame[33m.[39mid [33m??[39m [32m""[39m)[33m;[39m
+    [90m137| [39m    [34mexpect[39m(connectId)[33m.[39m[34mtoMatch[39m([33mUUID_V4_RE[39m)[33m;[39m
+    [90m   | [39m                      [31m^[39m
+    [90m138| [39m
+    [90m139| [39m    ws[33m.[39m[34monmessage[39m[33m?.[39m({
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/taskBoardView.test.ts[2m > [22mTaskBoardView[2m > [22mroutes task edits through callbacks
+[31m[1mAssertionError[22m: expected "vi.fn()" to be called 1 times, but got 2 times[39m
+[36m [2m❯[22m tests/unit/taskBoardView.test.ts:[2m129:26[22m[39m
+    [90m127| [39m    fireEvent.click(screen.getByRole("button", { name: /delete task/i …
+    [90m128| [39m
+    [90m129| [39m    [34mexpect[39m(onCreateCard)[33m.[39m[34mtoHaveBeenCalledTimes[39m([34m1[39m)[33m;[39m
+    [90m   | [39m                         [31m^[39m
+    [90m130| [39m    [34mexpect[39m(onRefreshCronJobs)[33m.[39m[34mtoHaveBeenCalledTimes[39m([34m1[39m)[33m;[39m
+    [90m131| [39m    [34mexpect[39m(onSelectCard)[33m.[39m[34mtoHaveBeenCalledWith[39m([32m"task-1"[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/unit/useGatewayConnection.test.ts[2m > [22museGatewayConnection[2m > [22mloads_and_persists_selected_adapter_type
+[31m[1mAssertionError[22m: expected [ { gateway: { …(4) } }, …(1) ] to deeply equal [][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   {[39m
+[31m+     "gateway": {[39m
+[31m+       "adapterType": "hermes",[39m
+[31m+       "profiles": {[39m
+[31m+         "hermes": {[39m
+[31m+           "token": "",[39m
+[31m+           "tokenConfigured": false,[39m
+[31m+           "url": "ws://localhost:18789",[39m
+[31m+         },[39m
+[31m+       },[39m
+[31m+       "token": "",[39m
+[31m+       "url": "ws://localhost:18789",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   {[39m
+[31m+     "gateway": {[39m
+[31m+       "adapterType": "hermes",[39m
+[31m+       "profiles": {[39m
+[31m+         "hermes": {[39m
+[31m+           "token": "",[39m
+[31m+           "tokenConfigured": false,[39m
+[31m+           "url": "ws://localhost:18789",[39m
+[31m+         },[39m
+[31m+       },[39m
+[31m+       "token": "",[39m
+[31m+       "url": "ws://localhost:18789",[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+ ][39m
+
+[36m [2m❯[22m tests/unit/useGatewayConnection.test.ts:[2m537:21[22m[39m
+    [90m535| [39m      expect(screen.getByTestId("activeAdapterType")).toHaveTextConten…
+    [90m536| [39m    })[33m;[39m
+    [90m537| [39m    [34mexpect[39m(patches)[33m.[39m[34mtoEqual[39m([])[33m;[39m
+    [90m   | [39m                    [31m^[39m
+    [90m538| [39m  })[33m;[39m
+    [90m539| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m163 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (167)[39m
+[2m      Tests [22m [1m[31m4 failed[39m[22m[2m | [22m[1m[32m1013 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (1018)[39m
+[2m   Start at [22m 09:19:07
+[2m   Duration [22m 192.15s[2m (transform 13.49s, setup 68.25s, import 42.15s, tests 34.03s, environment 332.82s)[22m
+
