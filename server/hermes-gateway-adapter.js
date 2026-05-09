@@ -890,6 +890,7 @@ async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _r
     };
   }
 
+  return { textContent, toolCalls, finishReason };
 }
 
 /**

@@ -322,7 +322,6 @@ class DataEngine {
   }
 
 
-
   async getPropertyStatus(id) {
     try {
       const rs = await this.executeQuery(`SELECT status FROM properties WHERE id = ?`, [id]);
