@@ -723,6 +723,7 @@ async function completeOneTurn(messages, model, tools, _retryCount = 0) {
  * @returns {{ textContent: string, toolCalls: Array<{id,name,args}>, finishReason: string }}
  */
 async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _retryCount = 0) {
+  console.log(`[DEBUG] streamOneTurn START: model=${model}, retry=${_retryCount}`);
   // Reset to primary provider (Groq) at the start of each new request
   if (_retryCount === 0) {
     const primaryUrl = (process.env.HERMES_API_URL || "https://api.groq.com/openai").replace(/\/+$/, "").replace(/\/v1$/, "");
@@ -890,6 +891,7 @@ async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _r
     };
   }
 
+  console.log(`[DEBUG] streamOneTurn END: returning text(${textContent?.length || 0}), tools(${toolCalls?.length || 0})`);
   return { textContent, toolCalls, finishReason };
 }
 
@@ -2256,9 +2258,18 @@ async function runAgenticLoop({ sessionKey, agentId, userMessage, model, tools, 
     const supportsOfficialTools = !model.includes("8b-instant") || model.includes("70b");
     const activeTools = supportsOfficialTools ? tools : [];
 
-    let { textContent, toolCalls, finishReason } = await streamOneTurn(
-      messages, model, activeTools, emitDelta, abortCheck
-    );
+    let result;
+    try {
+      result = await streamOneTurn(messages, model, activeTools, emitDelta, abortCheck);
+      if (!result) {
+        throw new Error("streamOneTurn returned UNDEFINED/NULL");
+      }
+    } catch (err) {
+      console.error("[AgenticLoop] CRITICAL: streamOneTurn failed:", err.message);
+      throw err;
+    }
+
+    let { textContent, toolCalls, finishReason } = result;
 
     // Início: Universal Tool Fallback Parser (Interceptor Proativo) - DESATIVADO PARA EVITAR CONFLITO DE PERSONA
     /*
