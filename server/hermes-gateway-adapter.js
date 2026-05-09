@@ -602,11 +602,19 @@ function sanitizeErrorMessage(error) {
 
 function extractOpenAiStyleError(payload, fallbackMessage) {
   if (payload && typeof payload === "object") {
+    // Check various formats
     const message =
-      typeof payload?.error?.message === "string"
-        ? payload.error.message.trim()
-        : "";
-    if (message) return message;
+      payload?.error?.message || 
+      payload?.message ||
+      (typeof payload?.error === "string" ? payload.error : "");
+    
+    if (message) {
+      const msgStr = String(message).toLowerCase();
+      if (msgStr.includes("balance") || msgStr.includes("credit") || msgStr.includes("billing") || msgStr.includes("insufficient")) {
+        return `SISTEMA SEM CRÉDITOS: ${message}`;
+      }
+      return String(message).trim();
+    }
   }
   return fallbackMessage;
 }
@@ -883,16 +891,23 @@ async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _r
   });
 
   if (!textContent.trim() && toolCalls.length === 0 && finishReason === "stop") {
-    const fallback = await completeOneTurn(messages, resolvedModel, tools);
+    const fallback = await completeOneTurn(messages, resolvedModel, tools).catch(e => {
+        console.error("[streamOneTurn] Fallback failed:", e.message);
+        return { textContent: `ERRO DE CONEXÃO (CRÉDITOS?): ${e.message}`, toolCalls: [], finishReason: "stop" };
+    });
     return {
-      textContent: fallback.textContent,
-      toolCalls: fallback.toolCalls,
-      finishReason: fallback.finishReason,
+      textContent: fallback.textContent || "",
+      toolCalls: fallback.toolCalls || [],
+      finishReason: fallback.finishReason || "stop",
     };
   }
 
   console.log(`[DEBUG] streamOneTurn END: returning text(${textContent?.length || 0}), tools(${toolCalls?.length || 0})`);
-  return { textContent, toolCalls, finishReason };
+  return { 
+    textContent: textContent || "", 
+    toolCalls: toolCalls || [], 
+    finishReason: finishReason || "stop" 
+  };
 }
 
 /**
