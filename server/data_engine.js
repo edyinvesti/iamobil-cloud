@@ -5,10 +5,11 @@ const { createClient } = require('@libsql/client');
 
 class DataEngine {
   constructor() {
-    this.leadsPath = path.join(process.cwd(), "data", "LEADS.md");
-    this.dbPath = path.join(process.cwd(), "data", "iamobil.db");
-    if (!fs.existsSync(path.join(process.cwd(), "data"))) {
-      fs.mkdirSync(path.join(process.cwd(), "data"), { recursive: true });
+    this.leadsPath = path.join(__dirname, "..", "data", "LEADS.md");
+    this.dbPath = path.join(__dirname, "..", "data", "iamobil.db");
+    const dataDir = path.join(__dirname, "..", "data");
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
     }
     this.dbClient = null;
     this.db = null;
@@ -178,6 +179,15 @@ class DataEngine {
         lastActive TEXT
       )
     `);
+
+    await this.executeQuery(`
+      CREATE TABLE IF NOT EXISTS pending_sync (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        operation TEXT,
+        data TEXT,
+        timestamp TEXT
+      )
+    `);
   }
 
   calculateNeuroScore(data) {
@@ -268,30 +278,93 @@ class DataEngine {
   }
 
   async savePartnerProperty(data) {
+    const propertyId = data.id || `prop_${Date.now()}`;
+    const receivedAt = data.receivedAt || new Date().toISOString();
+    
+    // Tenta salvar na nuvem primeiro (Turso)
+    let cloudSuccess = false;
+    await this.checkClient();
+    
+    if (this.dbClient) {
+      try {
+        await this.executeQuery(
+          `INSERT INTO properties (id, title, price, bedrooms, bathrooms, area, location, description, imagePath, images, brokerName, brokerCreci, suites, livingRooms, kitchens, parkingSpaces, status, receivedAt, aiDescription, zipCode, neighborhood, city, state, streetNumber, complement, sizeUnit) 
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+           ON CONFLICT(id) DO UPDATE SET
+           title=excluded.title, price=excluded.price, status=excluded.status, 
+           bedrooms=excluded.bedrooms, bathrooms=excluded.bathrooms, suites=excluded.suites, 
+           livingRooms=excluded.livingRooms, kitchens=excluded.kitchens, parkingSpaces=excluded.parkingSpaces,
+           location=excluded.location, description=excluded.description, images=excluded.images,
+           zipCode=excluded.zipCode, neighborhood=excluded.neighborhood, city=excluded.city, state=excluded.state, streetNumber=excluded.streetNumber, complement=excluded.complement, sizeUnit=excluded.sizeUnit`,
+          [
+            propertyId, data.title, data.price, data.bedrooms || 0, data.bathrooms || 0, 
+            data.size || 0, data.address || "", data.description || "", data.imagePath || "", 
+            JSON.stringify(data.images || []), data.brokerName || "", data.brokerCreci || "", 
+            data.suites || 0, data.livingRooms || 0, data.kitchens || 0, data.parkingSpaces || 0,
+            data.remoteStatus || data.status || "pending", receivedAt, data.aiDescription || "",
+            data.zipCode || "", data.neighborhood || "", data.city || "", data.state || "", data.streetNumber || "", data.complement || "",
+            data.sizeUnit || 'm²'
+          ]
+        );
+        cloudSuccess = true;
+        console.log(`☁️ [Data Engine] Imóvel ${propertyId} salvo na nuvem.`);
+      } catch (err) {
+        console.warn(`⚠️ [Data Engine] Falha ao salvar na nuvem, enfileirando localmente: ${err.message}`);
+        // Se falhar na nuvem, marca para sincronia futura
+        await this.queueForSync('saveProperty', data);
+      }
+    }
+
+    // Salva sempre no SQLite local como cache/contingência
     try {
-      await this.executeQuery(
-        `INSERT INTO properties (id, title, price, bedrooms, bathrooms, area, location, description, imagePath, images, brokerName, brokerCreci, suites, livingRooms, kitchens, parkingSpaces, status, receivedAt, aiDescription, zipCode, neighborhood, city, state, streetNumber, complement, sizeUnit) 
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-         ON CONFLICT(id) DO UPDATE SET
-         title=excluded.title, price=excluded.price, status=excluded.status, 
-         bedrooms=excluded.bedrooms, bathrooms=excluded.bathrooms, suites=excluded.suites, 
-         livingRooms=excluded.livingRooms, kitchens=excluded.kitchens, parkingSpaces=excluded.parkingSpaces,
-         location=excluded.location, description=excluded.description, images=excluded.images,
-         zipCode=excluded.zipCode, neighborhood=excluded.neighborhood, city=excluded.city, state=excluded.state, streetNumber=excluded.streetNumber, complement=excluded.complement, sizeUnit=excluded.sizeUnit`,
-        [
-          data.id, data.title, data.price, data.bedrooms || 0, data.bathrooms || 0, 
-          data.size || 0, data.address || "", data.description || "", data.imagePath || "", 
-          JSON.stringify(data.images || []), data.brokerName || "", data.brokerCreci || "", 
-          data.suites || 0, data.livingRooms || 0, data.kitchens || 0, data.parkingSpaces || 0,
-          data.remoteStatus || "pending", data.receivedAt || new Date().toISOString(), data.aiDescription || "",
-          data.zipCode || "", data.neighborhood || "", data.city || "", data.state || "", data.streetNumber || "", data.complement || "",
-          data.sizeUnit || 'm²'
-        ]
-      );
-      return { ok: true };
+      const localDB = new sqlite3.Database(this.dbPath);
+      const sql = `INSERT INTO properties (id, title, price, bedrooms, bathrooms, area, location, description, imagePath, images, brokerName, brokerCreci, suites, livingRooms, kitchens, parkingSpaces, status, receivedAt, aiDescription, zipCode, neighborhood, city, state, streetNumber, complement, sizeUnit) 
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                   ON CONFLICT(id) DO UPDATE SET
+                   title=excluded.title, price=excluded.price, status=excluded.status, 
+                   bedrooms=excluded.bedrooms, bathrooms=excluded.bathrooms, suites=excluded.suites`;
+      
+      const params = [
+        propertyId, data.title, data.price, data.bedrooms || 0, data.bathrooms || 0, 
+        data.size || 0, data.address || "", data.description || "", data.imagePath || "", 
+        JSON.stringify(data.images || []), data.brokerName || "", data.brokerCreci || "", 
+        data.suites || 0, data.livingRooms || 0, data.kitchens || 0, data.parkingSpaces || 0,
+        data.remoteStatus || data.status || "pending", receivedAt, data.aiDescription || "",
+        data.zipCode || "", data.neighborhood || "", data.city || "", data.state || "", data.streetNumber || "", data.complement || "",
+        data.sizeUnit || 'm²'
+      ];
+
+      await new Promise((resolve, reject) => {
+        localDB.run(sql, params, (err) => {
+          localDB.close();
+          if (err) reject(err);
+          else resolve();
+        });
+      });
+      return { ok: true, id: propertyId, cloud: cloudSuccess };
     } catch (err) {
-      console.error("[DataEngine] Property DB Error:", err.message);
-      return { ok: false, error: err.message };
+      console.error("[DataEngine] Local Cache Error:", err.message);
+      return { ok: cloudSuccess, id: propertyId, cloud: cloudSuccess, error: err.message };
+    }
+  }
+
+  async queueForSync(operation, data) {
+    try {
+      const localDB = new sqlite3.Database(this.dbPath);
+      await new Promise((resolve, reject) => {
+        localDB.run(
+          `INSERT INTO pending_sync (operation, data, timestamp) VALUES (?, ?, ?)`,
+          [operation, JSON.stringify(data), new Date().toISOString()],
+          (err) => {
+            localDB.close();
+            if (err) reject(err);
+            else resolve();
+          }
+        );
+      });
+      console.log(`📂 [Data Engine] Operação ${operation} enfileirada no SQLite.`);
+    } catch (err) {
+      console.error("[DataEngine] Sync Queue Error:", err.message);
     }
   }
 
@@ -321,6 +394,68 @@ class DataEngine {
     }
   }
 
+  async syncPendingToCloud() {
+    await this.checkClient();
+    if (!this.dbClient) return { ok: false, msg: "Nuvem indisponível" };
+    if (this.isSyncing) return { ok: false, msg: "Sincronia em andamento" };
+
+    this.isSyncing = true;
+    try {
+      const localDB = new sqlite3.Database(this.dbPath);
+      const pending = await new Promise((resolve, reject) => {
+        localDB.all(`SELECT * FROM pending_sync ORDER BY id ASC`, [], (err, rows) => {
+          if (err) reject(err);
+          else resolve(rows || []);
+        });
+      });
+
+      if (!pending || pending.length === 0) {
+        this.isSyncing = false;
+        localDB.close();
+        return { ok: true, msg: "Nada para sincronizar" };
+      }
+
+      console.log(`🔄 [Data Engine] Sincronizando ${pending.length} operação(ões) pendente(s) com a nuvem...`);
+
+      for (const item of pending) {
+        const data = JSON.parse(item.data);
+        try {
+          if (item.operation === 'saveProperty') {
+            await this.executeQuery(
+              `INSERT INTO properties (id, title, price, bedrooms, bathrooms, area, location, description, imagePath, images, brokerName, brokerCreci, suites, livingRooms, kitchens, parkingSpaces, status, receivedAt, aiDescription, zipCode, neighborhood, city, state, streetNumber, complement, sizeUnit) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+               ON CONFLICT(id) DO UPDATE SET
+               title=excluded.title, price=excluded.price, status=excluded.status, 
+               bedrooms=excluded.bedrooms, bathrooms=excluded.bathrooms, suites=excluded.suites`,
+              [
+                data.id, data.title, data.price, data.bedrooms || 0, data.bathrooms || 0, 
+                data.size || 0, data.address || "", data.description || "", data.imagePath || "", 
+                JSON.stringify(data.images || []), data.brokerName || "", data.brokerCreci || "", 
+                data.suites || 0, data.livingRooms || 0, data.kitchens || 0, data.parkingSpaces || 0,
+                data.remoteStatus || data.status || "pending", data.receivedAt, data.aiDescription || "",
+                data.zipCode || "", data.neighborhood || "", data.city || "", data.state || "", data.streetNumber || "", data.complement || "",
+                data.sizeUnit || 'm²'
+              ]
+            );
+          }
+          await new Promise((resolve) => {
+            localDB.run(`DELETE FROM pending_sync WHERE id = ?`, [item.id], () => resolve());
+          });
+          console.log(`✅ [Data Engine] Item ${item.id} sincronizado.`);
+        } catch (err) {
+          console.error(`❌ [Data Engine] Erro no item ${item.id}:`, err.message);
+          if (err.message.includes('connect') || err.message.includes('fetch')) break;
+        }
+      }
+      localDB.close();
+      this.isSyncing = false;
+      return { ok: true };
+    } catch (err) {
+      this.isSyncing = false;
+      console.error("[DataEngine] syncPendingToCloud Error:", err.message);
+      return { ok: false, error: err.message };
+    }
+  }
 
   async getPropertyStatus(id) {
     try {

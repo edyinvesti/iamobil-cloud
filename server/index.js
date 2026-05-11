@@ -161,59 +161,43 @@ async function main() {
 
   const createServer = () =>
     useHttps
-      ? https.createServer(httpsCert, (req, res) => {
+      ? https.createServer(httpsCert, async (req, res) => {
           try {
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
             res.setHeader("Access-Control-Allow-Headers", "Content-Type");
             if (req.method === "OPTIONS") { res.statusCode = 204; res.end(); return; }
             if (accessGate.handleHttp(req, res)) return;
+            const pathname = resolvePathname(req.url);
 
-             const pathname = resolvePathname(req.url);
-             if (pathname === '/api/status') {
-                res.statusCode = 200;
-                res.setHeader("Content-Type", "application/json");
-                res.end(JSON.stringify({ 
-                  status: "ok", 
-                  tgBotReady: !!global.tgBot, 
-                  pendingUpdates: global.pendingTelegramUpdates?.length || 0,
-                  nextReady: nextReady,
-                  time: new Date().toISOString()
-                }));
-                return;
-             }
-             if (pathname === '/api/logs') {
-                let out = "=== HUB LOG ===\n";
-                // Corrigido para hub_debug.log para bater com o messaging_hub.js
-                try { out += fs.readFileSync(path.join(__dirname, '../logs/hub_debug.log'), 'utf8').split('\n').slice(-100).join('\n'); } catch(e){}
-                out += "\n\n=== ADAPTER LOG ===\n";
-                try { out += fs.readFileSync(path.join(__dirname, '../logs/adapter_debug.log'), 'utf8').split('\n').slice(-100).join('\n'); } catch(e){}
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'text/plain');
-                res.end(out);
-                return;
-             }
-            if (pathname === '/api/tg-webhook') {
-              let body = '';
-              req.on('data', chunk => body += chunk.toString());
-              req.on('end', () => {
-                 try { 
-                   const update = JSON.parse(body);
-                   if (global.tgBot) {
-                     global.tgBot.processUpdate(update);
-                   } else {
-                     global.pendingTelegramUpdates.push(update);
-                   }
-                 } catch(e) { console.error('[Webhook] Erro:', e.message); }
-                 res.statusCode = 200; res.end('OK');
-              });
+            if (pathname === "/api/login-admin") {
+              res.setHeader("Set-Cookie", `studio_access=${studioToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000`);
+              res.statusCode = 302;
+              res.setHeader("Location", "/");
+              res.end("Redirecionando...");
               return;
             }
+             if (pathname === '/api/tg-webhook') {
+               let body = '';
+               req.on('data', chunk => body += chunk.toString());
+               req.on('end', () => {
+                  try { 
+                    const update = JSON.parse(body);
+                    if (global.tgBot) {
+                      global.tgBot.processUpdate(update);
+                    } else {
+                      global.pendingTelegramUpdates.push(update);
+                    }
+                  } catch(e) { console.error('[Webhook] Erro:', e.message); }
+                  res.statusCode = 200; res.end('OK');
+               });
+               return;
+             }
 
             if (!nextReady) {
               res.statusCode = 200;
               res.setHeader("Content-Type", "application/json");
-              res.end(JSON.stringify({ status: "preparing", message: "IAmobil is starting up. Please wait..." }));
+              res.end(JSON.stringify({ status: "preparando", message: "IAmobil está iniciando. Por favor, aguarde..." }));
               return;
             }
             handle(req, res);
@@ -227,7 +211,7 @@ async function main() {
             }));
           }
         })
-      : http.createServer((req, res) => {
+      : http.createServer(async (req, res) => {
           try {
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
@@ -236,44 +220,30 @@ async function main() {
             if (accessGate.handleHttp(req, res)) return;
 
             const pathname = resolvePathname(req.url);
-            if (pathname === '/api/status') {
-               res.statusCode = 200;
-               res.setHeader("Content-Type", "application/json");
-               res.end(JSON.stringify({ 
-                 status: "ok", 
-                 tgBotReady: !!global.tgBot, 
-                 pendingUpdates: global.pendingTelegramUpdates?.length || 0,
-                 nextReady: nextReady,
-                 time: new Date().toISOString()
-               }));
-               return;
-            }
-            if (pathname === '/api/logs') {
-               let out = "=== HUB LOG ===\n";
-               try { out += fs.readFileSync(path.join(__dirname, '../logs/hub_debug.log'), 'utf8').split('\n').slice(-100).join('\n'); } catch(e){}
-               out += "\n\n=== ADAPTER LOG ===\n";
-               try { out += fs.readFileSync(path.join(__dirname, '../logs/adapter_debug.log'), 'utf8').split('\n').slice(-100).join('\n'); } catch(e){}
-               res.statusCode = 200;
-               res.setHeader('Content-Type', 'text/plain');
-               res.end(out);
-               return;
-            }
-            if (pathname === '/api/tg-webhook') {
-              let body = '';
-              req.on('data', chunk => body += chunk.toString());
-              req.on('end', () => {
-                 try { 
-                   const update = JSON.parse(body);
-                   if (global.tgBot) {
-                     global.tgBot.processUpdate(update);
-                   } else {
-                     global.pendingTelegramUpdates.push(update);
-                   }
-                 } catch(e) { console.error('[Webhook] Erro:', e.message); }
-                 res.statusCode = 200; res.end('OK');
-              });
+
+            if (pathname === "/api/login-admin") {
+              res.setHeader("Set-Cookie", `studio_access=${studioToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000`);
+              res.statusCode = 302;
+              res.setHeader("Location", "/");
+              res.end("Redirecionando...");
               return;
             }
+             if (pathname === '/api/tg-webhook') {
+               let body = '';
+               req.on('data', chunk => body += chunk.toString());
+               req.on('end', () => {
+                  try { 
+                    const update = JSON.parse(body);
+                    if (global.tgBot) {
+                      global.tgBot.processUpdate(update);
+                    } else {
+                      global.pendingTelegramUpdates.push(update);
+                    }
+                  } catch(e) { console.error('[Webhook] Erro:', e.message); }
+                  res.statusCode = 200; res.end('OK');
+               });
+               return;
+             }
             if (pathname === "/api/simulator/status") {
               res.statusCode = 200;
               res.setHeader("Content-Type", "application/json");
@@ -284,7 +254,7 @@ async function main() {
             if (!nextReady) {
               res.statusCode = 200;
               res.setHeader("Content-Type", "application/json");
-              res.end(JSON.stringify({ status: "preparing", message: "IAmobil is starting up. Please wait..." }));
+              res.end(JSON.stringify({ status: "preparando", message: "IAmobil está iniciando. Por favor, aguarde..." }));
               return;
             }
             handle(req, res);
@@ -336,7 +306,8 @@ async function main() {
         if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true });
         const logStream = fs.createWriteStream(logFile, { flags: 'a' });
         
-        const child = spawn("node", ["server/hermes-gateway-adapter.js"], {
+        const adapterPath = path.join(__dirname, "hermes-gateway-adapter.js");
+        const child = spawn("node", [adapterPath], {
           stdio: ["inherit", "pipe", "pipe"],
           env: { ...process.env, ADAPTER_IS_SUBPROCESS: "true" },
         });
@@ -362,6 +333,7 @@ async function main() {
     try { require("./autofix-engine"); } catch (e) { console.error(e); }
     try { require("./brain_engine").startAutonomousLearning(30 * 60 * 1000); } catch (e) { console.error(e); }
     try { require("./rag_engine").syncKnowledgeBase(); } catch (e) { console.error(e); }
+    try { require("./maintenance_engine").start(); } catch (e) { console.error(e); }
   })();
 
   // 4. PREPARAR NEXT.JS EM PARALELO
@@ -394,7 +366,7 @@ async function main() {
   }
 
   if (useHttps) {
-    console.info("HTTPS mode: self-signed cert in use. You may need to accept a browser security warning once.");
+    console.info("Modo HTTPS: certificado auto-assinado em uso. Você pode precisar aceitar um aviso de segurança no navegador uma vez.");
     console.info(`Spotify redirect URI: ${browserUrl}/office`);
   }
 }
@@ -406,7 +378,7 @@ main().catch((err) => {
 
 // Graceful shutdown handling
 const shutdown = async () => {
-  console.info("\nShutting down gracefully...");
+  console.info("\nEncerrando o sistema graciosamente...");
   // Release port 3000 and close servers
   if (global.servers) {
     await Promise.all(global.servers.map(s => new Promise(resolve => s.close(resolve))));

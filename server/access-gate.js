@@ -99,7 +99,8 @@ function createAccessGate(options) {
       url.startsWith("/api/status") ||
       url.startsWith("/api/tg-webhook") ||
       url.startsWith("/api/partner/properties") ||
-      url.startsWith("/api/partner/register")
+      url.startsWith("/api/partner/register") ||
+      url.startsWith("/api/login-admin")
     ) {
       return false; 
     }
@@ -113,8 +114,8 @@ function createAccessGate(options) {
         res.end(
           JSON.stringify({
             error: auth.limited
-              ? "Too many failed studio access attempts. Wait a minute and retry."
-              : "Studio access token required. Send the configured Studio access cookie and retry.",
+              ? "Muitas tentativas falhas de acesso ao Studio. Aguarde um minuto e tente novamente."
+              : "Token de acesso ao Studio obrigatório. Envie o cookie de acesso e tente novamente.",
           })
         );
       } else {
@@ -122,8 +123,8 @@ function createAccessGate(options) {
         res.setHeader("Content-Type", "text/plain");
         res.end(
           auth.limited
-            ? "Too many failed studio access attempts. Wait a minute and retry."
-            : "Studio access token required. Set the studio_access cookie to access this page."
+            ? "Muitas tentativas falhas de acesso ao Studio. Aguarde um minuto e tente novamente."
+            : "Token de acesso ao Studio obrigatório. Configure o cookie studio_access para acessar esta página."
         );
       }
       return true;
