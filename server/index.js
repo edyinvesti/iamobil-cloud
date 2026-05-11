@@ -1,48 +1,28 @@
 const http = require("node:http");
-const fs_init = require("node:fs");
-const path_init = require("node:path");
-
-// Carregamento Global de Ambiente para Nuvem (Render Secrets)
-const cloudEnvPath = "/etc/secrets/.env";
-if (process.platform === 'linux') {
-  const exists = fs_init.existsSync(cloudEnvPath);
-  console.log(`🔍 [Cloud-Init] Buscando segredos em: ${cloudEnvPath} | Existe: ${exists ? 'SIM ✅' : 'NÃO ❌'}`);
-  if (exists) {
-    const stats = fs_init.statSync(cloudEnvPath);
-    console.log(`🔍 [Cloud-Init] Tamanho do .env: ${stats.size} bytes`);
-    require('dotenv').config({ path: cloudEnvPath });
-  } else {
-    require('dotenv').config();
-  }
-} else {
-  require('dotenv').config();
-}
-const envKeysDetected = Object.keys(process.env);
-console.log(`📡 [Env] Chaves no process.env: ${envKeysDetected.filter(k => k.match(/KEY|TOKEN|URL|ID/)).join(", ")}`);
 const https = require("node:https");
 const net = require("node:net");
+const fs = require("node:fs");
+const path = require("node:path");
+const { spawn } = require("child_process");
 const next = require("next");
+const { parse } = require("url");
+
+// Carregamento de Ambiente
+require('dotenv').config();
+const cloudEnvPath = "/etc/secrets/.env";
+if (fs.existsSync(cloudEnvPath)) {
+  require('dotenv').config({ path: cloudEnvPath });
+}
 
 const { createAccessGate } = require("./access-gate");
 const { createGatewayProxy } = require("./gateway-proxy");
 const { assertPublicHostAllowed, resolveHosts } = require("./network-policy");
-const { loadUpstreamGatewaySettings } = require("./studio-settings");
 const simulatorManager = require("./simulator-manager");
-const { spawn } = require("child_process");
 const radarEngine = require("./radar_engine");
-const fs = require("node:fs");
-const path = require("node:path");
-
-// Buffer para updates do Telegram que chegam antes do tgBot inicializar
-global.pendingTelegramUpdates = [];
-global.tgBot = null;
-
 
 const resolvePort = () => {
-  const raw = process.env.PORT?.trim() || "3000";
-  const port = Number(raw);
-  if (!Number.isFinite(port) || port <= 0) return 3000;
-  return port;
+  const p = Number(process.env.PORT || "3000");
+  return Number.isFinite(p) && p > 0 ? p : 3000;
 };
 
 const resolvePathname = (url) => {
@@ -51,352 +31,195 @@ const resolvePathname = (url) => {
   return (idx === -1 ? raw : raw.slice(0, idx)) || "/";
 };
 
-async function waitForPort(port, host = "127.0.0.1", timeout = 15000) {
+async function waitForPort(port, host = "127.0.0.1", timeout = 30000) {
   const start = Date.now();
   while (Date.now() - start < timeout) {
     try {
       await new Promise((resolve, reject) => {
         const socket = net.createConnection(port, host);
-        socket.on("connect", () => {
-          socket.end();
-          resolve();
-        });
-        socket.on("error", (err) => {
-          reject(err);
-        });
+        socket.on("connect", () => { socket.end(); resolve(); });
+        socket.on("error", reject);
       });
       return true;
     } catch (e) {
-      await new Promise((r) => setTimeout(r, 100)); // Polling mais rápido (100ms)
+      await new Promise((r) => setTimeout(r, 200));
     }
   }
   return false;
 }
 
-
-const CERT_DIR = path.join(__dirname, "..", ".certs");
-const CERT_PATH = path.join(CERT_DIR, "localhost.crt");
-const KEY_PATH = path.join(CERT_DIR, "localhost.key");
-
-const generateHttpsCert = async () => {
-  // Re-use a saved cert so the browser only needs to trust it once.
-  if (fs.existsSync(CERT_PATH) && fs.existsSync(KEY_PATH)) {
-    return {
-      key: fs.readFileSync(KEY_PATH, "utf8"),
-      cert: fs.readFileSync(CERT_PATH, "utf8"),
-    };
-  }
-
-  const selfsigned = require("selfsigned");
-  const attrs = [{ name: "commonName", value: "localhost" }];
-  const pems = await selfsigned.generate(attrs, {
-    days: 825,
-    keySize: 2048,
-    algorithm: "sha256",
-    extensions: [
-      {
-        name: "subjectAltName",
-        altNames: [
-          { type: 2, value: "localhost" },
-          { type: 7, ip: "127.0.0.1" },
-        ],
-      },
-    ],
-  });
-
-  fs.mkdirSync(CERT_DIR, { recursive: true });
-  fs.writeFileSync(CERT_PATH, pems.cert);
-  fs.writeFileSync(KEY_PATH, pems.private);
-
-  console.info(`\nCert saved to ${CERT_DIR}`);
-  console.info("To make browsers trust it (macOS), run:");
-  console.info(`  sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain "${CERT_PATH}"\n`);
-
-  return { key: pems.private, cert: pems.cert };
-};
-
 async function main() {
   const dev = process.argv.includes("--dev");
-  const useHttps = process.argv.includes("--https") || process.env.HTTPS === "true";
-  const hostnames = Array.from(new Set(resolveHosts(process.env)));
-  const hostname = hostnames[0] ?? "127.0.0.1";
+  const useHttps = process.env.HTTPS === "true";
+  const hostnames = resolveHosts(process.env);
   const port = resolvePort();
+  const isRender = process.env.RENDER === "true" || (typeof window === "undefined" && process.env.HOSTNAME?.includes("onrender"));
   
   const studioToken = process.env.STUDIO_ACCESS_TOKEN || "local-dev-bypass";
-  const accessGate = createAccessGate({
-    token: studioToken
-  });
-
-  for (const host of hostnames) {
-    assertPublicHostAllowed({
-      host,
-      studioAccessToken: studioToken,
-    });
-  }
+  const accessGate = createAccessGate({ token: studioToken });
 
   const proxy = createGatewayProxy({
     loadUpstreamSettings: async () => ({
-      url: process.env.CLAW3D_GATEWAY_URL || `ws://127.0.0.1:${process.env.HERMES_ADAPTER_PORT || 18789}`,
+      url: process.env.CLAW3D_GATEWAY_URL || `ws://localhost:18789`,
       token: studioToken,
-      adapterType: process.env.CLAW3D_GATEWAY_ADAPTER_TYPE || "hermes",
+      adapterType: "hermes",
     }),
     log: (msg) => console.log(`[Gateway Proxy] ${msg}`),
     logError: (msg, err) => console.error(`[Gateway Proxy] ${msg}`, err),
-    upstreamHandshakeTimeoutMs: 10000,
+    upstreamHandshakeTimeoutMs: 15000,
   });
 
-  const app = next({
-    dev,
-    hostname,
-    port,
-    ...(dev ? { webpack: true } : null),
-  });
-  let handle = null;
-  let handleUpgrade = null;
+  const app = next({ dev, hostname: "0.0.0.0", port });
+  const handle = app.getRequestHandler();
+  let nextReady = false;
 
-  // 1. Definição do Handler do Servidor
-  const handleServerUpgrade = (req, socket, head) => {
-    if (resolvePathname(req.url) === "/api/gateway/ws") {
+  // --- Handlers Centrais ---
+
+  const requestHandler = async (req, res) => {
+    try {
+      const pathname = resolvePathname(req.url).replace(/\/$/, "") || "/";
+      console.log(`[Request] ${req.method} ${pathname}`);
+
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+      res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+      if (req.method === "OPTIONS") { res.statusCode = 204; res.end(); return; }
+
+      // 1. Diagnóstico Público (Prioridade Máxima)
+      if (pathname === "/api/diagnostics" || pathname === "/api/health" || pathname === "/api/status") {
+        const hermesStatus = await (async () => {
+          return new Promise((resolve) => {
+            const socket = net.createConnection(18789, "127.0.0.1");
+            socket.on("connect", () => { socket.destroy(); resolve("online ✅"); });
+            socket.on("error", (e) => { resolve(`offline ❌ (${e.message})`); });
+            setTimeout(() => { socket.destroy(); resolve("timeout ⏳"); }, 1500);
+          });
+        })();
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({
+          app: "IAmobil Cloud",
+          diagnostics: {
+            gateway_internal: hermesStatus,
+            port: 18789,
+            proxy_target: "ws://localhost:18789"
+          },
+          system: {
+            uptime: Math.floor(process.uptime()),
+            node: process.version,
+            platform: process.platform
+          }
+        }));
+        return;
+      }
+
+      if (pathname === "/api/logs-gateway") {
+        const logFile = path.join(__dirname, "../logs/adapter_debug.log");
+        if (fs.existsSync(logFile)) {
+          const content = fs.readFileSync(logFile, "utf8").split("\n").slice(-200).join("\n");
+          res.setHeader("Content-Type", "text/plain");
+          res.end(content);
+        } else {
+          res.statusCode = 404; res.end("Log not found");
+        }
+        return;
+      }
+
+      // 2. Proteção de Acesso
+      if (accessGate.handleHttp(req, res)) return;
+
+      if (pathname === "/api/login-admin") {
+        res.setHeader("Set-Cookie", `studio_access=${studioToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000`);
+        res.statusCode = 302; res.setHeader("Location", "/");
+        res.end(); return;
+      }
+
+      // 3. Webhooks e Next.js
+      if (!nextReady && pathname !== "/api/status") {
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ status: "preparando", message: "Iniciando IAmobil..." }));
+        return;
+      }
+
+      handle(req, res);
+    } catch (err) {
+      console.error("🔥 [Server Error]", err);
+      res.statusCode = 500; res.end("Internal Server Error");
+    }
+  };
+
+  const handleUpgrade = (req, socket, head) => {
+    const pathname = resolvePathname(req.url);
+    console.log(`[Upgrade] Intent: ${pathname} from ${req.headers.origin || 'unknown'}`);
+    
+    if (pathname === "/api/gateway/ws") {
+      if (!accessGate.allowUpgrade(req)) {
+        console.warn(`[Upgrade] Bloqueado gateway: Não autorizado`);
+        socket.destroy(); return;
+      }
       proxy.handleUpgrade(req, socket, head);
       return;
     }
-    if (handleUpgrade) {
-      handleUpgrade(req, socket, head);
+    
+    if (nextReady) {
+      app.getUpgradeHandler()(req, socket, head);
     } else {
       socket.destroy();
     }
   };
 
-  const httpsCert = useHttps ? await generateHttpsCert() : null;
-  let nextReady = false;
+  // --- Inicialização de Servidores ---
 
-  const createServer = () =>
-    useHttps
-      ? https.createServer(httpsCert, async (req, res) => {
-          try {
-            res.setHeader("Access-Control-Allow-Origin", "*");
-            res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-            res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-            if (req.method === "OPTIONS") { res.statusCode = 204; res.end(); return; }
-            if (accessGate.handleHttp(req, res)) return;
-            const pathname = resolvePathname(req.url);
+  const server = useHttps ? https.createServer({}, requestHandler) : http.createServer(requestHandler);
+  server.on("upgrade", handleUpgrade);
 
-            if (pathname === "/api/login-admin") {
-              res.setHeader("Set-Cookie", `studio_access=${studioToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000`);
-              res.statusCode = 302;
-              res.setHeader("Location", "/");
-              res.end("Redirecionando...");
-              return;
-            }
-             if (pathname === '/api/tg-webhook') {
-               let body = '';
-               req.on('data', chunk => body += chunk.toString());
-               req.on('end', () => {
-                  try { 
-                    const update = JSON.parse(body);
-                    if (global.tgBot) {
-                      global.tgBot.processUpdate(update);
-                    } else {
-                      global.pendingTelegramUpdates.push(update);
-                    }
-                  } catch(e) { console.error('[Webhook] Erro:', e.message); }
-                  res.statusCode = 200; res.end('OK');
-               });
-               return;
-             }
+  server.listen(port, "0.0.0.0", () => {
+    console.info(`✅ [Server] IAmobil rodando em http://0.0.0.0:${port}`);
+  });
 
-            if (!nextReady) {
-              res.statusCode = 200;
-              res.setHeader("Content-Type", "application/json");
-              res.end(JSON.stringify({ status: "preparando", message: "IAmobil está iniciando. Por favor, aguarde..." }));
-              return;
-            }
-            handle(req, res);
-          } catch (err) {
-            console.error("🔥 [Server] Critical Request Error (HTTPS):", err);
-            res.statusCode = 500;
-            res.end(JSON.stringify({ 
-              error: "Internal Server Error (HTTPS)",
-              message: err.message,
-              stack: err.stack
-            }));
-          }
-        })
-      : http.createServer(async (req, res) => {
-          try {
-            res.setHeader("Access-Control-Allow-Origin", "*");
-            res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-            res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-            if (req.method === "OPTIONS") { res.statusCode = 204; res.end(); return; }
-            if (accessGate.handleHttp(req, res)) return;
+  // --- Background Motors ---
 
-            const pathname = resolvePathname(req.url);
-
-            if (pathname === "/api/login-admin") {
-              res.setHeader("Set-Cookie", `studio_access=${studioToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000`);
-              res.statusCode = 302;
-              res.setHeader("Location", "/");
-              res.end("Redirecionando...");
-              return;
-            }
-             if (pathname === '/api/tg-webhook') {
-               let body = '';
-               req.on('data', chunk => body += chunk.toString());
-               req.on('end', () => {
-                  try { 
-                    const update = JSON.parse(body);
-                    if (global.tgBot) {
-                      global.tgBot.processUpdate(update);
-                    } else {
-                      global.pendingTelegramUpdates.push(update);
-                    }
-                  } catch(e) { console.error('[Webhook] Erro:', e.message); }
-                  res.statusCode = 200; res.end('OK');
-               });
-               return;
-             }
-            if (pathname === "/api/simulator/status") {
-              res.statusCode = 200;
-              res.setHeader("Content-Type", "application/json");
-              res.end(JSON.stringify(simulatorManager.getSimulatorStatus()));
-              return;
-            }
-
-
-            if (!nextReady) {
-              res.statusCode = 200;
-              res.setHeader("Content-Type", "application/json");
-              res.end(JSON.stringify({ status: "preparando", message: "IAmobil está iniciando. Por favor, aguarde..." }));
-              return;
-            }
-            handle(req, res);
-          } catch (err) {
-            console.error("🔥 [Server] Critical Request Error (HTTP):", err);
-            res.statusCode = 500;
-            res.end(JSON.stringify({ 
-              error: "Internal Server Error (HTTP)",
-              message: err.message,
-              stack: err.stack
-            }));
-          }
-        });
-
-  // 2. ABRIR PORTA IMEDIATAMENTE (Vital para Render Health Check)
-  const servers = hostnames.map(() => createServer());
-  global.servers = servers;
-  for (const server of servers) {
-    server.on("upgrade", handleServerUpgrade);
-  }
-
-  const listenOnHost = (server, host) =>
-    new Promise((resolve, reject) => {
-      server.listen(port, host, () => resolve());
-      server.once("error", reject);
-    });
-
-  const protocol = useHttps ? "https" : "http";
-  const browserUrl = `${protocol}://0.0.0.0:${port}`;
-
-  console.info(`📡 [Server] [${new Date().toLocaleTimeString()}] Abrindo porta ${port} imediatamente (Health Check)...`);
-  try {
-    await Promise.all(servers.map((server, index) => listenOnHost(server, hostnames[index])));
-    console.info(`✅ [Server] [${new Date().toLocaleTimeString()}] Porta aberta com sucesso!`);
-  } catch (err) {
-    console.error("❌ [Server] Falha fatal ao abrir porta:", err.message);
-    process.exit(1);
-  }
-
-  // 3. INICIAR MOTORES EM BACKGROUND (Não bloqueia o Health Check)
   (async () => {
-    console.info(`🚀 [Server] [${new Date().toLocaleTimeString()}] Iniciando motores secundários...`);
-    
-    // Hermes Adapter
-    try {
-      if (process.env.SKIP_SUBPROCESS !== "true") {
-        const logFile = path.join(__dirname, "../logs/adapter_debug.log");
-        const logDir = path.dirname(logFile);
-        if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true });
-        const logStream = fs.createWriteStream(logFile, { flags: 'a' });
-        
-        const adapterPath = path.join(__dirname, "hermes-gateway-adapter.js");
-        const child = spawn("node", [adapterPath], {
-          stdio: ["inherit", "pipe", "pipe"],
-          env: { ...process.env, ADAPTER_IS_SUBPROCESS: "true" },
-        });
-        
-        child.stdout.pipe(logStream);
-        child.stderr.pipe(logStream);
-        child.stdout.pipe(process.stdout);
-        child.stderr.pipe(process.stderr);
+    const logFile = path.join(__dirname, "../logs/adapter_debug.log");
+    const logDir = path.dirname(logFile);
+    if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true });
+    const logStream = fs.createWriteStream(logFile, { flags: 'a' });
 
-        child.on("error", (err) => console.error("❌ [Server] Erro Hermes:", err.message));
-      }
-    } catch (e) { console.error(e); }
+    const spawnHermes = () => {
+      console.info("🚀 [Subprocess] Iniciando Hermes...");
+      const child = spawn("node", [path.join(__dirname, "hermes-gateway-adapter.js")], {
+        cwd: path.join(__dirname, ".."),
+        env: { ...process.env, ADAPTER_IS_SUBPROCESS: "true" }
+      });
+      child.stdout.pipe(logStream);
+      child.stderr.pipe(logStream);
+      child.on("exit", (code) => {
+        console.error(`❌ [Subprocess] Hermes caiu (code ${code}). Reiniciando em 5s...`);
+        setTimeout(spawnHermes, 5000);
+      });
+    };
 
-    // Messaging Hub
+    spawnHermes();
+
     try {
-      const ready = await waitForPort(18789, "127.0.0.1", 30000);
+      await waitForPort(18789);
       require("./messaging_hub");
-      console.info(`📡 [Server] [${new Date().toLocaleTimeString()}] Messaging Hub conectado.`);
-    } catch (e) { console.error(e); }
-
-    // Outros Motores
-    try { radarEngine.start(); } catch (e) { console.error(e); }
-    try { require("./autofix-engine"); } catch (e) { console.error(e); }
-    try { require("./brain_engine").startAutonomousLearning(30 * 60 * 1000); } catch (e) { console.error(e); }
-    try { require("./rag_engine").syncKnowledgeBase(); } catch (e) { console.error(e); }
-    try { require("./maintenance_engine").start(); } catch (e) { console.error(e); }
+      radarEngine.start();
+      console.info("⚙️ [Motors] Todos os motores em background ativos.");
+    } catch (e) {
+      console.error("❌ [Motors] Falha ao sincronizar motores:", e.message);
+    }
   })();
 
-  // 4. PREPARAR NEXT.JS EM PARALELO
-  console.info(`⚙️ [Server] [${new Date().toLocaleTimeString()}] Preparando Next.js (Cold Start)...`);
+  // --- Build Next.js ---
   try {
     await app.prepare();
-    handle = app.getRequestHandler();
-    handleUpgrade = app.getUpgradeHandler();
     nextReady = true;
-    console.info(`🎉 [Server] [${new Date().toLocaleTimeString()}] Sistema IAmobil Totalmente Pronto!`);
-
-    // 🏓 Self-Ping: mantém o servidor acordado no Render (plano free dorme após 15min)
-    if (process.env.NODE_ENV === 'production') {
-      const selfPingUrl = `http://127.0.0.1:${resolvePort()}/api/status`;
-      setInterval(async () => {
-        try {
-          const mod = require('http');
-          mod.get(selfPingUrl, (res) => {
-            console.info(`🏓 [KeepAlive] Ping OK — status ${res.statusCode}`);
-          }).on('error', (e) => {
-            console.warn(`🏓 [KeepAlive] Ping falhou: ${e.message}`);
-          });
-        } catch (e) {}
-      }, 10 * 60 * 1000); // a cada 10 minutos
-      console.info('🏓 [KeepAlive] Self-ping ativado (a cada 10 min) — servidor não vai dormir.');
-    }
-
+    console.info("🎉 [Next.js] Dashboard Pronto!");
   } catch (err) {
-    console.error("❌ [Server] Falha ao preparar Next.js:", err.message);
-  }
-
-  if (useHttps) {
-    console.info("Modo HTTPS: certificado auto-assinado em uso. Você pode precisar aceitar um aviso de segurança no navegador uma vez.");
-    console.info(`Spotify redirect URI: ${browserUrl}/office`);
+    console.error("❌ [Next.js] Erro no Cold Start:", err);
   }
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exitCode = 1;
-});
-
-// Graceful shutdown handling
-const shutdown = async () => {
-  console.info("\nEncerrando o sistema graciosamente...");
-  // Release port 3000 and close servers
-  if (global.servers) {
-    await Promise.all(global.servers.map(s => new Promise(resolve => s.close(resolve))));
-  }
-  process.exit(0);
-};
-
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
+main().catch(console.error);

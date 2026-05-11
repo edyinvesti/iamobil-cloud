@@ -123,15 +123,10 @@ export const ConnectStep = ({
 
       <div className="space-y-1.5 text-[11px] text-white/40">
         <p>
-          <strong className="text-white/60">Local?</strong> Use{" "}
-          <code className="text-white/50">ws://localhost:18789</code>
+          <strong className="text-white/60">Ajuda Cloud:</strong> Se estiver no Render, use a URL segura <code className="text-white/50">wss://.../api/gateway/ws</code>.
         </p>
         <p>
-          <strong className="text-white/60">Tailscale?</strong> Use{" "}
-          <code className="text-white/50">wss://your-host.ts.net</code>
-        </p>
-        <p>
-          <strong className="text-white/60">Túnel SSH?</strong> Encaminhe a porta 18789 primeiro, depois use localhost.
+          <strong className="text-white/60">Segurança:</strong> A conexão segura (WSS) é obrigatória para acesso remoto.
         </p>
       </div>
     </div>

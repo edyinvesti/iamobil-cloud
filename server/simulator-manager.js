@@ -11,7 +11,7 @@ function startSimulator(options = {}) {
   const port = options.port || 18789;
   const scriptPath = path.join(__dirname, "demo-gateway-adapter.js");
 
-  console.info(`[Simulator] Starting demo gateway on port ${port}...`);
+  console.info(`[Simulador] Iniciando gateway de demonstração na porta ${port}...`);
 
   simulatorProcess = spawn("node", [scriptPath], {
     env: {
@@ -22,12 +22,12 @@ function startSimulator(options = {}) {
   });
 
   simulatorProcess.on("close", (code) => {
-    console.info(`[Simulator] Process exited with code ${code}`);
+    console.info(`[Simulador] Processo encerrado com código ${code}`);
     simulatorProcess = null;
   });
 
   simulatorProcess.on("error", (err) => {
-    console.error("[Simulator] Failed to start:", err);
+    console.error("[Simulador] Falha ao iniciar:", err);
     simulatorProcess = null;
   });
 
@@ -39,7 +39,7 @@ function stopSimulator() {
     return { ok: true, notRunning: true };
   }
 
-  console.info("[Simulator] Stopping simulator...");
+  console.info("[Simulador] Parando simulador...");
   simulatorProcess.kill();
   simulatorProcess = null;
   return { ok: true };

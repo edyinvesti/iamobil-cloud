@@ -22,7 +22,7 @@ services:
       - key: NEXT_PUBLIC_GATEWAY_URL
         value: wss://iamobil-cloud-1.onrender.com/api/gateway/ws
       - key: CLAW3D_GATEWAY_URL
-        value: ws://localhost:18789
+        value: ws://127.0.0.1:18789
       - key: CLAW3D_GATEWAY_TOKEN
         value: local-dev-bypass
       - key: CLAW3D_GATEWAY_ADAPTER_TYPE

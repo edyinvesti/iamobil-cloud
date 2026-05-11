@@ -147,6 +147,9 @@ export const resolveGatewayClientName = (
 export const resolveInitialGatewayAutoConnectDelayMs = (
   adapterType: StudioGatewayAdapterType
 ): number => {
+  if (typeof window !== "undefined" && window.location.hostname.includes("onrender.com")) {
+    return 0; // Instant connection on Cloud
+  }
   switch (adapterType) {
     case "hermes":
     case "demo":
@@ -725,11 +728,20 @@ export const useGatewayConnection = (
   const autoConnectTimerRef = useRef<number | null>(null);
   const wasManualDisconnectRef = useRef(false);
 
-  const [gatewayUrl, setGatewayUrl] = useState(DEFAULT_UPSTREAM_GATEWAY_URL);
+  const isRender = typeof window !== "undefined" && window.location.hostname.includes("onrender.com");
+  
+  const [gatewayUrl, setGatewayUrlState] = useState(() => {
+    const initial = DEFAULT_UPSTREAM_GATEWAY_URL;
+    if (isRender && (initial.includes("localhost") || !initial.trim())) {
+      return `wss://${window.location.hostname}/api/gateway/ws`;
+    }
+    return initial;
+  });
+
   const [token, setToken] = useState("");
   const [tokenConfigured, setTokenConfigured] = useState(false);
   const [selectedAdapterType, setSelectedAdapterTypeState] =
-    useState<StudioGatewayAdapterType>("openclaw");
+    useState<StudioGatewayAdapterType>(() => (isRender ? "hermes" : "openclaw"));
   const [adapterProfiles, setAdapterProfiles] = useState<
     Partial<Record<StudioGatewayAdapterType, { url: string; token: string; tokenConfigured?: boolean }>>
   >({});
@@ -743,6 +755,25 @@ export const useGatewayConnection = (
   const [connectErrorCode, setConnectErrorCode] = useState<string | null>(null);
   const [settingsLoaded, setSettingsLoaded] = useState(false);
   const [hasLastKnownGoodState, setHasLastKnownGoodState] = useState(false);
+
+  const setGatewayUrl = useCallback((url: string) => {
+    if (isRender && url.includes("localhost")) {
+      const cloudUrl = `wss://${window.location.hostname}/api/gateway/ws`;
+      setGatewayUrlState(cloudUrl);
+      setSelectedAdapterTypeState("hermes");
+      return;
+    }
+    setGatewayUrlState(url);
+  }, [isRender]);
+
+  useEffect(() => {
+    if (isRender && (gatewayUrl.includes("localhost") || !gatewayUrl.trim())) {
+      const cloudUrl = `wss://${window.location.hostname}/api/gateway/ws`;
+      setGatewayUrl(cloudUrl);
+      setSelectedAdapterTypeState("hermes");
+      console.log(`[GatewayClient] Ambientes cloud detectado. Forçando gateway Hermes em ${cloudUrl}`);
+    }
+  }, [gatewayUrl, isRender, setGatewayUrl]);
   const setSelectedAdapterType = useCallback(
     (value: StudioGatewayAdapterType) => {
       setSelectedAdapterTypeState(value);
@@ -805,6 +836,7 @@ export const useGatewayConnection = (
                     : "openclaw",
               }
             : null;
+
         // When the user has no saved gateway URL, prefer the runtime
         // localGatewayDefaults (from openclaw.json, CLAW3D_GATEWAY_URL,
         // or detected local Hermes/demo adapter ports)
@@ -1046,9 +1078,14 @@ export const useGatewayConnection = (
   useEffect(() => {
     if (didAutoConnect.current) return;
     if (!settingsLoaded) return;
-    if (!hasLastKnownGoodState) return;
+    
+    // On Render, we auto-connect even without "last known good" state if we have a valid cloud URL
+    const canAutoConnect = isRender ? (gatewayUrl.trim().length > 0) : hasLastKnownGoodState;
+    
+    if (!canAutoConnect) return;
     if (!gatewayUrl.trim()) return;
     if (!isAutoManagedAdapter(selectedAdapterType)) return;
+    
     didAutoConnect.current = true;
     const delayMs = resolveInitialGatewayAutoConnectDelayMs(selectedAdapterType);
     gatewayDebugLog("auto-connect", {

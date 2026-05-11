@@ -97,7 +97,7 @@ export const ConnectionPanel = ({
             type="text"
             value={gatewayUrl}
             onChange={(event) => onGatewayUrlChange(event.target.value)}
-            placeholder="ws://localhost:18789"
+            placeholder="wss://iamobil-cloud-1.onrender.com/api/gateway/ws"
             spellCheck={false}
           />
         </label>

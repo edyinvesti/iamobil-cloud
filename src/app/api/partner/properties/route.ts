@@ -117,7 +117,7 @@ export async function POST(req: Request) {
       propertyId: newProperty.id,
     });
   } catch (error: any) {
-    console.error("Error processing property API:", error);
+    console.error("Erro ao processar API de imóveis:", error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
@@ -139,7 +139,24 @@ export async function GET(req: Request) {
       properties
     });
   } catch (error: any) {
-    console.error("Error fetching properties GET:", error);
+    console.error("Erro ao buscar imóveis (GET):", error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ success: false, error: "ID é obrigatório para deletar." }, { status: 400 });
+    }
+
+    const ok = await dataEngine.deleteProperty(id);
+    return NextResponse.json({ success: ok });
+  } catch (error: any) {
+    console.error("Erro ao deletar imóvel (DELETE):", error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }

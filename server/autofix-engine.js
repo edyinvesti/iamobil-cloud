@@ -3,8 +3,8 @@ const path = require("path");
 const { completeOneTurn, executeToolCall, AGENT_TOOLS } = require("./hermes-gateway-adapter");
 const memoryManager = require("./memory-manager");
 
-const LOG_FILE = path.join(process.cwd(), "server.log");
-const REPAIR_LOG = path.join(process.cwd(), "REPAROS_IA.md");
+const LOG_FILE = path.join(__dirname, "..", "server.log");
+const REPAIR_LOG = path.join(__dirname, "..", "REPAROS_IA.md");
 
 let lastReadSize = 0;
 
@@ -56,7 +56,7 @@ class AutofixEngine {
         await this.triggerRepair(newContent);
       }
     } catch (err) {
-      console.error("[Autofix-Engine] Monitor Error:", err.message);
+      console.error("[Autofix-Engine] Erro no Monitor:", err.message);
     }
   }
 
@@ -115,7 +115,7 @@ Responda com brevidade sobre o que consertou.`;
       
       this.logRepair(errorContext, textContent || "Reparo executado via ferramentas.");
     } catch (err) {
-      console.error("[Autofix-Engine] Repair Trigger Failed:", err.message);
+      console.error("[Autofix-Engine] Falha ao disparar reparo:", err.message);
     }
   }
 

@@ -1,5 +1,5 @@
 "use strict";
-console.log(`[hermes-adapter] BOOTING AT ${new Date().toISOString()} | CWD: ${process.cwd()}`);
+console.log(`[hermes-adapter] INICIANDO EM ${new Date().toISOString()} | CWD: ${process.cwd()}`);
 
 /**
  * Hermes Gateway Adapter — with multi-agent orchestration
@@ -34,6 +34,49 @@ const { takeScreenshot } = require("./screenshot-service");
 const multiposter = require("./multiposter_engine");
 const tokenOptimizer = require("./token_optimizer");
 const { createClient } = require('@libsql/client');
+
+// --- AI Traffic Control (Prevention of 429 Errors) ---------------------------
+class AIQueueManager {
+  constructor(maxConcurrency = 2) {
+    this.queue = [];
+    this.activeCount = 0;
+    this.maxConcurrency = maxConcurrency;
+    this.lastRequestAt = 0;
+    this.minDelayMs = 200; // Reduzido de 500ms para 200ms para maior fluidez
+  }
+
+  async run(taskFn) {
+    return new Promise((resolve, reject) => {
+      this.queue.push(async () => {
+        const now = Date.now();
+        const timeSinceLast = now - this.lastRequestAt;
+        if (timeSinceLast < this.minDelayMs) {
+          await new Promise(r => setTimeout(r, this.minDelayMs - timeSinceLast));
+        }
+        this.lastRequestAt = Date.now();
+        
+        try {
+          const result = await taskFn();
+          resolve(result);
+        } catch (err) {
+          reject(err);
+        } finally {
+          this.activeCount--;
+          this.next();
+        }
+      });
+      this.next();
+    });
+  }
+
+  next() {
+    if (this.activeCount >= this.maxConcurrency || this.queue.length === 0) return;
+    this.activeCount++;
+    const task = this.queue.shift();
+    task();
+  }
+}
+const aiQueue = new AIQueueManager(2); // Máximo de 2 requisições paralelas
 
 function loadDotenvFile(filePath) {
   if (!fs.existsSync(filePath)) return;
@@ -70,10 +113,13 @@ function loadRuntimeEnv() {
 
 loadRuntimeEnv();
 function loadIdentity(folder = "edy") {
-  const agentPath = path.join(process.cwd(), "agents", folder, "IDENTITY.md");
-  const rootPath = path.join(process.cwd(), "IDENTITY.md");
+  const agentPath = path.join(__dirname, "..", "agents", folder, "IDENTITY.md");
+  const rootPath = path.join(__dirname, "..", "IDENTITY.md");
   const finalPath = fs.existsSync(agentPath) ? agentPath : rootPath;
-  if (!fs.existsSync(finalPath)) return "";
+  if (!fs.existsSync(finalPath)) {
+    console.warn(`[hermes-adapter] Identidade não encontrada em: ${finalPath}`);
+    return {};
+  }
   const content = fs.readFileSync(finalPath, "utf8");
   const lines = content.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
   const identity = {};
@@ -109,7 +155,7 @@ async function getEmbedding(text) {
         
         // Se falhar (429 por exemplo) e tivermos Gemini, tentar fallback
         if (geminiKey && (res.status === 429 || res.status >= 500)) {
-          console.warn(`[v6] OpenAI/Groq Embeddings failed (${res.status}). Falling back to Gemini...`);
+          console.warn(`[v6] Falha nos Embeddings OpenAI/Groq (${res.status}). Usando fallback para Gemini...`);
           return getGeminiEmbedding(text);
         }
       } catch (err) {
@@ -168,35 +214,35 @@ async function execSemanticSearch({ query }) {
   });
 }
 function loadSoul(folder = "edy") {
-  const agentPath = path.join(process.cwd(), "agents", folder, "SOUL.md");
-  const rootPath = path.join(process.cwd(), "SOUL.md");
+  const agentPath = path.join(__dirname, "..", "agents", folder, "SOUL.md");
+  const rootPath = path.join(__dirname, "..", "SOUL.md");
   const finalPath = fs.existsSync(agentPath) ? agentPath : rootPath;
   if (!fs.existsSync(finalPath)) return "";
   return fs.readFileSync(finalPath, "utf8");
 }
 function loadAgents(folder = "edy") {
-  const agentPath = path.join(process.cwd(), "agents", folder, "AGENTS.md");
-  const rootPath = path.join(process.cwd(), "AGENTS.md");
+  const agentPath = path.join(__dirname, "..", "agents", folder, "AGENTS.md");
+  const rootPath = path.join(__dirname, "..", "AGENTS.md");
   const finalPath = fs.existsSync(agentPath) ? agentPath : rootPath;
   if (!fs.existsSync(finalPath)) return "";
   return fs.readFileSync(finalPath, "utf8");
 }
 function loadHeartbeat(folder = "edy") {
-  const agentPath = path.join(process.cwd(), "agents", folder, "HEARTBEAT.md");
-  const rootPath = path.join(process.cwd(), "HEARTBEAT.md");
+  const agentPath = path.join(__dirname, "..", "agents", folder, "HEARTBEAT.md");
+  const rootPath = path.join(__dirname, "..", "HEARTBEAT.md");
   const finalPath = fs.existsSync(agentPath) ? agentPath : rootPath;
   if (!fs.existsSync(finalPath)) return "";
   return fs.readFileSync(finalPath, "utf8");
 }
 function loadKnowledgeBase() {
-  const juridicPath = path.join(process.cwd(), "assets", "knowledge_base", "KNOWLEDGE_IMOBILIARIO.md");
-  const ruralPath = path.join(process.cwd(), "assets", "knowledge_base", "RURAL_PORTFOLIO.md");
+  const juridicPath = path.join(__dirname, "..", "assets", "knowledge_base", "KNOWLEDGE_IMOBILIARIO.md");
+  const ruralPath = path.join(__dirname, "..", "assets", "knowledge_base", "RURAL_PORTFOLIO.md");
   const juridic = fs.existsSync(juridicPath) ? fs.readFileSync(juridicPath, "utf8") : "";
   const rural = fs.existsSync(ruralPath) ? fs.readFileSync(ruralPath, "utf8") : "";
   return `${juridic}\n\n${rural}`;
 }
 function loadGoldMemory() {
-  const memoryPath = path.join(process.cwd(), "assets", "knowledge_base", "GOLD_MEMORY.md");
+  const memoryPath = path.join(__dirname, "..", "assets", "knowledge_base", "GOLD_MEMORY.md");
   if (!fs.existsSync(memoryPath)) return "";
   return fs.readFileSync(memoryPath, "utf8");
 }
@@ -214,14 +260,14 @@ function logAdapter(msg) {
 }
 
 let HERMES_API_URL = (process.env.HERMES_API_URL || "http://localhost:8642").replace(/\/+$/, "").replace(/\/v1$/, "");
-console.log(`[hermes-adapter] API Base URL: ${HERMES_API_URL}`);
+console.log(`[hermes-adapter] URL Base da API: ${HERMES_API_URL}`);
 
 let HERMES_API_KEY = process.env.HERMES_API_KEY || "";
 const ADAPTER_PORT = parseInt(process.env.HERMES_ADAPTER_PORT || "18789", 10);
 const HERMES_MODEL = process.env.HERMES_MODEL || "llama-3.1-8b-instant";
 const HERMES_AGENT_NAME = identity.name || identity.nome || process.env.HERMES_AGENT_NAME || "Hermes";
 const HERMES_ROLE = identity.role || identity.papel || "Diretor de Vendas";
-const HERMES_VIBE = identity.vibe || "Efficient and helpful";
+const HERMES_VIBE = identity.vibe || "Eficiente e prestativo";
 const HERMES_EMOJI = identity.emoji || "✨";
 const HOME = process.env.HOME || process.env.USERPROFILE || process.env.HOMEPATH || "/tmp";
 
@@ -266,16 +312,16 @@ const TEAM_TOOLS = [
   { type: "function", function: { name: "execute_command", description: "Executa comando terminal.", parameters: { type: "object", required: ["command"], properties: { command: { type: "string" } } } } },
   { type: "function", function: { name: "read_logs", description: "Lê logs do sistema.", parameters: { type: "object", properties: { lines: { type: "number" } } } } },
   // Ferramentas auxiliares
-  { type: "function", function: { name: "calculate_property_match", description: "Match score.", parameters: { type: "object", required: ["lead_preferences", "property_details"], properties: { lead_preferences: { type: "string" }, property_details: { type: "string" } } } } },
-  { type: "function", function: { name: "schedule_visit", description: "Agenda visita.", parameters: { type: "object", required: ["lead_name", "property_title", "date_time"], properties: { lead_name: { type: "string" }, property_title: { type: "string" }, date_time: { type: "string" } } } } },
-  { type: "function", function: { name: "request_kyc_documents", description: "Checklist KYC.", parameters: { type: "object", required: ["lead_name"], properties: { lead_name: { type: "string" }, custom_requirements: { type: "string" } } } } },
+  { type: "function", function: { name: "calculate_property_match", description: "Calcula pontuação de compatibilidade entre lead e imóvel.", parameters: { type: "object", required: ["lead_preferences", "property_details"], properties: { lead_preferences: { type: "string" }, property_details: { type: "string" } } } } },
+  { type: "function", function: { name: "schedule_visit", description: "Agenda visita ao imóvel.", parameters: { type: "object", required: ["lead_name", "property_title", "date_time"], properties: { lead_name: { type: "string" }, property_title: { type: "string" }, date_time: { type: "string" } } } } },
+  { type: "function", function: { name: "request_kyc_documents", description: "Solicita checklist de documentos KYC ao lead.", parameters: { type: "object", required: ["lead_name"], properties: { lead_name: { type: "string" }, custom_requirements: { type: "string" } } } } },
   { type: "function", function: { name: "secure_cloud_backup", description: "Realiza backup externo dos arquivos críticos (DB, Leads) para proteção contra falhas.", parameters: { type: "object", properties: {} } } },
-  { type: "function", function: { name: "system_health_check", description: "Verifica o estado vital do sistema (Memória, CPU, Disco).", parameters: { type: "object", properties: {} } } },
-  { type: "function", function: { name: "rollback_patch", description: "Desfaz a última alteração de arquivo realizada.", parameters: { type: "object", required: ["path"], properties: { path: { type: "string", description: "Caminho do arquivo para restaurar do backup .bak" } } } } },
+  { type: "function", function: { name: "system_health_check", description: "Verifica a saúde de todos os serviços do ecossistema iAmobil (Cloud, DB, Bot, Hub).", parameters: { type: "object", properties: {} } } },
+  { type: "function", function: { name: "codebook_audit", description: "Analisa arquivos ou diretórios específicos para auditoria de segurança ou qualidade.", parameters: { type: "object", required: ["path"], properties: { path: { type: "string", description: "Caminho do arquivo para auditoria" } } } } },
   // Novas Ferramentas de Engenharia Avançada (Fase 3)
   { type: "function", function: { name: "execute_git_command", description: "Executa comandos Git (commit, status, branch).", parameters: { type: "object", required: ["command"], properties: { command: { type: "string", description: "Comando git (ex: commit -m 'msg')" } } } } },
   { type: "function", function: { name: "run_security_audit", description: "Realiza auditoria de segurança (npm audit) e busca chaves expostas.", parameters: { type: "object", properties: { deep_scan: { type: "boolean" } } } } },
-  { type: "function", function: { name: "take_page_screenshot", description: "Captura screenshot da URL local para validação visual.", parameters: { type: "object", properties: { url: { type: "string" }, filename: { type: "string" } } } } },
+  { type: "function", function: { name: "server_screenshot", description: "Tira um print da tela inteira do servidor (Dashboard/Gestor/Processos).", parameters: { type: "object", properties: { url: { type: "string" }, filename: { type: "string" } } } } },
   { type: "function", function: { name: "execute_db_query", description: "Executa consultas SQL no banco de dados SQLite principal.", parameters: { type: "object", required: ["query"], properties: { query: { type: "string" }, params: { type: "array" } } } } },
   { type: "function", function: { name: "monitor_system_resources", description: "Coleta dados detalhados de Hardware e Disco.", parameters: { type: "object", properties: { include_processes: { type: "boolean" } } } } },
   // Ferramentas de Marketing (Dika)
@@ -348,7 +394,7 @@ const agentRegistry = new Map([
   [AGENT_ID, {
     id: AGENT_ID,
     name: HERMES_AGENT_NAME,
-    workspace: `${HOME}/.hermes/workspace-hermes`,
+    workspace: path.join(HOME, ".hermes", "workspace-hermes"),
     role: HERMES_ROLE,
     systemPrompt: ORCHESTRATOR_SYSTEM_PROMPT,
     settings: { wipe: false, continuity: true, model: HERMES_MODEL },
@@ -368,6 +414,7 @@ const REGISTRY_FILE = path.join(HOME, ".hermes", "clawd3d-registry.json");
 let persistDebounceTimer = null;
 
 function loadHistoryFromDisk() {
+  console.log(`[hermes-adapter] Carregando histórico de: ${HISTORY_FILE}`);
   try {
     if (fs.existsSync(HISTORY_FILE)) {
       const raw = fs.readFileSync(HISTORY_FILE, "utf8");
@@ -376,11 +423,11 @@ function loadHistoryFromDisk() {
         for (const [key, messages] of Object.entries(data)) {
           if (Array.isArray(messages)) conversationHistory.set(key, messages);
         }
-        console.log(`[hermes-adapter] Loaded history for ${Object.keys(data).length} session(s).`);
+        console.log(`[hermes-adapter] Histórico carregado para ${Object.keys(data).length} sessão(ões).`);
       }
     }
   } catch (err) {
-    console.warn("[hermes-adapter] Could not load history:", sanitizeErrorMessage(err));
+    console.warn("[hermes-adapter] Não foi possível carregar o histórico:", sanitizeErrorMessage(err));
   }
 }
 
@@ -395,7 +442,7 @@ function saveHistoryToDisk() {
       fs.mkdirSync(path.dirname(HISTORY_FILE), { recursive: true });
       fs.writeFileSync(HISTORY_FILE, JSON.stringify(data, null, 2), "utf8");
     } catch (err) {
-      console.warn("[hermes-adapter] Could not save history:", sanitizeErrorMessage(err));
+      console.warn("[hermes-adapter] Não foi possível salvar o histórico:", sanitizeErrorMessage(err));
     }
   }, 500);
 }
@@ -427,17 +474,17 @@ function loadRegistryFromDisk() {
       }
     }
   } catch (err) {
-    console.warn("[hermes-adapter] Could not load registry:", sanitizeErrorMessage(err));
+    console.warn("[hermes-adapter] Não foi possível carregar o registro:", sanitizeErrorMessage(err));
   }
 }
 
 function autoDiscoverAgents() {
   try {
-    const agentsDir = path.join(process.cwd(), "agents");
+    const agentsDir = path.join(__dirname, "..", "agents");
     console.log(`[hermes-adapter] 🔍 Iniciando auto-descoberta em: ${agentsDir}`);
     
     if (!fs.existsSync(agentsDir)) {
-      console.warn(`[hermes-adapter] ⚠️ Pasta 'agents/' não encontrada em: ${process.cwd()}`);
+      console.warn(`[hermes-adapter] ⚠️ Pasta 'agents/' não encontrada em: ${agentsDir}`);
       return;
     }
 
@@ -650,11 +697,15 @@ async function resolveHermesModel(requestedModel) {
 }
 
 async function completeOneTurn(messages, model, tools, _retryCount = 0) {
+  return aiQueue.run(() => _completeOneTurn(messages, model, tools, _retryCount));
+}
+
+async function _completeOneTurn(messages, model, tools, _retryCount = 0) {
   const resolvedModel = (_retryCount > 0) ? model : await resolveHermesModel(model);
   
-  // Limitação de Histórico para evitar vazamento de memória (Bug Fix #1)
+  // Limitação de Histórico para máxima velocidade (Performance Fix #3)
   let activeMessages = messages;
-  const MAX_HISTORY = 50;
+  const MAX_HISTORY = 20; // Reduzido de 50 para 20 para menor latência
   if (activeMessages.length > MAX_HISTORY) {
       console.warn(`[hermes-adapter] Pruning history for session. ${activeMessages.length} -> ${MAX_HISTORY}`);
       const systemMsg = activeMessages.find(m => m.role === "system");
@@ -731,6 +782,10 @@ async function completeOneTurn(messages, model, tools, _retryCount = 0) {
  * @returns {{ textContent: string, toolCalls: Array<{id,name,args}>, finishReason: string }}
  */
 async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _retryCount = 0) {
+  return aiQueue.run(() => _streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _retryCount));
+}
+
+async function _streamOneTurn(messages, model, tools, onTextDelta, abortCheck, _retryCount = 0) {
   console.log(`[DEBUG] streamOneTurn START: model=${model}, retry=${_retryCount}`);
   // Reset to primary provider (Groq) at the start of each new request
   if (_retryCount === 0) {
@@ -2908,7 +2963,7 @@ function startAdapter() {
   });
 
   httpServer.listen(ADAPTER_PORT, "0.0.0.0", () => {
-    console.log(`\n[hermes-adapter] ✓ Listening on ws://localhost:${ADAPTER_PORT}`);
+    console.log(`[hermes-adapter] Servidor rodando na porta ${ADAPTER_PORT}`);
     console.log(`[hermes-adapter] ✓ Forwarding to Hermes API at ${HERMES_API_URL}`);
     console.log(`[hermes-adapter] ✓ Model: ${HERMES_MODEL}`);
     console.log(`[hermes-adapter] ✓ Multi-agent orchestration: ENABLED`);

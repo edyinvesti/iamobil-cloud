@@ -7,7 +7,7 @@ const fs = require("fs");
  * Uses Playwright to render URLs or local HTML files and save them as PNG.
  */
 async function takeScreenshot(urlOrPath, outputFilename) {
-    console.log(`[ScreenshotService] Starting capture for: ${urlOrPath}`);
+    console.log(`[ServiçoScreenshot] Iniciando captura para: ${urlOrPath}`);
     
     let browser;
     try {
@@ -40,11 +40,11 @@ async function takeScreenshot(urlOrPath, outputFilename) {
             target = `file:///${absolutePath}`;
         }
 
-        console.log(`[ScreenshotService] Final Target: ${target}`);
+        console.log(`[ServiçoScreenshot] Alvo Final: ${target}`);
         const response = await page.goto(target, { waitUntil: 'networkidle', timeout: 30000 });
         
         if (response && response.status() === 404) {
-            console.warn(`[ScreenshotService] ⚠️ 404 DETECTED for target: ${target}`);
+            console.warn(`[ServiçoScreenshot] ⚠️ 404 DETECTADO para o alvo: ${target}`);
             const content = await page.content();
             console.log(`[ScreenshotService] Page Content Preview: ${content.slice(0, 500)}`);
         }
@@ -60,7 +60,7 @@ async function takeScreenshot(urlOrPath, outputFilename) {
         const outputPath = path.join(debugDir, outputFilename);
         await page.screenshot({ path: outputPath, fullPage: false });
         
-        console.log(`[ScreenshotService] Screenshot saved to: ${outputPath}`);
+        console.log(`[ServiçoScreenshot] Screenshot salva em: ${outputPath}`);
         return outputPath;
     } catch (err) {
         console.error(`[ScreenshotService] Error:`, err.message);

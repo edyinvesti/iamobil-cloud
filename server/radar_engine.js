@@ -10,8 +10,8 @@ require('dotenv').config();
  */
 
 const VAULT_PATH = path.join(process.env.USERPROFILE || process.env.HOME, "Downloads", "IAmobil_Vault", "IAmobil_Vault");
-const GOLD_MEMORY_PATH = path.join(process.cwd(), "GOLD_MEMORY.md");
-const OUTPUT_PATH = path.join(process.cwd(), "public", "radar_data.json");
+const GOLD_MEMORY_PATH = path.join(__dirname, "..", "assets", "knowledge_base", "GOLD_MEMORY.md");
+const OUTPUT_PATH = path.join(__dirname, "..", "public", "radar_data.json");
 const GROQ_API_KEY = process.env.GROQ_API_KEY || process.env.HERMES_API_KEY;
 
 async function analyzeTrends() {
@@ -44,22 +44,32 @@ async function analyzeTrends() {
 
 
   try {
-    const prompt = `Analise os dados da imobiliária abaixo e gere um JSON com as tendências de mercado e alertas de concorrência.
-    DADOS:
+    const prompt = `VOCÊ É O OMNI-BRAIN DA IAMOBIL. Sua missão é ser proativo.
+    Analise os dados internos (Vault) e cruze com seu conhecimento de mercado imobiliário em tempo real (Goiânia).
+    
+    DADOS INTERNOS (VAULT/MEMORY):
     ${context}
     
+    INSTRUÇÕES PROATIVAS:
+    1. Se o Vault estiver vazio ou desatualizado, você DEVE gerar tendências baseadas no mercado atual de Goiânia (ex: valorização no Setor Bueno, novos lançamentos no Marista, demanda por casas em condomínio fechado no Alphaville).
+    2. Identifique oportunidades que o corretor ainda não viu.
+    3. Crie alertas de ameaça competitiva (ex: novos aplicativos de leilão, mudanças na taxa Selic).
+
     RESPONDA APENAS UM JSON NO SEGUINTE FORMATO (Sem markdown tags):
     {
-      "top_regions": [{"name": "Bairro", "score": 85}, ...],
-      "property_types": [{"type": "Tipo", "percentage": 60}, ...],
-      "active_profiles": ["Perfil 1", "Perfil 2"],
-      "market_vibe": "Uma frase curta sobre o momento do mercado",
-      "competition_alerts": [
-        {"title": "Alerta de Preço", "neighborhood": "Bairro", "threat": "Alta/Média", "suggestion": "Ação recomendada"}
+      "top_regions": [{"name": "Bairro", "score": 85, "trend": "up/down"}],
+      "property_types": [{"type": "Tipo", "percentage": 60}],
+      "active_profiles": ["Perfil de Comprador Atual"],
+      "market_vibe": "Análise crítica do momento econômico para imobiliárias em GO",
+      "proactive_opportunities": [
+         {"title": "Oportunidade Digital", "description": "Sugestão de ação proativa no mercado"}
       ],
-      "last_update": "Data formatada"
+      "competition_alerts": [
+        {"title": "Alerta", "neighborhood": "Bairro", "threat": "Alta", "suggestion": "Ação imediata"}
+      ],
+      "last_update": "Data"
     }
-    Se não houver dados suficientes, invente dados realistas e competitivos baseados em Goiânia (Setor Bueno, Marista, Alphaville) para demonstração de inteligência comercial.`;
+    Seja específico sobre Goiânia. Não ignore o contexto local.`;
 
     const response = await axios.post(API_URL, {
       model: MODEL,

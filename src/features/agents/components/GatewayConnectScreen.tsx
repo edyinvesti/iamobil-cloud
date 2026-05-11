@@ -54,6 +54,8 @@ export const GatewayConnectScreen = ({
   const [showToken, setShowToken] = useState(false);
   const [isLaunchingSimulator, setIsLaunchingSimulator] = useState(false);
   const [launchError, setLaunchError] = useState<string | null>(null);
+
+  const isRender = typeof window !== "undefined" && window.location.hostname.includes("onrender.com");
   const tokenOptional =
     selectedAdapterType === "hermes" ||
     selectedAdapterType === "demo" ||
@@ -158,12 +160,14 @@ export const GatewayConnectScreen = ({
         />
       </label>
 
-      <div className="space-y-0.5 text-xs text-muted-foreground">
-        <p className="font-medium text-foreground">Using Tailscale?</p>
-        <p>
-          URL: <span className="font-mono">wss://&lt;your-tailnet-host&gt;</span>
-        </p>
-      </div>
+      {!isRender && (
+        <div className="space-y-0.5 text-xs text-muted-foreground">
+          <p className="font-medium text-foreground">Using Tailscale?</p>
+          <p>
+            URL: <span className="font-mono">wss://&lt;your-tailnet-host&gt;</span>
+          </p>
+        </div>
+      )}
 
       <label className="flex flex-col gap-1 text-[11px] font-medium text-foreground/90">
         {tokenOptional ? "Token de acesso (opcional)" : "Token de acesso"}
@@ -288,14 +292,21 @@ export const GatewayConnectScreen = ({
       </div>
 
       <div className="ui-card px-4 py-4 sm:px-6 sm:py-5">
-        <div className="space-y-1.5">
-          <p className="font-mono text-[10px] font-semibold tracking-[0.06em] text-muted-foreground">
-            Rodar localmente (opcional)
-          </p>
-          <p className="text-sm text-foreground/90">
-            Inicie um processo de gateway local nesta máquina e conecte-se.
-          </p>
-        </div>
+        {!isRender && (
+          <div className="py-4">
+            <p className="font-mono text-[10px] font-medium tracking-[0.06em] text-muted-foreground">
+              Rodar localmente (opcional)
+            </p>
+            <p className="mt-2 text-sm text-foreground/90">
+              Inicie um processo de gateway local nesta máquina e conecte-se.
+            </p>
+            <div className="mt-3 flex flex-col gap-3">
+              <code className="block overflow-x-auto whitespace-nowrap rounded-md bg-[var(--command-bg)] px-2.5 py-2 font-mono text-[11px] text-[var(--command-fg)]">
+                {localGatewayCommand}
+              </code>
+            </div>
+          </div>
+        )}
         <div className="mt-3 space-y-3">
           {commandField}
           <div className="rounded-md border border-border bg-muted/30 px-3 py-3">
@@ -325,11 +336,9 @@ export const GatewayConnectScreen = ({
             {launchError && <p className="mt-1 text-[10px] ui-text-danger">{launchError}</p>}
           </div>
           <div className="rounded-md border border-border bg-muted/30 px-3 py-3">
-            <p className="text-xs font-medium text-foreground">Usando Hermes localmente?</p>
+            <p className="text-xs font-medium text-foreground">Conexão em Produção</p>
             <p className="mt-1 text-xs leading-snug text-muted-foreground">
-              Rode <span className="font-mono text-foreground">npm run hermes-adapter</span>, depois escolha
-              <span className="font-mono text-foreground"> Backend Hermes</span>. A URL local padrão é
-              <span className="font-mono text-foreground"> ws://localhost:18789</span>.
+              Para o IAmobil Cloud, utilize o gateway oficial da nuvem. O simulador interno e os backends demo são recomendados apenas para testes rápidos de interface.
             </p>
           </div>
           <div className="rounded-md border border-border bg-muted/30 px-3 py-3">
@@ -352,7 +361,7 @@ export const GatewayConnectScreen = ({
               remains per browser/device.
             </p>
           </div>
-          {localGatewayDefaults ? (
+          {!isRender && localGatewayDefaults ? (
             <div className="ui-input rounded-md px-3 py-3">
               <div className="space-y-2">
                 <p className="text-xs text-muted-foreground">

@@ -69,17 +69,21 @@ const createFrameRateLimiter = (
  * Format: comma-separated hostnames, e.g. "gateway.percival-labs.ai,localhost"
  */
 const isUpstreamAllowed = (url) => {
-  const allowlist = (process.env.UPSTREAM_ALLOWLIST || "").trim();
-  if (!allowlist) {
-    return process.env.NODE_ENV !== "production";
-  }
   try {
     const parsed = new URL(url);
+    const host = parsed.hostname.toLowerCase();
+    if (host === "localhost" || host === "127.0.0.1" || host === "::1") {
+      return true;
+    }
+    const allowlist = (process.env.UPSTREAM_ALLOWLIST || "").trim();
+    if (!allowlist) {
+      return process.env.NODE_ENV !== "production";
+    }
     const allowed = allowlist
       .split(",")
       .map((h) => h.trim().toLowerCase())
       .filter(Boolean);
-    return allowed.includes(parsed.hostname.toLowerCase());
+    return allowed.includes(host);
   } catch {
     return false;
   }
@@ -216,7 +220,7 @@ function createGatewayProxy(options) {
       if (requiresToken && !upstreamToken && !browserHasAuth) {
         sendConnectError(
           "studio.gateway_token_missing",
-          "Upstream gateway token is not configured on the Studio host."
+          "Token do gateway de origem não configurado no host do Studio."
         );
         return;
       }
@@ -254,7 +258,7 @@ function createGatewayProxy(options) {
         logError("Failed to load upstream gateway settings.", err);
         pendingUpstreamSetupError = {
           code: "studio.settings_load_failed",
-          message: "Failed to load Studio gateway settings.",
+          message: "Falha ao carregar as configurações do gateway do Studio.",
         };
         return;
       }
@@ -262,7 +266,7 @@ function createGatewayProxy(options) {
       if (!upstreamUrl) {
         pendingUpstreamSetupError = {
           code: "studio.gateway_url_missing",
-          message: "Upstream gateway URL is not configured on the Studio host.",
+          message: "URL do gateway de origem não configurada no host do Studio.",
         };
         return;
       }
@@ -270,7 +274,7 @@ function createGatewayProxy(options) {
       if (!isUpstreamAllowed(upstreamUrl)) {
         pendingUpstreamSetupError = {
           code: "studio.gateway_url_blocked",
-          message: "Upstream gateway URL is not in the allowed hosts list.",
+          message: "A URL do gateway de origem não está na lista de hosts permitidos.",
         };
         return;
       }
@@ -281,7 +285,7 @@ function createGatewayProxy(options) {
       } catch {
         pendingUpstreamSetupError = {
           code: "studio.gateway_url_invalid",
-          message: "Upstream gateway URL is invalid on the Studio host.",
+          message: "A URL do gateway de origem é inválida no host do Studio.",
         };
         return;
       }
@@ -302,7 +306,7 @@ function createGatewayProxy(options) {
         } else {
           const timeoutError = {
             code: "studio.upstream_timeout",
-            message: "Timed out connecting Studio to the upstream gateway WebSocket after multiple attempts.",
+            message: "O tempo limite esgotou ao conectar o Studio ao WebSocket do gateway de origem após várias tentativas.",
           };
           pendingUpstreamSetupError = timeoutError;
           if (connectRequestId) sendConnectError(timeoutError.code, timeoutError.message);
@@ -358,7 +362,7 @@ function createGatewayProxy(options) {
         if (!connectRequestId) {
           pendingUpstreamSetupError ||= {
             code: "studio.upstream_closed",
-            message: `Upstream gateway closed (${code}): ${reason}`,
+            message: `O gateway de origem fechou (${code}): ${reason}`,
           };
           return;
         }
@@ -369,8 +373,8 @@ function createGatewayProxy(options) {
               connectRequestId,
               code === 1008 ? "studio.upstream_rejected" : "studio.upstream_closed",
               code === 1008
-                ? `Upstream gateway rejected connect (${code}): ${reason || "no reason provided"}`
-                : `Upstream gateway closed (${code}): ${reason}`
+                ? `O gateway de origem rejeitou a conexão (${code}): ${reason || "nenhuma razão fornecida"}`
+                : `O gateway de origem fechou (${code}): ${reason}`
             )
           );
           return;
@@ -394,13 +398,13 @@ function createGatewayProxy(options) {
         if (!connectRequestId) {
           pendingUpstreamSetupError ||= {
             code: "studio.upstream_error",
-            message: "Failed to connect to upstream gateway WebSocket.",
+            message: "Falha ao conectar ao WebSocket do gateway de origem.",
           };
           return;
         }
         sendConnectError(
           "studio.upstream_error",
-          "Failed to connect to upstream gateway WebSocket."
+          "Falha ao conectar ao WebSocket do gateway de origem."
         );
       });
     };

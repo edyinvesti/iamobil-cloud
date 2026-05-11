@@ -6,9 +6,9 @@ const BRAIN_INTERVAL_MS = 60 * 60 * 1000; // 1 hr default
 
 class BrainEngine {
   constructor() {
-    this.dbPath = path.join(process.cwd(), "data", "iamobil.db");
-    this.knowledgePath = path.join(process.cwd(), "KNOWLEDGE_IMOBILIARIO.md");
-    // fallback logic in case URL isn't configured, though .env has it
+    this.dbPath = path.join(__dirname, "..", "data", "iamobil.db");
+    this.knowledgePath = path.join(__dirname, "..", "assets", "knowledge_base", "KNOWLEDGE_IMOBILIARIO.md");
+    // Lógica de fallback para a URL da API
     this.apiUrl = process.env.HERMES_API_URL || 'https://api.groq.com/openai/v1/chat/completions';
     this.apiKey = process.env.HERMES_API_KEY || process.env.OPENAI_API_KEY;
   }
@@ -64,7 +64,7 @@ Responda com APENAS 3 marcadores rápidos, curtos e acionáveis servindo como re
                 body: bodyQuery
             });
         } catch (fetchErr) {
-            console.error('❌ [Brain] Fetch falhou:', fetchErr.message);
+            console.error('❌ [Brain] Busca (Fetch) falhou:', fetchErr.message);
             db.close();
             return;
         }

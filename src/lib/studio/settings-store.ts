@@ -169,19 +169,33 @@ const mergeGatewayProfiles = (
   };
 };
 
+const isCloudEnvironment = () => Boolean(process.env.RENDER || process.env.NODE_ENV === "production");
+
 export const loadLocalGatewayDefaults = (): StudioGatewaySettings | null => {
+  if (isCloudEnvironment()) {
+    // In cloud, we don't probe local files; return a standard cloud default profile
+    return buildGatewaySettings({
+      adapterType: "hermes",
+      url: process.env.NEXT_PUBLIC_GATEWAY_URL || "",
+      profiles: {
+        hermes: buildLocalProfile(process.env.NEXT_PUBLIC_GATEWAY_URL || "")
+      }
+    });
+  }
   const fromFile = readOpenclawGatewayDefaults();
   const fromEnv = buildEnvGatewayDefaults();
   if (fromFile) {
     return mergeGatewayProfiles(fromFile, fromEnv);
   }
-  // Fall back to env vars so operators can configure the gateway URL at
-  // runtime without openclaw.json and without a rebuild. If no explicit
-  // URL is provided, also expose local Hermes/Demo adapter ports when set.
   return fromEnv;
 };
 
 export const loadStudioSettings = (): StudioSettings => {
+  if (isCloudEnvironment()) {
+    const defaults = defaultStudioSettings();
+    const gateway = loadLocalGatewayDefaults();
+    return gateway ? { ...defaults, gateway } : defaults;
+  }
   const settingsPath = resolveStudioSettingsPath();
   if (!fs.existsSync(settingsPath)) {
     const defaults = defaultStudioSettings();

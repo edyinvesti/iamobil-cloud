@@ -66,6 +66,74 @@ const PROPERTY_MEDIA = {
     "studio": path.join(process.cwd(), "public", "properties", "studio.png"),
 };
 
+const TelegramBot = require('node-telegram-bot-api');
+const WebSocket = require('ws');
+const googleTTS = require('google-tts-api');
+const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
+const { Readable } = require('stream');
+const ragEngine = require('./rag_engine');
+const dataEngine = require('./data_engine');
+const { generateSalesReportPDF } = require('./report_generator');
+
+// Carregar variáveis de ambiente
+require('dotenv').config({ path: (process.platform === 'linux' && require('fs').existsSync('/etc/secrets/.env')) ? '/etc/secrets/.env' : '.env' });
+
+const HERMES_WS_URL = process.env.HERMES_WS_URL || 'ws://127.0.0.1:18789';
+const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+
+// Diagnóstico de inicialização
+console.log(`[Hub] TELEGRAM_TOKEN: ${TELEGRAM_TOKEN ? 'CONFIGURADO ✅' : 'NÃO ENCONTRADO ❌'}`);
+console.log(`[Hub] HERMES_WS_URL: ${HERMES_WS_URL}`);
+
+const DEBUG_LOG = path.join(process.cwd(), "logs", "hub_debug.log");
+if (!fs.existsSync(path.join(process.cwd(), "logs"))) {
+    fs.mkdirSync(path.join(process.cwd(), "logs"), { recursive: true });
+}
+const logStream = fs.createWriteStream(DEBUG_LOG, { flags: 'a' });
+
+function logDebug(msg) {
+    const entry = `[${new Date().toISOString()}] ${msg}\n`;
+    logStream.write(entry);
+    console.log(msg);
+}
+
+// Carregar Identidade do Edy
+function loadIdentity(folder = "edy") {
+    const identityPath = path.join(process.cwd(), "agents", folder, "IDENTITY.md");
+    if (!fs.existsSync(identityPath)) return {};
+    const content = fs.readFileSync(identityPath, "utf8");
+    const lines = content.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    const identity = {};
+    for (let i = 0; i < lines.length; i += 2) {
+        if (lines[i] && lines[i + 1]) {
+            identity[lines[i].toLowerCase()] = lines[i + 1];
+        }
+    }
+    return identity;
+}
+const identity = loadIdentity();
+const AGENT_NAME = identity.name || "Edy";
+const AGENT_ROLE = identity.role || "Gerente";
+const AGENT_EMOJI = identity.emoji || "👔";
+
+let ws;
+const pendingRequests = new Map(); // runId -> { chatId, platform }
+const abortedHubRuns = new Set();
+let tgBot = null;
+let reconnectAttempts = 0;
+let queueTimeout = null;
+
+const PROPERTY_MEDIA = {
+    "penthouse": path.join(process.cwd(), "public", "properties", "penthouse.png"),
+    "itahye": path.join(process.cwd(), "public", "properties", "mansion.png"),
+    "itahyé": path.join(process.cwd(), "public", "properties", "mansion.png"),
+    "mansion": path.join(process.cwd(), "public", "properties", "mansion.png"),
+    "itaim": path.join(process.cwd(), "public", "properties", "studio.png"),
+    "studio": path.join(process.cwd(), "public", "properties", "studio.png"),
+};
+
 async function sendMediaIfMentioned(chatId, platform, text) {
     const lowerText = text.toLowerCase();
     for (const [key, filePath] of Object.entries(PROPERTY_MEDIA)) {
@@ -259,168 +327,6 @@ function connectHermes() {
                                      textForVoice = voiceMatch[1].trim();
                                      ans = ans.replace(voiceMatch[0], '').trim();
                                  }
-                                // 1. Entrega do Texto (Com Split para Mensagens Longas)
-                                 const safeAns = (typeof ans === 'string' && ans.length > 0) ? ans : "Desculpe, não consegui processar a resposta.";
-                                 const textChunks = splitText(safeAns);
-                                 
-                                 for (let i = 0; i < textChunks.length; i++) {
-                                     const prefix = textChunks.length > 1 ? `(${i+1}/${textChunks.length}) ` : "";
-                                     const header = i === 0 ? `🤖 **${actingAgentName}:**\n\n` : "";
-                                     const chunkMsg = `${header}${prefix}${textChunks[i]}`;
-                                     
-                                     try {
-                                         logDebug(`[Telegram] Enviando chunk ${i+1}/${textChunks.length} (${chunkMsg.length} chars)`);
-                                         await tgBot.sendMessage(reqData.chatId, chunkMsg, { parse_mode: 'Markdown' });
-                                     } catch (err) { 
-                                         logDebug(`[Telegram] Falha no Markdown no chunk ${i+1}, tentando Texto Plano...`); 
-                                         try {
-                                             await tgBot.sendMessage(reqData.chatId, `${header}${prefix}${textChunks[i]}`);
-                                         } catch (err2) {
-                                             logDebug(`[Telegram] Erro crítico ao enviar chunk ${i+1}:`, err2.message);
-                                         }
-                                     }
-                                 }
-
-                                try {
-                                    await sendMediaIfMentioned(reqData.chatId, 'Telegram', ans);
-                                } catch (err) { logDebug(`[Telegram] Erro Mídia:`, err.message); }
-
-                                if (docPath && fs.existsSync(docPath)) {
-                                    try {
-                                        logDebug(`[Telegram] Enviando documento: ${docPath}`);
-                                        await tgBot.sendDocument(reqData.chatId, docPath);
-                                    } catch (err) {
-                                        logDebug(`[Telegram] Erro ao enviar documento:`, err.message);
-                                    }
-                                }
-
-                                 if (imgPath) {
-                                     const absPath = path.resolve(process.cwd(), imgPath);
-                                     if (fs.existsSync(absPath)) {
-                                         try {
-                                             logDebug(`[Telegram] Enviando imagem personalizada: ${absPath}`);
-                                             await tgBot.sendPhoto(reqData.chatId, absPath);
-                                         } catch (err) {
-                                             logDebug(`[Telegram] Erro ao enviar imagem:`, err.message);
-                                         }
-                                     } else {
-                                         logDebug(`[Hub] ❌ Arquivo de imagem não encontrado: ${absPath}`);
-                                     }
-                                 }
-
-                                    // 2. Entrega do Áudio (Obrigatória - Independente)
-                                    logDebug(`[Telegram] Iniciando pipeline de áudio obrigatório...`);
-                                    try {
-                                        let audioBuffer = null;
-                                        
-                                        // 1. Google TTS (Fallback Final Único - Estabilidade Total)
-                                        if (textForVoice) {
-                                            logDebug(`[Hub] Gerando voz via sistema estável iAmobil.`);
-                                            audioBuffer = await getVoiceAudio(textForVoice);
-                                        }
-
-                                    if (audioBuffer) {
-                                        logDebug(`[Telegram] Despachando áudio (${audioBuffer.length} bytes)...`);
-                                        await tgBot.sendVoice(reqData.chatId, audioBuffer, {}, { filename: 'audio.mp3', contentType: 'audio/mpeg' });
-                                    } else {
-                                        logDebug(`[Hub] ❌ Erro Fatal: Todos os sistemas de voz falharam.`);
-                                    }
-                                } catch (errAudio) {
-                                    logDebug(`[Telegram] Falha na entrega do áudio:`, errAudio.message || JSON.stringify(errAudio));
-                                    if (errAudio.response && errAudio.response.body) {
-                                        logDebug(`[Telegram] Detalhe da Falha no Áudio:`, JSON.stringify(errAudio.response.body));
-                                    }
-                                }
-                            } catch (errGlobal) { 
-                                logDebug(`[Telegram] Erro de Processamento Global:`, errGlobal.message);
-                            }
-                        }
-                    }
-                    pendingRequests.delete(payload.runId);
-                } else if (payload.state === 'error' || payload.state === 'aborted') {
-                    const errorMsg = payload.errorMessage || "";
-                    logDebug(`[Hub] Erro recebido do Hermes: ${errorMsg}`);
-                    
-                    if (reqData.platform === 'Telegram' && tgBot) {
-                        if (errorMsg.includes("429") || errorMsg.toLowerCase().includes("rate limit")) {
-                            tgBot.sendMessage(reqData.chatId, `🔄 *Sincronizando iAmobil...* Nossa inteligência central está com alta demanda. Estou otimizando seu atendimento, por favor aguarde 15 segundos e tente novamente.`, { parse_mode: 'Markdown' });
-                        } else if (errorMsg.toLowerCase().includes("balance") || errorMsg.toLowerCase().includes("credit") || errorMsg.toLowerCase().includes("billing")) {
-                            tgBot.sendMessage(reqData.chatId, `💳 *Saldo Insuficiente:* O sistema central está sem créditos para processar novas mensagens. Por favor, verifique sua conta.`, { parse_mode: 'Markdown' });
-                        } else if (errorMsg.includes("400") || errorMsg.toLowerCase().includes("context_length") || errorMsg.toLowerCase().includes("maximum context")) {
-                            tgBot.sendMessage(reqData.chatId, `🔄 *Sincronizando sistema...* Tivemos um excesso de informações, estou limpando o histórico para continuarmos. Por favor, envie sua mensagem novamente em um instante.`, { parse_mode: 'Markdown' });
-                            ws.send(JSON.stringify({ type: "req", id: `reset-${Date.now()}`, method: "sessions.reset", params: { key: reqData.sessionKey || "agent:hermes:main" } }));
-                        } else {
-                            tgBot.sendMessage(reqData.chatId, `🚨 *Instabilidade Central:* ${errorMsg || "Erro desconhecido"}. Estou tentando restabelecer o contato.`, { parse_mode: 'Markdown' });
-                        }
-                    }
-                    pendingRequests.delete(payload.runId);
-                }
-            }
-            
-            // 2. Tratamento de Notificações Push (CEO Alert)
-
-            if (frame.type === 'event' && frame.event === 'notification') {
-                const ceoFile = path.join(process.cwd(), '.ceo_id');
-                if (fs.existsSync(ceoFile) && tgBot) {
-                    const ceoId = fs.readFileSync(ceoFile, 'utf8');
-                    tgBot.sendMessage(ceoId, `🔔 **Alerta iAmobil:**\n\n${frame.payload.message}`, { parse_mode: 'Markdown' });
-                }
-            }
-            
-        } catch (e) { logDebug('[Hub] Erro ao processar frame:', e.message); }
-    });
-
-    ws.on('close', () => {
-        hermesReady = false;
-        isProcessingQueue = false; // Reset queue if connection is lost
-        if (queueTimeout) clearTimeout(queueTimeout);
-        
-        reconnectAttempts++;
-        const delay = Math.min(5000 * Math.pow(2, reconnectAttempts - 1), 30000); // 5s, 10s, 20s, max 30s
-        logDebug(`❌ [Hub] Conexão perdidda. Reconectando em ${delay / 1000}s... (tentativa ${reconnectAttempts})`);
-        setTimeout(connectHermes, delay);
-    });
-
-    ws.on('error', (err) => {
-        logDebug('[Hub] Erro WebSocket:', err.message);
-    });
-}
-
-const messageQueue = [];
-let isProcessingQueue = false;
-
-function sendToAgents(task, platform, chatId, msgRef = null) {
-    // Normaliza plataforma para capitalização correta
-    const normalizedPlatform = platform.charAt(0).toUpperCase() + platform.slice(1).toLowerCase();
-    logDebug(`🚦 [Broker] Nova tarefa recebida: "${task.substring(0, 20)}..." | Plataforma: ${normalizedPlatform} | ChatID: ${chatId}`);
-    messageQueue.push({ task, platform: normalizedPlatform, chatId, msgRef });
-    if (ws && ws.readyState === WebSocket.OPEN && hermesReady) {
-        processQueue();
-    } else {
-        logDebug(`⚠️ [Hub] Hermes ainda conectando. Mensagem aguardando na fila (${messageQueue.length} pendentes).`);
-        if (platform === 'Telegram' && tgBot) {
-            tgBot.sendMessage(chatId, `⏳ Conectando ao escritório iAmobil... Sua mensagem será respondida em instantes.`);
-        }
-    }
-    return true;
-}
-
-function processQueue() {
-    if (isProcessingQueue || messageQueue.length === 0) return;
-    
-    isProcessingQueue = true;
-    const item = messageQueue.shift();
-    const runId = `hub-run-${Date.now()}`;
-    
-    logDebug(`🧠 [Broker] Processando da Fila (Restam ${messageQueue.length}): "${item.task}"`);
-    pendingRequests.set(runId, { platform: item.platform, chatId: item.chatId, msgRef: item.msgRef });
-    
-    logDebug(`[Broker] Estado da Fila: isProcessingQueue=${isProcessingQueue}, Pendentes=${pendingRequests.size}`);
-
-    
-    // Auto-destravar a fila em 90 segundos (Watchdog agressivo)
-    if (queueTimeout) clearTimeout(queueTimeout);
-    queueTimeout = setTimeout(() => {
         if (isProcessingQueue) {
             logDebug(`🕒 [Hub] Watchdog alert: Timeout na fila para runId: ${runId}. Destravando...`);
             abortedHubRuns.add(runId);
