@@ -113,8 +113,16 @@ const parseConnectFailedCloseReason = (
   return { code, message: message || "connect failed" };
 };
 
-const DEFAULT_UPSTREAM_GATEWAY_URL =
-  process.env.NEXT_PUBLIC_GATEWAY_URL || "ws://localhost:18789";
+const resolveDefaultUpstreamGatewayUrl = () => {
+  if (typeof window === "undefined") return process.env.NEXT_PUBLIC_GATEWAY_URL || "ws://localhost:18789";
+  if (process.env.NEXT_PUBLIC_GATEWAY_URL) return process.env.NEXT_PUBLIC_GATEWAY_URL;
+  if (window.location.hostname.includes("onrender.com")) {
+    return `wss://${window.location.hostname}/api/gateway/ws`;
+  }
+  return "ws://localhost:18789";
+};
+
+const DEFAULT_UPSTREAM_GATEWAY_URL = resolveDefaultUpstreamGatewayUrl();
 const DEFAULT_CUSTOM_RUNTIME_URL = "http://localhost:7770";
 const INITIAL_AUTO_CONNECT_DELAY_MS = 900;
 const INITIAL_CONNECT_RETRY_DELAY_MS = 1_200;
