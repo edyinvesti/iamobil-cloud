@@ -134,6 +134,17 @@ async function main() {
     });
   }
 
+  const proxy = createGatewayProxy({
+    loadUpstreamSettings: async () => ({
+      url: process.env.CLAW3D_GATEWAY_URL || `ws://127.0.0.1:${process.env.HERMES_ADAPTER_PORT || 18789}`,
+      token: studioToken,
+      adapterType: process.env.CLAW3D_GATEWAY_ADAPTER_TYPE || "hermes",
+    }),
+    log: (msg) => console.log(`[Gateway Proxy] ${msg}`),
+    logError: (msg, err) => console.error(`[Gateway Proxy] ${msg}`, err),
+    upstreamHandshakeTimeoutMs: 10000,
+  });
+
   const app = next({
     dev,
     hostname,
