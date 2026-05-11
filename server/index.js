@@ -262,6 +262,20 @@ async function main() {
               return;
             }
 
+            if (pathname === "/api/debug-adapter") {
+              const logFile = path.join(__dirname, "../logs/adapter_debug.log");
+              if (fs.existsSync(logFile)) {
+                const logs = fs.readFileSync(logFile, "utf8").split("\n").slice(-100).join("\n");
+                res.statusCode = 200;
+                res.setHeader("Content-Type", "text/plain");
+                res.end(logs);
+              } else {
+                res.statusCode = 404;
+                res.end("Log file not found at " + logFile);
+              }
+              return;
+            }
+
             if (!nextReady) {
               res.statusCode = 200;
               res.setHeader("Content-Type", "application/json");
