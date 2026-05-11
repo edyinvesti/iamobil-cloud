@@ -171,7 +171,7 @@ const resolveDefaultGatewayProfile = (
       return { url: DEFAULT_CUSTOM_RUNTIME_URL, token: "", tokenConfigured: false };
     case "demo":
     case "hermes":
-      return { url: "ws://localhost:18789", token: "", tokenConfigured: false };
+      return { url: DEFAULT_UPSTREAM_GATEWAY_URL, token: "", tokenConfigured: false };
     case "openclaw":
     default:
       return {
