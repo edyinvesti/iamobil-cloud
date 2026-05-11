@@ -100,8 +100,7 @@ function createAccessGate(options) {
       url.startsWith("/api/tg-webhook") ||
       url.startsWith("/api/partner/properties") ||
       url.startsWith("/api/partner/register") ||
-      url.startsWith("/api/login-admin") ||
-      url.startsWith("/api/debug-adapter")
+      url.startsWith("/api/login-admin")
     ) {
       return false; 
     }
